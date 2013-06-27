@@ -7554,6 +7554,1485 @@ _cFor - 被转发的控件对象
 })();
 //{/if}//
 
+/**
+ * liteTable - 简单表格
+ *
+ */
+
+(function () {
+
+    var core = ecui,
+        string = core.string,
+        ui = core.ui,
+        util = core.util,
+        string = core.string,
+
+        undefined,
+
+        extend = util.extend,
+        blank = util.blank,
+        attachEvent = util.attachEvent,
+        encodeHTML = string.encodeHTML,
+
+        inheritsControl = core.inherits,
+        triggerEvent = core.triggerEvent,
+
+        UI_CONTROL = ui.Control,
+        UI_CONTROL_CLASS = UI_CONTROL.prototype;
+
+    var UI_LITE_TABLE = ui.LiteTable =
+        inheritsControl(
+            UI_CONTROL,
+            'ui-lite-table',
+            function (el, options) {
+                options.resizable = false;
+            },
+            function (el, options) {
+                this._aData = [];
+                this._aFields = [];
+                this._eCheckboxAll = null;
+                this._aCheckboxs = [];
+                this._sEmptyText = options.emptyText || '暂无数据';
+                this._bCheckedHighlight = options.checkedHighlight === true;
+            }
+        ),
+
+        UI_LITE_TABLE_CLASS = UI_LITE_TABLE.prototype,
+
+        DELEGATE_EVENTS = ['click', 'mouseup', 'mousedown'],
+
+        // 默认处理函数
+        DEFAULT_EVENTS = {
+            'click th.ui-lite-table-hcell-sort': function (event, control) {
+                var field = this.getAttribute('data-field'),
+                    orderby;
+
+                if (this.className.indexOf('-sort-desc') >= 0) {
+                    orderby = 'asc';
+                }
+                else if (this.className.indexOf('-sort-asc') >= 0) {
+                    orderby = 'desc'
+                }
+                else {
+                    orderby = this.getAttribute('data-orderby') || 'desc';
+                }
+
+                triggerEvent(control, 'sort', null, [field, orderby]);
+            },
+            'click input.ui-lite-table-checkbox-all': function (event, control) {
+                control.$refreshCheckbox(this.checked);
+            },
+            'click input.ui-lite-table-checkbox': function (event, control) {
+                control.$refreshCheckbox();
+            }
+        };
+
+    function copyArray(data) {
+        var res = [], i, item;
+
+        for (i = 0; item = data[i]; i++) {
+            res.push(extend({}, item));
+        }
+
+        return res;
+    }
+
+    function getHanlderByType(events, type) {
+        var handlers = [], item;
+
+        events = extend({}, events);
+        events = extend(events, DEFAULT_EVENTS);
+
+        for (var key in events) {
+            item = {handler: events[key]};
+            key = key.split(/\s+/);
+            if (key[0] == type) {
+                item.selector = key[1];
+                handlers.push(item);
+            }
+        }
+
+        return handlers;
+    }
+
+    function checkElementBySelector(ele, selector) {
+        var tagName, value, type, res = true;
+
+        if (!ele && !selector) {
+            return false;
+        }
+
+        selector.replace(/^([^.#]*)([.#]?)(.*)$/, function ($0, $1, $2, $3) {
+            tagName = $1;
+            type = $2;
+            value = $3;
+        });
+
+        if (tagName && ele.tagName.toLowerCase() != tagName) {
+            res = false;
+        }
+
+        if (type == '.' && !new RegExp('(^|\\s+)' + value + '(\\s+|$)').test(ele.className)) {
+            res = false;
+        }
+
+        if (type == '#' && ele.id != value) {
+            res = false;
+        }
+
+        return res;
+    }
+
+    function buildTabeBody(fields, datasource, type) {
+        var i, item, j, field, html = [], str,
+            className;
+
+        for (i = 0; item = datasource[i]; i++) {
+            html.push('<tr class="'+ type +'-row">')
+            for (j = 0; field = fields[j]; j++) {
+                className = type + '-cell';
+                if (field.align) {
+                    className += ' ' + type + '-cell-align-' + field.align;
+                }
+                else if (field.checkbox) {
+                    className += ' ' + type + '-cell-align-center';
+                }
+                html.push('<td class="'+ className +'">');
+                if (field.checkbox) {
+                    html.push('<input type="checkbox" value="'+ item[field.content] + '" class="'+ type +'-checkbox"');
+                    if (field.checkedField && item[field.checkedField] == true) {
+                        html.push(' checked="checked"');
+                    }
+                    html.push(' />');
+                }
+                else {
+                    if (typeof field.content == 'function') {
+                        html.push(field.content.call(null, item, i));
+                    }
+                    else {
+                        str = item[field.content];
+                        if (!str && str != 0) {
+                            str = '&nbsp;';
+                        }
+                        else {
+                            str = encodeHTML(str + '');
+                        }
+                        html.push(str);
+                    }
+                }
+                html.push('</td>')
+            }
+            html.push('</tr>')
+        }
+
+        return html.join('');
+    };
+
+    /**
+     * @override
+     */
+    UI_LITE_TABLE_CLASS.$setSize = blank;
+
+    /**
+     * @override
+     */
+    UI_LITE_TABLE_CLASS.init = function () {
+        var i, item, ele = this.getOuter(),
+            control = this;
+
+        UI_CONTROL_CLASS.init.call(this);
+
+        // 添加控件全局的事件监听
+        // 只支持click mousedown mouseup
+        for (i = 0; item = DELEGATE_EVENTS[i]; i++) {
+            attachEvent(ele, item, (function (name) {
+                return function (event) {
+                    var e = event || window.event;
+                    e.targetElement = e.target || e.srcElement;
+                    control.$fireEventHanlder(name, e);
+                }
+            })(item));
+        }
+    }
+
+    /**
+     * 设置表格的数据
+     * @public
+     * 
+     * @param {Array} datasource 表格数据
+     * @param {Object} sortInfo 排序信息
+     *          {String} sortby 排序字段
+     *          {String} orderby 排序方式
+     * @param {Boolean} isSilent 静默模式 如果true的话 不会立刻重绘表格 需要手动调用render
+     */
+    UI_LITE_TABLE_CLASS.setData = function (datasource, sortInfo, isSilent) {
+        this._aData = copyArray(datasource);
+        if (sortInfo) {
+            this._sSortby = sortInfo.sortby || '';
+            this._sOrderby = sortInfo.orderby || '';
+        }
+
+        !isSilent && this.render();
+    };
+
+    UI_LITE_TABLE_CLASS.getData = function () {
+        return copyArray(this._aData);
+    };
+
+    UI_LITE_TABLE_CLASS.getDataByField = function (o, field) {
+        var i, item;
+
+        field = field || 'id';
+        for (i = 0; item = this._aData[i]; i++) {
+            if (item[field] == o) {
+                return extend({}, item);
+            }
+        }
+
+        return null;
+    };
+
+    /**
+     * 设置表格的列信息
+     * @public
+     * 
+     * @param {Array} fields 列信息
+     * @param {Boolean} isSilent 静默模式 如果true的话 不会立刻重绘表格 需要手动调用render
+     */
+    UI_LITE_TABLE_CLASS.setFields = function (fields, isSilent) {
+        this._aFields = copyArray(fields);
+
+        !isSilent && this.render();
+    };
+
+    /**
+     * 获取当前选择的行单选框value
+     * @public
+     */
+    UI_LITE_TABLE_CLASS.getSelection = function () {
+        var ids = [], i, item;
+
+        for (i = 0; item = this._aCheckboxs[i]; i++) {
+            item.checked && ids.push(item.value);
+        }
+
+        return ids;
+    };
+
+    /**
+     * 重新绘制表格
+     * @public
+     */
+    UI_LITE_TABLE_CLASS.render = function () {
+        var type = this.getTypes()[0],
+            html = ['<table cellpadding="0" cellspacing="0" width="100%" class="'+ type +'-table">'],
+            i, item, className,
+            fields = this._aFields, datasource = this._aData;
+
+        if (!fields || fields.length <= 0) {
+            return;
+        }
+
+        html.push('<tr class="'+ type +'-head">');
+        // 渲染表头
+        for (i = 0; item = fields[i]; i++ ) {
+            className = type + '-hcell';
+            if (item.checkbox) {
+                className += ' ' + type + '-hcell-checkbox';
+                html.push('<th class="'+ className +'"><input type="checkbox" class="'+ type +'-checkbox-all" /></th>');
+                continue;
+            }
+            html.push('<th');
+            if (item.width) {
+                html.push(' width="' + item.width + '"');
+            }
+            if (item.sortable) {
+                className += ' ' + type + '-hcell-sort';
+                if (item.field && item.field == this._sSortby) {
+                    className += ' ' + type + '-hcell-sort-' + this._sOrderby;
+                }
+                html.push(' data-field="'+ item.field +'"');
+                if (item.orderby) {
+                    html.push(' data-orderby="' + item.orderby + '"');
+                }
+            }
+            html.push(' class="' + className + '">' + item.title + '</th>');
+        }
+        html.push('</tr>');
+
+        // 渲染无数据表格
+        if (!datasource || datasource.length <= 0) {
+            html.push('<tr class="'+ type +'-row"><td colspan="'
+                    + fields.length +'" class="'+ type +'-cell-empty">'+ this._sEmptyText +'</td></tr>');
+        }
+        else {
+           html.push(buildTabeBody(fields, datasource, type));
+        }
+
+        html.push('</table>');
+
+        this.setContent(html.join(''));
+        // 重新捕获所有的行当选框
+        this.$bindCheckbox();
+        if (this._eCheckboxAll) {
+            this.$refreshCheckbox();
+        }
+    };
+
+    /**
+     * 获取表格当前所有行单选框的引用
+     * @private
+     */
+    UI_LITE_TABLE_CLASS.$bindCheckbox = function () {
+        var inputs = this.getBody().getElementsByTagName('input'),
+            i, item, type = this.getTypes()[0];
+
+        this._aCheckboxs = [];
+        this._eCheckboxAll = null;
+
+        for (i = 0; item = inputs[i]; i++) {
+            if (item.type == 'checkbox' && item.className.indexOf(type + '-checkbox-all') >= 0) {
+                this._eCheckboxAll = item;
+            }
+            else if (item.type == 'checkbox' && item.className.indexOf(type + '-checkbox') >= 0) {
+                this._aCheckboxs.push(item);
+            }
+        }
+    };
+
+    /**
+     * 刷新表格的行单选框
+     * @private
+     *
+     * @param {Boolean} checked 全选/全不选 如果忽略此参数则根据当前表格的实际选择情况来设置“全选”的勾选状态
+     */
+    UI_LITE_TABLE_CLASS.$refreshCheckbox = function (checked) {
+        var i, item, newChecked = true, tr;
+
+        for (i = 0; item = this._aCheckboxs[i]; i++) {
+            tr = item.parentNode.parentNode;
+            if (checked !== undefined) {
+                item.checked = checked;
+            }
+            else {
+                newChecked = item.checked && newChecked;
+            }
+
+            if (item.checked && this._bCheckedHighlight) {
+                tr.className += ' highlight';
+            }
+            else if (this._bCheckedHighlight) {
+                tr.className = tr.className.replace(/\s+highlight/g, '');
+            }
+        }
+
+        this._eCheckboxAll.checked = checked !== undefined ? checked : newChecked;
+    };
+
+    /**
+     * 触发表格events中定义的事件
+     * @private
+     *
+     * @param {String} eventType 事件类型
+     * @param {Event} nativeEvent 原生事件参数
+     */
+    UI_LITE_TABLE_CLASS.$fireEventHanlder = function (eventType, nativeEvent) {
+        var events = getHanlderByType(this.events, eventType),
+            i, item, target = nativeEvent.targetElement, selector;
+
+        for (i = 0; item = events[i]; i++) {
+            if (checkElementBySelector(target, item.selector)) {
+                item.handler.call(target, nativeEvent, this);
+            }
+        }
+    };
+
+    /**
+     * @override
+     */
+    UI_LITE_TABLE_CLASS.$dispose = function () {
+        this._aCheckboxs = [];
+        this._eCheckboxAll = null;
+        UI_CONTROL_CLASS.$dispose.call(this);
+    };
+})();
+
+
+/*
+MonthView - 定义日历显示的基本操作。
+日历视图控件，继承自基础控件，不包含年/月/日的快速选择与切换，如果需要实现这些功能，请将下拉框(选择月份)、输入框(输入年份)等组合使用建立新的控件或直接在页面上布局并调用接口。
+
+日历视图控件直接HTML初始化的例子:
+<div ecui="type:month-view;year:2009;month:11"></div>
+
+属性
+_nYear      - 年份
+_nMonth     - 月份(0-11)
+_aCells     - 日历控件内的所有单元格，其中第0-6项是日历的头部星期名称
+_oBegin     - 起始日期 小于这个日期的日历单元格会被disabled
+_oEnd       - 结束日期 大于这个日期的日历单元格会被disabled
+_oDate      - 当前选择日期
+_uSelected  - 当前选择的日历单元格
+
+子控件属性
+_nDay       - 从本月1号开始计算的天数，如果是上个月，是负数，如果是下个月，会大于当月最大的天数
+*/
+//{if 0}//
+(function () {
+
+    var core = ecui,
+        array = core.array,
+        dom = core.dom,
+        ui = core.ui,
+
+        DATE = Date,
+
+        indexOf = array.indexOf,
+        addClass = dom.addClass,
+        getParent = dom.getParent,
+        removeClass = dom.removeClass,
+        setText = dom.setText,
+
+        $fastCreate = core.$fastCreate,
+        inheritsControl = core.inherits,
+        triggerEvent = core.triggerEvent,
+
+        UI_CONTROL = ui.Control;
+//{/if}//
+//{if $phase == "define"}//
+    ///__gzip_original__UI_MONTH_VIEW
+    ///__gzip_original__UI_MONTH_VIEW_CLASS
+    /**
+     * 初始化日历控件。
+     * options 对象支持的属性如下：
+     * year    日历控件的年份
+     * month   日历控件的月份(1-12)
+     * @public
+     *
+     * @param {Object} options 初始化选项
+     */
+    var UI_MONTH_VIEW = ui.MonthView =
+        inheritsControl(
+            UI_CONTROL,
+            'ui-monthview',
+            function (el, options) {
+                var i = 0,
+                    type = this.getType(),
+                    list = [];
+
+                el.style.overflow = 'auto';
+
+                for (; i < 7; ) {
+                    list[i] =
+                        '<td class="' + type + '-title' + this.Cell.TYPES + '">' +
+                            UI_MONTH_VIEW.WEEKNAMES[i++] + '</td>';
+                }
+                list[i] = '</tr></thead><tbody><tr>';
+                for (; ++i < 50; ) {
+                    list[i] =
+                        '<td class="' + type + '-item' + this.Cell.TYPES + '"></td>' +
+                            (i % 7 ? '' : '</tr><tr>');
+                }
+
+                el.innerHTML =
+                    '<table cellspacing="0"><thead><tr>' + list.join('') + '</tr></tbody></table>';
+            },
+            function (el, options) {
+                this._aCells = [];
+                for (var i = 0, list = el.getElementsByTagName('TD'), o; o = list[i]; ) {
+                    // 日历视图单元格禁止改变大小
+                    this._aCells[i++] = $fastCreate(this.Cell, o, this, {resizable: false});
+                }
+
+                this._oBegin = new Date(options.begin);
+                this._oEnd = new Date(options.end);
+
+                this.setView(options.year, options.month);
+            }
+        ),
+        UI_MONTH_VIEW_CLASS = UI_MONTH_VIEW.prototype,
+
+        /**
+         * 初始化日历控件的单元格部件。
+         * @public
+         *
+         * @param {Object} options 初始化选项
+         */
+        UI_MONTH_VIEW_CELL_CLASS = (UI_MONTH_VIEW_CLASS.Cell = inheritsControl(UI_CONTROL)).prototype;
+//{else}//
+    UI_MONTH_VIEW.WEEKNAMES = ['一', '二', '三', '四', '五', '六', '日'];
+
+    /**
+     * 选中某个日期单元格
+     * @private
+     *
+     * @param {Object} 日期单元格对象
+     */
+    function UI_MONTH_VIEW_CLASS_SETSELECTED(control, o) {
+        if (control._uSelected == o) {
+            return;
+        }
+        
+        if (control._uSelected) {
+            control._uSelected.alterClass('-selected');
+        }
+
+        if (o) {
+            o.alterClass('+selected');
+        }
+        control._uSelected = o;
+    };
+
+    /**
+     * 点击时，根据单元格类型触发相应的事件。
+     * @override
+     */
+    UI_MONTH_VIEW_CELL_CLASS.$click = function (event) {
+        var parent = this.getParent(),
+            index = indexOf(parent._aCells, this),
+            curDate = parent._oDate;
+
+        if (index < 7) {
+            triggerEvent(parent, 'titleclick', event, [index]);
+        }
+        else {
+            index = new DATE(parent._nYear, parent._nMonth, this._nDay);
+            //change事件可以取消，返回false会阻止选中
+            if ((!curDate || index.getTime() != curDate.getTime()) && triggerEvent(parent, 'change', event, [index])) {
+                parent._oDate = new DATE(parent._nYear, parent._nMonth, this._nDay);
+                UI_MONTH_VIEW_CLASS_SETSELECTED(parent, this);
+            }
+        }
+    };
+
+    /**
+     * 获取日历控件当前显示的月份。
+     * @public
+     *
+     * @return {number} 月份(1-12)
+     */
+    UI_MONTH_VIEW_CLASS.getMonth = function () {
+        return this._nMonth + 1;
+    };
+
+    /**
+     * 获取日历控件当前显示的年份。
+     * @public
+     *
+     * @return {number} 年份(19xx-20xx)
+     */
+    UI_MONTH_VIEW_CLASS.getYear = function () {
+        return this._nYear;
+    };
+
+    /**
+     * 日历显示移动指定的月份数。
+     * 参数为正整数则表示向当前月份之后的月份移动，负数则表示向当前月份之前的月份移动，设置后日历控件会刷新以显示新的日期。
+     * @public
+     *
+     * @param {number} offsetMonth 日历移动的月份数
+     */
+    UI_MONTH_VIEW_CLASS.move = function (offsetMonth) {
+        var time = new DATE(this._nYear, this._nMonth + offsetMonth, 1);
+        this.setView(time.getFullYear(), time.getMonth() + 1);
+    };
+
+    /**
+     * 设置日历的显示范围
+     * 只有在两参数的闭区间外的日期单元格会被disabled
+     * @public
+     *
+     * @param {Date} begin 起始日期，如果为null则表示不设置起始日期
+     * @param {Date} end 结束日期，如果为null则表示不设置结束日期
+     * @param {Boolean} isSilent 如果为true则只设置不刷新页面
+     */
+    UI_MONTH_VIEW_CLASS.setRange = function (begin, end, isSilent) {
+        this._oBegin = begin;
+        this._oEnd = end;
+        if (!isSilent) {
+            this.setView(this.getYear(), this.getMonth());
+        }
+    };
+
+    /**
+     * 设置日历当前选择日期，并切换到对应的月份
+     * @public
+     *
+     * @param {Date} date 日期
+     */
+    UI_MONTH_VIEW_CLASS.setDate = function (date) {
+        this.$setDate(date);
+        this.setView(date.getFullYear(), date.getMonth() + 1);
+    };
+
+    /**
+     * 获取当前日历选择的日期
+     * @public
+     *
+     * @return {Date} 日期
+     */
+    UI_MONTH_VIEW_CLASS.getDate = function () {
+        return this._oDate;
+    };
+
+    /*
+     * 设置日历的当前选择日历
+     * @private
+     *
+     * @param {Date} date 日期
+     */
+    UI_MONTH_VIEW_CLASS.$setDate = function (date) {
+        this._oDate = date ? new DATE(date.getFullYear(), date.getMonth(), date.getDate()) : null;
+    };
+
+    /**
+     * 设置日历控件当前显示的月份。
+     * @public
+     *
+     * @param {number} year 年份(19xx-20xx)，如果省略使用浏览器的当前年份
+     * @param {number} month 月份(1-12)，如果省略使用浏览器的当前月份
+     */
+    UI_MONTH_VIEW_CLASS.setView = function (year, month) {
+        //__gzip_original__date
+        var i = 7,
+            today = new DATE(),
+            year = year || today.getFullYear(),
+            month = month ? month - 1 : today.getMonth(),
+            // 得到上个月的最后几天的信息，用于补齐当前月日历的上月信息位置
+            o = new DATE(year, month, 0),
+            day = 1 - o.getDay(),
+            lastDayOfLastMonth = o.getDate(),
+            // 得到当前月的天数
+            lastDayOfCurrMonth = new DATE(year, month + 1, 0).getDate(),
+            begin = this._oBegin, end = this._oEnd, selected = this._oDate,
+            curDate;
+
+        this._nYear = year;
+        this._nMonth = month;
+
+        //设置日期范围
+        //begin = begin && begin.getFullYear() == year && begin.getMonth() == month ? begin.getDate() : 0 ;
+        //end = end && end.getFullYear() == year && end.getMonth() == month ? end.getDate() : 31;
+        begin = begin ? new Date(begin.getFullYear(), begin.getMonth(), begin.getDate()).getTime() : 0
+        end = end ? new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime() : Number.MAX_VALUE;
+
+        selected = selected && selected.getFullYear() == year && selected.getMonth() == month ? selected.getDate() : 0;
+
+        UI_MONTH_VIEW_CLASS_SETSELECTED(this, null);
+
+        for (; o = this._aCells[i++]; ) {
+            if (month = day > 0 && day <= lastDayOfCurrMonth) {
+                curDate = new Date(this._nYear, this._nMonth, day).getTime();
+                if (begin > curDate || end < curDate) {
+                    o.disable();
+                }
+                else {
+                    o.enable();
+                    //恢复选择的日期
+                    if (day == selected) {
+                        UI_MONTH_VIEW_CLASS_SETSELECTED(this, o);
+                    }
+                }
+            }
+            else {
+                o.disable();
+            }
+
+            if (i == 36 || i == 43) {
+                (o.isDisabled() ? addClass : removeClass)(getParent(o.getOuter()), this.getType() + '-extra');
+            }
+
+            setText(
+                o.getBody(),
+                month ? day : day > lastDayOfCurrMonth ? day - lastDayOfCurrMonth : lastDayOfLastMonth + day
+            );
+            o._nDay = day++;
+        }
+    };
+//{/if}//
+//{if 0}//
+})();
+//{/if}//
+
+(function () {
+
+    var core = ecui,
+        array = core.array,
+        dom = core.dom,
+        ui = core.ui,
+        string = core.string,
+        util = core.util,
+
+        DATE = Date,
+        REGEXP = RegExp,
+        DOCUMENT = document,
+
+        pushArray = array.push,
+        children = dom.children,
+        createDom = dom.create,
+        getParent = dom.getParent,
+        getPosition = dom.getPosition,
+        moveElements = dom.moveElements,
+        setText = dom.setText,
+        formatDate = string.formatDate,
+        getView = util.getView,
+
+        $fastCreate = core.$fastCreate,
+        inheritsControl = core.inherits,
+        triggerEvent = core.triggerEvent,
+        setFocused = core.setFocused,
+
+        UI_CONTROL = ui.Control,
+        UI_CONTROL_CLASS = UI_CONTROL.prototype,
+        UI_BUTTON = ui.Button,
+        UI_BUTTON_CLASS = UI_BUTTON.prototype,
+        UI_INPUT_CONTROL = ui.InputControl,
+        UI_INPUT_CONTROL_CLASS = UI_INPUT_CONTROL.prototype,
+        UI_SELECT = ui.Select,
+        UI_MONTH_VIEW = ui.MonthView,
+        UI_MONTH_VIEW_CELL = UI_MONTH_VIEW.Cell;
+
+    /**
+     * 初始化日历控件。
+     * options 对象支持的属性如下：
+     * year    日历控件的年份
+     * month   日历控件的月份(1-12)
+     * @public
+     *
+     * @param {Object} options 初始化选项
+     */
+    var UI_CALENDAR = ui.Calendar =
+        inheritsControl(
+            UI_INPUT_CONTROL,
+            'ui-calendar',
+            function (el, options) {
+                var type = this.getTypes()[0];
+
+                options.hidden = true;
+                el.innerHTML = '<span class="'+ type +'-text"></span><span class="'+ type +'-cancel"></span><span class="'+ type +'-button"></span>';
+            },
+            function (el, options) {
+                var child = children(el),
+                    type = this.getTypes()[0],
+                    o = createDom(type + '-panel', 'position:absolute;display:none');
+
+                this._bTip = options.tip !== false;
+
+                if (options.date) {
+                    var date = options.date.split('-');
+                    this._oDate = new DATE(parseInt(date[0], 10), parseInt(date[1], 10) - 1, parseInt(date[2], 10));
+                }
+                else if (options.date === false) {
+                    this._oDate = null
+                }
+                else {
+                    this._oDate = new DATE();
+                }
+                var range = UI_CALENDAR_PARSE_RANGE(options.start, options.end);
+
+                this._eText = child[0];
+
+                this._uCancel = $fastCreate(this.Cancel, child[1], this);
+                this._uButton = $fastCreate(UI_CONTROL, child[2], this);
+
+                this._bCancelButton = options.cancelButton !== false;
+                if (!this._bCancelButton) {
+                    this._uCancel.$hide();
+                }
+
+                DOCUMENT.body.appendChild(o);
+                this._uPanel = $fastCreate(this.Panel, o, this, {date: this._oDate, range: range});
+            }
+        ),
+
+        UI_CALENDAR_CLASS = UI_CALENDAR.prototype,
+        UI_CALENDAR_CANCEL_CLASS = (UI_CALENDAR_CLASS.Cancel = inheritsControl(UI_CONTROL)).prototype,
+
+        UI_CALENDAR_PANEL = UI_CALENDAR_CLASS.Panel = 
+        inheritsControl(
+            UI_CONTROL,
+            'ui-calendar-panel',
+            function (el, options) {
+                var html = [],
+                    year = (new DATE()).getFullYear(),
+                    type = this.getTypes()[0];
+                var today = new Date();
+                var startYear = today.getFullYear() - 5;
+                var endYear = today.getFullYear() + 5;
+                var startDate = options.range.begin;
+                var endDate = options.range.end;
+                if (startDate) {
+                    startYear = startDate.getFullYear();
+                }
+                if (endDate) {
+                    endYear = endDate.getFullYear();
+                }
+                html.push('<div class="'+ type +'-buttons"><div class="'+ type +'-btn-prv'+ UI_BUTTON.TYPES +
+                    '"></div><select class="'+ type +'-slt-year'+ UI_SELECT.TYPES +'">');
+
+                for (var  i = startYear; i <= endYear; i ++) {
+                    html.push('<option value="'+ i +'">'+ i +'</option>');
+                }
+
+                html.push('</select><select class="'+ type +'-slt-month'+ UI_SELECT.TYPES +'">');
+
+                for (var i = 1; i <= 12; i++) {
+                    html.push('<option value="'+ i +'">'+ (i < 10 ? '0' : '') + i +'</option>');
+                }
+
+                html.push('</select><div class="'+ type +'-btn-nxt'+ UI_BUTTON.TYPES +'"></div></div>');
+                html.push('<div class="'+ type +'-month-view'+ UI_MONTH_VIEW.TYPES +'"></div>');
+                el.innerHTML = html.join('');
+            },
+            function (el, options) {
+                var html = [], o, i,
+                    type = this.getTypes()[0],
+                    buttonClass = this.Button,
+                    selectClass = this.Select,
+                    monthViewClass = this.MonthView,
+                    date = options.date;
+                
+                el = children(el);
+                o = children(el[0]);
+
+                this._uPrvBtn = $fastCreate(buttonClass, o[0], this);
+                this._uPrvBtn._nStep = -1;
+                this._uYearSlt = $fastCreate(selectClass, o[1], this);
+                this._uMonthSlt = $fastCreate(selectClass, o[2], this);
+                this._uNxtBtn = $fastCreate(buttonClass, o[3], this);
+                this._uNxtBtn._nStep = 1;
+
+                el = el[1];
+                this._uMonthView = $fastCreate(monthViewClass, el, this,
+                    {
+                        begin: options.range.begin,
+                        end: options.range.end
+                    }
+                );
+            }
+        ),
+
+        UI_CALENDAR_PANEL_CLASS = UI_CALENDAR_PANEL.prototype,
+        UI_CALENDAR_PANEL_BUTTON_CLASS = (UI_CALENDAR_PANEL_CLASS.Button = inheritsControl(UI_BUTTON, null)).prototype,
+        UI_CALENDAR_PANEL_SELECT_CLASS = (UI_CALENDAR_PANEL_CLASS.Select = inheritsControl(UI_SELECT, null)).prototype,
+        UI_CALENDAR_PANEL_MONTHVIEW_CLASS = (UI_CALENDAR_PANEL_CLASS.MonthView = inheritsControl(UI_MONTH_VIEW, null)).prototype,
+
+        UI_CALENDAR_STR_DEFAULT = '<span class="ui-calendar-default">请选择一个日期</span>',
+        UI_CALENDAR_STR_PATTERN = 'yyyy-MM-dd';
+
+
+    function parseDate(str) {
+        str = str.split('-');
+        return new Date (str[0], parseInt(str[1], 10) - 1, str[2]);
+    }
+
+    function UI_CALENDAR_PARSE_RANGE(begin, end) {
+        var now = new Date(), res = null,
+            o = [now.getFullYear(), now.getMonth(), now.getDate()], t,
+            p = {y:0, M:1, d:2};
+        if (begin instanceof Date) {
+            res = res || {};
+            res.begin = begin;
+        }
+        else if (/^([-+]?)(\d+)([yMd])$/.test(begin)) {
+            res = res || {};
+            t = o.slice();
+            if (!REGEXP.$1 || REGEXP.$1 == '+') {
+                t[p[REGEXP.$3]] -= parseInt(REGEXP.$2, 10);
+            }
+            else {
+                t[p[REGEXP.$3]] += parseInt(REGEXP.$2, 10);
+            }
+            res.begin = new Date(t[0], t[1], t[2]);
+        }
+        else if ('[object String]' == Object.prototype.toString.call(begin)) {
+            res = res || {};
+            begin = begin.split('-');
+            res.begin = new Date(parseInt(begin[0], 10), parseInt(begin[1], 10) - 1, parseInt(begin[2], 10));
+        }
+
+        if (end instanceof Date) {
+            res = res || {};
+            res.end = end;
+        }
+        else if (/^([-+]?)(\d+)([yMd])$/.test(end)) {
+            res = res || {};
+            t = o.slice();
+            if (!REGEXP.$1 || REGEXP.$1 == '+') {
+                t[p[REGEXP.$3]] += parseInt(REGEXP.$2, 10);
+            }
+            else {
+                t[p[REGEXP.$3]] -= parseInt(REGEXP.$2, 10);
+            }
+            res.end = new Date(t[0], t[1], t[2]);
+        }
+        else if ('[object String]' == Object.prototype.toString.call(end)) {
+            res = res || {};
+            end = end.split('-');
+            res.end = new Date(parseInt(end[0], 10), parseInt(end[1], 10) - 1, parseInt(end[2], 10));
+        }
+
+        return res ? res : {};
+    }
+
+    function UI_CALENDAR_TEXT_FLUSH(con) {
+        var el = con._eText;
+        if (el.innerHTML == '') {
+            con._uCancel.$hide();
+            if (con._bTip) {
+                el.innerHTML = UI_CALENDAR_STR_DEFAULT;
+            }
+        }
+        else if (con._bCancelButton){
+            con._uCancel.show();
+        }
+    }
+
+    UI_CALENDAR_CLASS.getValue = function () {
+        return this._oDate
+            ? formatDate(this._oDate, UI_CALENDAR_STR_PATTERN)
+            : '';
+    };
+
+    UI_CALENDAR_CLASS.setValue = function (value) {
+        value = parseDate(value);
+
+        this.setDate(value);
+    };
+
+    /**
+     * 获得单日历控件的日期
+     */
+    UI_CALENDAR_CLASS.getDate = function () {
+        return this._oDate;
+    };
+
+    UI_CALENDAR_CLASS.setDate = function (date) {
+        var panel = this._uPanel,
+            ntxt = date != null ? formatDate(date, UI_CALENDAR_STR_PATTERN) : '';
+
+        if (this._uPanel.isShow()) {
+            this._uPanel.hide();
+        }
+
+        this._eText.innerHTML = ntxt;
+        UI_INPUT_CONTROL_CLASS.setValue.call(this, ntxt);
+        this._oDate = date;
+        UI_CALENDAR_TEXT_FLUSH(this);
+    };
+
+    UI_CALENDAR_CLASS.setValue = function (str) {
+        if (!str) {
+            this.setDate(null);
+        }
+        else {
+            str = str.split('-');
+            this.setDate(new Date(parseInt(str[0], 10), parseInt(str[1], 10) - 1, parseInt(str[2], 10)));
+        }
+    };
+
+    UI_CALENDAR_CLASS.$activate = function (event) {
+        var panel = this._uPanel, con,
+            pos = getPosition(this.getOuter()),
+            posTop = pos.top + this.getHeight();
+
+        UI_INPUT_CONTROL_CLASS.$activate.call(this, event);
+        if (!panel.isShow()) {
+            panel.setDate(this.getDate());
+            con = getView();
+            panel.show();
+            panel.setPosition(
+                pos.left + panel.getWidth() <= con.right ? pos.left : con.right - panel.getWidth() > 0 ? con.right - panel.getWidth() : 0,
+                posTop + panel.getHeight() <= con.bottom ? posTop : pos.top - panel.getHeight() > 0 ? pos.top - panel.getHeight() : 0
+            );
+            setFocused(panel);
+        }
+    };
+
+    UI_CALENDAR_CLASS.$cache = function (style, cacheSize) {
+        UI_INPUT_CONTROL_CLASS.$cache.call(this, style, cacheSize);
+        this._uButton.cache(false, true);
+        this._uPanel.cache(true, true);
+    };
+
+    UI_CALENDAR_CLASS.init = function () {
+        UI_INPUT_CONTROL_CLASS.init.call(this);
+        this.setDate(this._oDate);
+        this._uPanel.init();
+    };
+
+    UI_CALENDAR_CLASS.clear = function () {
+        this.setDate(null);
+    };
+
+    UI_CALENDAR_CLASS.setRange = function (begin, end) {
+        this._uPanel._uMonthView.setRange(begin, end);
+    };
+
+    UI_CALENDAR_CANCEL_CLASS.$click = function () {
+        var par = this.getParent(),
+            panel = par._uPanel;
+
+        UI_CONTROL_CLASS.$click.call(this);
+        par.setDate(null);
+    };
+
+    UI_CALENDAR_CANCEL_CLASS.$activate = UI_BUTTON_CLASS.$activate;
+
+    /**
+     * Panel
+     */
+    UI_CALENDAR_PANEL_CLASS.$blur = function () {
+        this.hide();
+    };
+
+    /**
+     * 设置日历面板的日期
+     */
+    UI_CALENDAR_PANEL_CLASS.setDate = function (date) {
+        var year = date != null ? date.getFullYear() : (new Date()).getFullYear(),
+            month = date != null ? date.getMonth() + 1 : (new Date()).getMonth() + 1;
+
+        this._uMonthView.$setDate(date);
+        this.setView(year, month);
+    };
+
+    /**
+     * 设置日历面板的展现年月 
+     */
+    UI_CALENDAR_PANEL_CLASS.setView = function (year, month) {
+        var monthSlt = this._uMonthSlt,
+            yearSlt = this._uYearSlt,
+            monthView = this._uMonthView;
+
+        yearSlt.setValue(year);
+        monthSlt.setValue(month);
+        monthView.setView(year, month);
+    };
+
+    /**
+     * 获取当前日历面板视图的年
+     */
+    UI_CALENDAR_PANEL_CLASS.getViewYear = function () {
+        return this._uMonthView.getYear();
+    };
+
+    /**
+     * 获取当前日历面板视图的月
+     */
+    UI_CALENDAR_PANEL_CLASS.getViewMonth = function () {
+        return this._uMonthView.getMonth();
+    };
+
+    UI_CALENDAR_PANEL_CLASS.$cache = function (style, cacheSize) {
+        this._uPrvBtn.cache(true, true);
+        this._uNxtBtn.cache(true, true);
+        this._uMonthSlt.cache(true, true);
+        this._uYearSlt.cache(true, true);
+        this._uMonthView.cache(true, true);
+        UI_CONTROL_CLASS.$cache.call(this, style, cacheSize);
+    };
+
+    UI_CALENDAR_PANEL_CLASS.init = function () {
+        UI_CONTROL_CLASS.init.call(this);
+        this._uMonthSlt.init();
+        this._uYearSlt.init();
+        this._uMonthView.init();
+    };
+
+    UI_CALENDAR_PANEL_CLASS.$change = function (event, date) {
+        var par = this.getParent();
+        if (triggerEvent(par, 'change', event, [date])) {
+            par.setDate(date);
+        }
+        this.hide();
+    };
+
+    UI_CALENDAR_PANEL_SELECT_CLASS.$change = function () {
+        var panel = this.getParent(),
+            yearSlt = panel._uYearSlt,
+            monthSlt = panel._uMonthSlt;
+
+        panel.setView(yearSlt.getValue(), monthSlt.getValue());
+    };
+
+    UI_CALENDAR_PANEL_BUTTON_CLASS.$click = function () {
+        var step = this._nStep,
+            panel = this.getParent(),
+            date;
+
+        date = new DATE(panel.getViewYear(), panel.getViewMonth() - 1 + step, 1);
+        panel.setView(date.getFullYear(), date.getMonth() + 1);
+    };
+
+    UI_CALENDAR_PANEL_MONTHVIEW_CLASS.$change = function (event, date) {
+        triggerEvent(this.getParent(), 'change', event, [date]);
+    };
+
+})();
+
+(function () {
+
+    var core = ecui,
+        dom = core.dom,
+        ui = core.ui,
+        string = core.string,
+
+        DATE = Date,
+        REGEXP = RegExp,
+        DOCUMENT = document,
+
+        children = dom.children,
+        createDom = dom.create,
+        getParent = dom.getParent,
+        moveElements = dom.moveElements,
+        formatDate = string.formatDate,
+
+        $fastCreate = core.$fastCreate,
+        inheritsControl = core.inherits,
+        triggerEvent = core.triggerEvent,
+
+        UI_CONTROL = ui.Control,
+        UI_CONTROL_CLASS = UI_CONTROL.prototype,
+        UI_BUTTON = ui.Button,
+        UI_BUTTON_CLASS = UI_BUTTON.prototype,
+        UI_INPUT_CONTROL = ui.InputControl,
+        UI_INPUT_CONTROL_CLASS = UI_INPUT_CONTROL.prototype,
+        UI_CALENDAR = ui.Calendar,
+        UI_CALENDAR_CLASS = UI_CALENDAR.prototype,
+        UI_CALENDAR_CANCEL_CLASS = UI_CALENDAR_CLASS.Cancel.prototype,
+        UI_CALENDAR_PANEL = UI_CALENDAR_CLASS.Panel,
+
+        UI_CALENDAR_STR_DEFAULT = '<span class="ui-calendar-default">请选择一个日期</span>',
+        UI_MULTI_CALENDAR_STR_DEFAULT = '<span class="ui-multi-calendar-default">请选择时间范围</span>',
+        UI_CALENDAR_STR_PATTERN = 'yyyy-MM-dd';
+
+    /**
+     * 初始化日历控件。
+     * options 对象支持的属性如下：
+     * year    日历控件的年份
+     * month   日历控件的月份(1-12)
+     * @public
+     *
+     * @param {Object} options 初始化选项
+     */
+
+    var UI_MULTI_CALENDAR = ui.MultiCalendar = 
+        inheritsControl(
+            UI_CALENDAR,
+            'ui-multi-calendar',
+            function (el, options) {
+                options.hidden = true;
+                options.yearRange && (this._nYearRange = options.yearRange - 0);
+                if (options.remind) {
+                    UI_MULTI_CALENDAR_STR_DEFAULT = '<span class="ui-calendar-default">'
+                        + options.remind
+                        + '</span>';
+                }
+            },
+            function (el, options) {
+                var o = createDom(), els;
+
+                o.innerHTML = '<input type="hidden" name="'+ (options.beginname ? options.beginname : 'beginDate') +'" />'
+                    + '<input type="hidden" name="'+ (options.endname ? options.endname : 'endDate') +'" />';
+                
+                if (options.bdate) {
+                    els = options.bdate.split('-');
+                    this._oBegin = new Date (els[0], parseInt(els[1], 10) - 1, els[2]);
+                }
+                if (options.edate) {
+                    els = options.edate.split('-');
+                    this._oEnd = new Date (els[0], parseInt(els[1], 10) - 1, els[2]);
+                }
+                els = children(o);    
+                this._eBeginInput = els[0];
+                this._eEndInput = els[1];
+
+                moveElements(o, el, true);
+            }
+        );
+
+    var UI_MULTI_CALENDAR_CLASS = UI_MULTI_CALENDAR.prototype;
+
+    var UI_MULTI_CALENDAR_PANEL = UI_MULTI_CALENDAR_CLASS.Panel = 
+        inheritsControl(
+            UI_CONTROL,
+            'ui-multi-calendar-panel',
+            function () {},
+            function (el, options) {
+                var type = this.getTypes()[0],
+                    html = [], range = options.range || {};
+
+                this._oRange = range;
+                html.push('<div class="'+ type +'-cal-area"><div class="'+ type +'-text"><strong>起始时间：</strong><span></span></div><div class="'+ UI_CALENDAR_PANEL.TYPES +'"></div></div>');
+                html.push('<div class="'+ type +'-cal-area"><div class="'+ type +'-text"><strong>结束时间：</strong><span></span></div><div class="'+ UI_CALENDAR_PANEL.TYPES +'"></div></div>');
+                html.push('<div class="'+ type +'-buttons"><div class="ui-button-g'+ UI_BUTTON.TYPES +'">确定</div><div class="'+ UI_BUTTON.TYPES +'">取消</div></div>');
+
+                el.innerHTML = html.join('');
+                el = children(el);
+
+                this._eBeginText = el[0].firstChild.lastChild;
+                this._eEndText = el[1].firstChild.lastChild;
+                this._uBeginCal = $fastCreate(this.Cal, el[0].lastChild, this, {range: range});
+                this._uBeginCal._sType = 'begin';
+                this._uEndCal = $fastCreate(this.Cal, el[1].lastChild, this, {range: range});
+                this._uEndCal._sType = 'end';
+                this._uSubmitBtn = $fastCreate(this.Button, el[2].firstChild, this);
+                this._uSubmitBtn._sType = 'submit';
+                this._uCancelBtn = $fastCreate(this.Button, el[2].lastChild, this);
+                this._uCancelBtn._sType = 'cancel';
+            }
+        );
+
+    var UI_MULTI_CALENDAR_CANCEL_CLASS = 
+        (UI_MULTI_CALENDAR_CLASS.Cancel = 
+            inheritsControl(UI_CALENDAR_CLASS.Cancel)
+        ).prototype;
+
+    var UI_MULTI_CALENDAR_PANEL_CLASS = UI_MULTI_CALENDAR_PANEL.prototype;
+
+    var UI_MULTI_CALENDAR_PANEL_CAL_CLASS = (
+        UI_MULTI_CALENDAR_PANEL_CLASS.Cal = 
+            inheritsControl(UI_CALENDAR_PANEL)
+        ).prototype;
+
+    var UI_MULTI_CALENDAR_PANEL_BUTTON_CLASS = 
+        (UI_MULTI_CALENDAR_PANEL_CLASS.Button = 
+            inheritsControl(UI_BUTTON)
+        ).prototype;
+    
+    function UI_MULTI_CALENDAR_TEXT_FLUSH(con) {
+        var el = con._eText;
+        if (el.innerHTML == '') {
+            con._uCancel.hide();
+            if (con._bTip) {
+                el.innerHTML = UI_MULTI_CALENDAR_STR_DEFAULT;
+            }
+        }
+        else {
+            con._uCancel.show();
+        }
+    }
+
+    function parseDate(str) {
+        str = str.split('-');
+        return new Date (str[0], parseInt(str[1], 10) - 1, str[2]);
+    }
+
+    UI_MULTI_CALENDAR_CLASS.init = function () {
+        UI_INPUT_CONTROL_CLASS.init.call(this);
+        this.setDate({begin: this._oBegin, end: this._oEnd});
+        this._uPanel.init();
+    };
+
+    UI_MULTI_CALENDAR_CLASS.setDate = function (date) {
+        var str = [], beginTxt, endTxt;
+
+        if (date == null) {
+            date = {begin: null, end: null};
+        }
+
+        beginTxt = date.begin ? formatDate(date.begin, UI_CALENDAR_STR_PATTERN) : '';
+        endTxt = date.end ? formatDate(date.end, UI_CALENDAR_STR_PATTERN) : '';
+
+        this._oBegin = date.begin;    
+        this._oEnd = date.end;
+        this._eBeginInput.value = beginTxt;
+        this._eEndInput.value = endTxt;
+        this._eInput.value = beginTxt + ',' + endTxt;
+        if (this._oBegin) {
+            str.push(beginTxt);
+        }
+        if (this._oEnd) {
+            str.push(endTxt);
+        }
+        if (str.length == 1) {
+            str.push(this._oEnd ? '之前' : '之后');
+            str = str.join('');
+        }
+        else if (str.length == 2) {
+            str = str.join('至');
+        }
+        else {
+            str = '';
+        }
+        this._eText.innerHTML = str;
+        UI_MULTI_CALENDAR_TEXT_FLUSH(this);
+    };
+
+    UI_MULTI_CALENDAR_CLASS.getDate = function () {
+        return {begin: this._oBegin, end: this._oEnd};
+    };
+
+    UI_MULTI_CALENDAR_CLASS.getValue = function () {
+        return {
+            begin: this._oBegin ? formatDate(this._oBegin, UI_CALENDAR_STR_PATTERN) : '',
+            end: this._oEnd ? formatDate(this._oEnd, UI_CALENDAR_STR_PATTERN): ''
+        };
+    };
+
+    UI_MULTI_CALENDAR_CLASS.setValue = function (data) {
+        data.begin = parseDate(data.begin);
+        data.end = parseDate(data.end);
+
+        this.setDate(data);
+    };
+
+    /**
+     * @event
+     * 点击输入框右侧的取消按钮时触发
+     */
+    UI_MULTI_CALENDAR_CANCEL_CLASS.$click = function() {
+        var par = this.getParent();
+        UI_CALENDAR_CANCEL_CLASS.$click.call(this);
+        par.clearRange();
+    };
+
+    /**
+     * 清除日历面板的range限制
+     * @public
+     */
+    UI_MULTI_CALENDAR_CLASS.clearRange = function() {
+        this._uPanel._oRange.begin = null;
+        this._uPanel._oRange.end = null;
+        this._uPanel._uBeginCal.setRange(null, null);
+        this._uPanel._uEndCal.setRange(null, null);
+    };
+
+    UI_MULTI_CALENDAR_PANEL_CLASS.setDate = function (date) {
+        var range = this._oRange, 
+            begin, end;
+
+        this._oBeginDate = date.begin;
+        this._oEndDate = date.end;
+
+        if (date.begin) {
+            this._eBeginText.innerHTML = formatDate(date.begin, UI_CALENDAR_STR_PATTERN);
+        }
+        else {
+            this._eBeginText.innerHTML = '';
+        }
+
+        if (date.end) {
+            this._eEndText.innerHTML = formatDate(date.end, UI_CALENDAR_STR_PATTERN);
+        }
+        else {
+            this._eEndText.innerHTML = '';
+        }
+
+        end = range.end ? range.end : date.end;
+        if (range.end && date.end && date.end.getTime() < range.end.getTime()) {
+                end =  date.end;
+        }
+        this._uBeginCal.setRange(range.begin, end, true);
+        this._uBeginCal.setDate(date.begin);
+
+        begin = range.begin ? range.begin : date.begin;
+        if (range.begin && date.begin && date.begin.getTime() > range.begin.getTime()) {
+                begin =  date.begin;
+        }
+        this._uEndCal.setRange(begin, range.end, true);
+        this._uEndCal.setDate(date.end);
+    };
+
+    UI_MULTI_CALENDAR_PANEL_CLASS.$blur = function () {
+        UI_CONTROL_CLASS.$blur.call(this);
+        this.hide();
+    };
+
+    /**
+     * 隐藏日历面板，隐藏时需要调整range
+     * @override
+     */
+    UI_MULTI_CALENDAR_PANEL_CLASS.hide = function (){
+        UI_CONTROL_CLASS.hide.call(this);
+        var par = this.getParent();
+        var date = par.getDate();
+
+        if (par._nYearRange) {
+            if (date.end) {
+                this._oRange.begin = new Date(date.end);
+                this._oRange.begin.setFullYear(
+                    this._oRange.begin.getFullYear() - par._nYearRange
+                );
+            }
+            if (date.begin) {
+                this._oRange.end = new Date(date.begin);
+                this._oRange.end.setFullYear(
+                    this._oRange.end.getFullYear() + par._nYearRange
+                );
+            }
+        }
+    };
+
+    UI_MULTI_CALENDAR_PANEL_CLASS.init = function () {
+        UI_CONTROL_CLASS.init.call(this);
+        this._uBeginCal.init();
+        this._uEndCal.init();
+    };
+
+    UI_MULTI_CALENDAR_PANEL_CLASS.$change = function () {
+        var par = this.getParent(),
+            beginDate = this._oBeginDate,
+            endDate = this._oEndDate;
+
+        if (triggerEvent(par, 'change', [beginDate, endDate])) {
+            par.setDate({begin: beginDate, end: endDate});
+        }
+        this.hide();
+    };
+
+    UI_MULTI_CALENDAR_PANEL_CLASS.$setDate = function (date, type) {
+        var key = type.charAt(0).toUpperCase() 
+                + type.substring(1);
+
+        var par = this.getParent();
+
+        this['_e' + key + 'Text'].innerHTML = formatDate(date, UI_CALENDAR_STR_PATTERN);
+        this['_o' + key + 'Date'] = date;
+        if (type == 'begin') {
+            if (par._nYearRange) {
+                this._oRange.end = new Date(date);
+                this._oRange.end.setFullYear(this._oRange.end.getFullYear() + par._nYearRange);
+            }
+            this._uEndCal.setRange(date, this._oRange.end);
+        }
+        else {
+            if (par._nYearRange) {
+                this._oRange.begin = new Date(date);
+                this._oRange.begin.setFullYear(this._oRange.begin.getFullYear() - par._nYearRange);
+            }
+            this._uBeginCal.setRange(this._oRange.begin, date);
+        }
+    };
+
+    UI_MULTI_CALENDAR_PANEL_CAL_CLASS.$blur = function () {
+        UI_CONTROL_CLASS.$blur.call(this);
+    };
+
+    UI_MULTI_CALENDAR_PANEL_CAL_CLASS.$change = function (event, date) {
+        var par = this.getParent();
+
+        this._oDateSel = date;
+        par.$setDate(date, this._sType);
+    };
+
+    UI_MULTI_CALENDAR_PANEL_CAL_CLASS.setRange = function (begin, end, isSilent) {
+        this._uMonthView.setRange(begin, end, isSilent);
+    };
+
+    UI_MULTI_CALENDAR_PANEL_BUTTON_CLASS.$click = function () {
+        var par = this.getParent();
+        UI_BUTTON_CLASS.$click.call(this);
+        if (this._sType == 'submit') {
+            triggerEvent(par, 'change');
+        }
+        else {
+            par.hide();
+        }
+    };
+})();
+
 
 /*
 MessageBox - 消息框功能。
