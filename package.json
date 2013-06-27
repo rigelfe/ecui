@@ -1,8 +1,9 @@
 {
-  "name": "ecui",
-  "version": "2.1.0",
-  "description": "ecui",
-  "dependencies": {
-    "uglify-js": "~2.3.6"
-  }
+    "name": "ecui",
+    "version": "2.1.0",
+    "description": "ecui",
+    "main": ["dis/ecui.js", "dis/ecui.css"],
+    "devDependencies": {
+        "uglify-js": "~2.3.6"
+    }
 }
