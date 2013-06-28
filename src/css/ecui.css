@@ -782,6 +782,27 @@ input.ui-button-g:active {
     margin-top: 10px;
     padding-bottom: 5px;
 }
+.ui-multi-calendar-panel {
+    z-index: 65535;
+    padding: 15px 0 0 10px;
+    width: 474px;
+    border: 1px solid #7D889A;
+    border-top-width: 2px;
+    background-color: #FFF;
+}
+.ui-multi-calendar-panel-text strong {
+    color: #104A78;
+}
+.ui-multi-calendar-panel-cal-area {
+    display: inline-block;
+    margin-right: 10px;
+    *display: inline;
+    zoom: 1;
+}
+.ui-multi-calendar-panel-buttons  {
+    margin-top: 10px;
+    padding-bottom: 5px;
+}
 
 .ui-pop {
     position: absolute;
