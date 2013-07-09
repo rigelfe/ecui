@@ -8,7 +8,7 @@ var path = require('path');
 var fs = require('fs');
 
 var sourceDir = path.resolve(__dirname, 'src');
-var disDir = path.resolve(__dirname, 'dis');
+var disDir = path.resolve(__dirname, 'dist');
 
 var sourceFile = path.resolve(sourceDir, 'ecui.js');
 var disFile = path.resolve(disDir, 'ecui.js');
