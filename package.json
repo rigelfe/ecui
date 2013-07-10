@@ -2,7 +2,7 @@
     "name": "ecui",
     "version": "2.1.0",
     "description": "ecui",
-    "main": ["dis/ecui.js", "dis/ecui.css"],
+    "main": ["dist/ecui.js", "dist/ecui.css"],
     "devDependencies": {
         "uglify-js": "~2.3.6"
     }
