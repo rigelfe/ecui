@@ -1,45 +1,52 @@
-/*
-Control - ECUI 的核心组成部分，定义所有控件的基本操作。
-基础控件是 ECUI 的核心组成部分，对 DOM 树上的节点区域进行封装。基础控件扩展了 Element 节点的标准事件(例如得到与失去焦点、激活等)，提供了方法对控件的基本属性(例如控件大小、位置与显示状态等)进行改变，是一切控件实现的基础。基本控件拥有四种状态：焦点(focus)、悬停(hover)、激活(active)与失效(disabled)。控件在创建过程中分为三个阶段：首先是填充控件所必须的 DOM 结构，然后缓存控件的属性信息，最后进行初始化真正的渲染并显示控件。
+/**
+ * @file
+ *
+ * Control - ECUI 的核心组成部分，定义所有控件的基本操作。
+ * 基础控件是 ECUI 的核心组成部分，对 DOM 树上的节点区域进行封装。
+ * 基础控件扩展了 Element 节点的标准事件(例如得到与失去焦点、激活等)，
+ * 提供了方法对控件的基本属性(例如控件大小、位置与显示状态等)进行改变，是一切控件实现的基础。
+ * 基本控件拥有四种状态：焦点(focus)、悬停(hover)、激活(active)与失效(disabled)。控
+ * 件在创建过程中分为三个阶段：首先是填充控件所必须的 DOM 结构，然后缓存控件的属性信息，最后进行初始化真正的渲染并显示控件。
+ * 基础控件直接HTML初始化的例子，id指定名称，可以通过ecui.get(id)的方式访问控件:
+ *
+ * @property {boolean} _bCapturable 控件是否响应浏览器事件状态
+ * @property {boolean} _bUserSelect 控件是否允许选中内容
+ * @property {boolean} _bFocusable 控件是否允许获取焦点
+ * @property {boolean} _bDisabled 控件的状态，为true时控件不处理任何事件
+ * @property {boolean} _bCached 控件是否已经读入缓存
+ * @property {boolean} _bCreated 控件是否已经完全生成
+ * @property {string} _sUID 控件的内部ID
+ * @property {string} _sPrimary 控件定义时的基本样式
+ * @property {string} _sClass 控件的当前样式
+ * @property {string} _sWidth 控件的基本宽度值，可能是百分比或者空字符串
+ * @property {string} _sHeight 控件的基本高度值，可能是百分比或者空字符串
+ * @property {string} _sDisplay 控件的布局方式，在hide时保存，在show时恢复
+ * @property {HTMLElement} _eMain 控件的基本标签对象
+ * @property {HTMLElement} _eBody 控件用于承载子控件的载体标签，通过$setBody函数设置这个值，绑定当前控件
+ * @property {ecui.ui.Control} _cParent 父控件对象
+ * @property {Array} _aStatus 控件当前的状态集合
+ * @property {number} $$width 控件的宽度缓存
+ * @property {number} $$height 控件的高度缓存
+ * @property {number} $$bodyWidthRevise 内容区域的宽度修正缓存
+ * @property {number} $$bodyHeightRevise 内容区域的高度修正缓存
+ * @property {number} $$borderTopWidth 上部边框线宽度缓存
+ * @property {number} $$borderLeftWidth 左部边框线宽度缓存
+ * @property {number} $$borderRightWidth 右部边框线宽度缓存
+ * @property {number} $$borderBottomWidth 下部边框线宽度缓存
+ * @property {number} $$paddingTop 上部内填充宽度缓存
+ * @property {number} $$paddingLeft 左部内填充宽度缓存
+ * @property {number} $$paddingRight 右部内填充宽度缓存
+ * @property {number} $$paddingBottom 下部内填充宽度缓存
+ * @property {string} $$position 控件布局方式缓存
+ *
+ *
+ * @example
+ * &lt;div ecui="type:control;id:demo"&gt;
+ *     &lt;!-- 这里放控件包含的内容 --&gt;
+ *     ...
+ * &lt;/div&gt;
+ */
 
-基础控件直接HTML初始化的例子，id指定名称，可以通过ecui.get(id)的方式访问控件:
-<div ecui="type:control;id:demo">
-  <!-- 这里放控件包含的内容 -->
-  ...
-</div>
-
-属性
-_bCapturable        - 控件是否响应浏览器事件状态
-_bUserSelect        - 控件是否允许选中内容
-_bFocusable         - 控件是否允许获取焦点
-_bDisabled          - 控件的状态，为true时控件不处理任何事件
-_bCached            - 控件是否已经读入缓存
-_bCreated           - 控件是否已经完全生成
-_sUID               - 控件的内部ID
-_sPrimary           - 控件定义时的基本样式
-_sClass             - 控件的当前样式
-_sWidth             - 控件的基本宽度值，可能是百分比或者空字符串
-_sHeight            - 控件的基本高度值，可能是百分比或者空字符串
-_sDisplay           - 控件的布局方式，在hide时保存，在show时恢复
-_eMain              - 控件的基本标签对象
-_eBody              - 控件用于承载子控件的载体标签，通过$setBody函数设置这个值，绑定当前控件
-_cParent            - 父控件对象
-_aStatus            - 控件当前的状态集合
-$$width             - 控件的宽度缓存
-$$height            - 控件的高度缓存
-$$bodyWidthRevise   - 内容区域的宽度修正缓存
-$$bodyHeightRevise  - 内容区域的高度修正缓存
-$$borderTopWidth    - 上部边框线宽度缓存
-$$borderLeftWidth   - 左部边框线宽度缓存
-$$borderRightWidth  - 右部边框线宽度缓存
-$$borderBottomWidth - 下部边框线宽度缓存
-$$paddingTop        - 上部内填充宽度缓存
-$$paddingLeft       - 左部内填充宽度缓存
-$$paddingRight      - 右部内填充宽度缓存
-$$paddingBottom     - 下部内填充宽度缓存
-$$position          - 控件布局方式缓存
-*/
-//{if 0}//
 (function () {
 
     var core = ecui,
@@ -89,25 +96,7 @@ $$position          - 控件布局方式缓存
             'click', 'dblclick', 'focus', 'blur', 'activate', 'deactivate',
             'keydown', 'keypress', 'keyup', 'mousewheel'
         ];
-//{/if}//
-//{if $phase == "define"}//
-    ///__gzip_original__UI_CONTROL
-    ///__gzip_original__UI_CONTROL_CLASS
-    /**
-     * 初始化基础控件。
-     * options 对象支持的属性如下：
-     * type       控件的类型样式
-     * primary    控件的基本样式
-     * current    控件的当前样式
-     * capturable 是否需要捕获鼠标事件，默认捕获
-     * userSelect 是否允许选中内容，默认允许
-     * focusable  是否允许获取焦点，默认允许
-     * resizable  是否允许改变大小，默认允许
-     * disabled   是否失效，默认有效
-     * @public
-     *
-     * @param {Object} options 初始化选项
-     */
+
     var UI_CONTROL = ui.Control =
         inheritsControl(
             null,
@@ -139,14 +128,32 @@ $$position          - 控件布局方式缓存
                 this._aStatus = ['', ' '];
             }
         ),
+
+        /**
+         * 初始化基础控件
+         *
+         * @exports UI_CONTROL_CLASS
+         *
+         * @property {Object} options 初始化选项
+         * @property {string} options.type 控件的类型样式
+         * @property {string} options.primary 控件的基本样式
+         * @property {string} options.current 控件的当前样式
+         * @property {boolean} options.capturable 是否需要捕获鼠标事件，默认捕获
+         * @property {boolean} options.userSelect 是否允许选中内容，默认允许
+         * @property {boolean} options.focusable 是否允许获取焦点，默认允许
+         * @property {boolean} options.resizable 是否允许改变大小，默认允许
+         * @property {boolean} options.disabled 是否失效，默认有效
+         */
         UI_CONTROL_CLASS = UI_CONTROL.prototype,
         UI_CONTROL_READY_LIST,
         UI_CONTROL_QUERY_SHOW = {custom: function (control) {
             return this != control && this.contain(control) && control.isShow();
         }};
-//{else}//
+
     /**
      * 设置控件的父对象。
+     *
+     * @method module:UI_CONTROL_CLASS#UI_CONTROL_ALTER_PARENT
      * @private
      *
      * @param {ecui.ui.Control} control 需要设置的控件对象
@@ -202,6 +209,7 @@ $$position          - 控件布局方式缓存
     /**
      * 控件失去焦点事件的默认处理。
      * 控件失去焦点时，移除状态样式 -focus。
+     *
      * @protected
      *
      * @param {ecui.ui.Event} event 事件对象
@@ -212,7 +220,10 @@ $$position          - 控件布局方式缓存
 
     /**
      * 缓存控件的属性。
-     * $cache 方法缓存部分控件属性的值，在初始化时避免频繁的读写交替操作，加快渲染的速度，在子控件或者应用程序开发过程中，如果需要避开控件提供的方法直接操作 Element 对象，操作完成后必须调用 clearCache 方法清除控件的属性缓存，否则将引发错误。
+     * $cache 方法缓存部分控件属性的值，在初始化时避免频繁的读写交替操作，加快渲染的速度，
+     * 在子控件或者应用程序开发过程中，如果需要避开控件提供的方法直接操作 Element 对象，
+     * 操作完成后必须调用 clearCache 方法清除控件的属性缓存，否则将引发错误。
+     *
      * @protected
      *
      * @param {CssStyle} style 主元素的 Css 样式对象
@@ -270,6 +281,7 @@ $$position          - 控件布局方式缓存
     /**
      * 控件失去激活事件的默认处理。
      * 控件失去激活时，移除状态样式 -active。
+     *
      * @protected
      *
      * @param {ecui.ui.Event} event 事件对象
@@ -280,7 +292,9 @@ $$position          - 控件布局方式缓存
 
     /**
      * 销毁控件的默认处理。
-     * 页面卸载时将销毁所有的控件，释放循环引用，防止在 IE 下发生内存泄漏，$dispose 方法的调用不会受到 ondispose 事件返回值的影响。
+     * 页面卸载时将销毁所有的控件，释放循环引用，防止在 IE 下发生内存泄漏，
+     * $dispose 方法的调用不会受到 ondispose 事件返回值的影响。
+     *
      * @protected
      */
     UI_CONTROL_CLASS.$dispose = function () {
@@ -298,6 +312,7 @@ $$position          - 控件布局方式缓存
     /**
      * 控件获得焦点事件的默认处理。
      * 控件获得焦点时，添加状态样式 -focus。
+     *
      * @protected
      *
      * @param {ecui.ui.Event} event 事件对象
@@ -308,7 +323,9 @@ $$position          - 控件布局方式缓存
 
     /**
      * 获取控件的基本高度。
-     * 控件的基本高度指控件基本区域与用户数据存放区域的高度差值，即主元素与内部元素(如果相同则忽略其中之一)的上下边框宽度(border-width)与上下内填充宽度(padding)之和。
+     * 控件的基本高度指控件基本区域与用户数据存放区域的高度差值，
+     * 即主元素与内部元素(如果相同则忽略其中之一)的上下边框宽度(border-width)与上下内填充宽度(padding)之和。
+     *
      * @public
      *
      * @return {number} 控件的基本高度
@@ -319,7 +336,9 @@ $$position          - 控件布局方式缓存
 
     /**
      * 获取控件的基本宽度。
-     * 控件的基本宽度指控件基本区域与用户数据存放区域的宽度差值，即主元素与内部元素(如果相同则忽略其中之一)的左右边框宽度(border-width)与左右内填充宽度(padding)之和。
+     * 控件的基本宽度指控件基本区域与用户数据存放区域的宽度差值，
+     * 即主元素与内部元素(如果相同则忽略其中之一)的左右边框宽度(border-width)与左右内填充宽度(padding)之和。
+     *
      * @public
      *
      * @return {number} 控件的基本宽度
@@ -330,7 +349,9 @@ $$position          - 控件布局方式缓存
 
     /**
      * 获取指定的部件。
-     * $getSection 方法返回控件的一个部件对象，部件对象也是 ECUI 控件，是当前控件的组成成份，不可缺少，请不要轻易的对部件对象进行操作。
+     * $getSection 方法返回控件的一个部件对象，部件对象也是 ECUI 控件，是当前控件的组成成份，不可缺少，
+     * 请不要轻易的对部件对象进行操作。
+     *
      * @protected
      *
      * @param {string} name 部件名称
@@ -343,6 +364,7 @@ $$position          - 控件布局方式缓存
     /**
      * 隐藏控件。
      * $hide 方法直接隐藏控件，控件失去激活、悬停与焦点状态，不检查控件之前的状态，因此不会导致浏览器的刷新操作。
+     *
      * @protected
      */
     UI_CONTROL_CLASS.$hide = function () {
@@ -366,6 +388,7 @@ $$position          - 控件布局方式缓存
     /**
      * 设置控件容器支持坐标定位。
      * $locate 方法执行后，容器内部 Element 对象的 offsetParent 将指向主元素(参见 getMain 方法)。
+     *
      * @protected
      */
     UI_CONTROL_CLASS.$locate = function () {
@@ -377,6 +400,7 @@ $$position          - 控件布局方式缓存
     /**
      * 鼠标移出事件的默认处理。
      * 鼠标移出控件区域时，控件失去悬停状态，移除状态样式 -hover。
+     *
      * @protected
      *
      * @param {ecui.ui.Event} event 事件对象
@@ -388,6 +412,7 @@ $$position          - 控件布局方式缓存
     /**
      * 鼠标移入事件的默认处理。
      * 鼠标移入控件区域时，控件获得悬停状态，添加状态样式 -hover。
+     *
      * @protected
      *
      * @param {ecui.ui.Event} event 事件对象
@@ -398,6 +423,7 @@ $$position          - 控件布局方式缓存
 
     /**
      * 控件大小变化事件的默认处理。
+     *
      * @protected
      */
     UI_CONTROL_CLASS.$resize = function () {
@@ -420,7 +446,9 @@ $$position          - 控件布局方式缓存
 
     /**
      * 设置控件的内层元素。
-     * ECUI 控件 逻辑上分为外层元素、主元素与内层元素，外层元素用于控制控件自身布局，主元素是控件生成时捆绑的 Element 对象，而内层元素用于控制控件对象的子控件与文本布局，三者允许是同一个 Element 对象。
+     * ECUI 控件 逻辑上分为外层元素、主元素与内层元素，外层元素用于控制控件自身布局，主元素是控件生成时捆绑的 Element 对象，
+     * 而内层元素用于控制控件对象的子控件与文本布局，三者允许是同一个 Element 对象。
+     *
      * @protected
      *
      * @param {HTMLElement} el Element 对象
@@ -431,7 +459,9 @@ $$position          - 控件布局方式缓存
 
     /**
      * 直接设置父控件。
-     * 相对于 setParent 方法，$setParent 方法仅设置控件对象逻辑上的父对象，不进行任何逻辑上的检查，用于某些特殊情况下的设定，如下拉框控件中的选项框子控件需要使用 $setParent 方法设置它的逻辑父控件为下拉框控件。
+     * 相对于 setParent 方法，$setParent 方法仅设置控件对象逻辑上的父对象，不进行任何逻辑上的检查，
+     * 用于某些特殊情况下的设定，如下拉框控件中的选项框子控件需要使用 $setParent 方法设置它的逻辑父控件为下拉框控件。
+     *
      * @protected
      *
      * @param {ecui.ui.Control} parent ECUI 控件对象
