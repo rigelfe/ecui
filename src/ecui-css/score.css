@@ -1,0 +1,20 @@
+
+.ui-score {
+    display: inline-block;
+    cursor: default;
+    *display: inline;
+    *zoom: 1;
+}
+.ui-score-item {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    vertical-align: middle;
+    overflow: hidden;
+    background: url(img/ecui.png) -32px -340px no-repeat;
+    *display: inline;
+    *zoom: 1;
+}
+.ui-score-item-marked {
+    background-position: -17px -340px;
+}

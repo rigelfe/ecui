@@ -1,0 +1,84 @@
+
+.ui-vscrollbar {
+    width: 16px;
+    padding: 16px 0;
+    background: #F0F0F0;
+}
+.ui-vscrollbar .ui-button {
+    padding: 0;
+    margin: 0;
+    cursor: default;
+    -webkit-border-radius: 0;
+    -o-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    border-radius: 0;
+}
+.ui-vscrollbar .ui-button-hover {
+    padding: 0px;
+    margin: 0px;
+    cursor: default;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -o-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+}
+.ui-vscrollbar-prev {
+    width: 16px;
+    height: 16px;
+    border: 0;
+    background: url(img/ecui.png) 0 -222px no-repeat;
+}
+.ui-vscrollbar-next {
+    width: 16px;
+    height: 16px;
+    border: 0;
+    background: url(img/ecui.png) 0 -202px no-repeat;
+}
+.ui-vscrollbar .ui-scrollbar-thumb {
+    width: 16px;
+    background: #EDF0F6;
+}
+
+.ui-hscrollbar {
+    height: 15px;
+    padding: 0 15px;
+    background: #F0F0F0;
+}
+.ui-hscrollbar .ui-button {
+    padding: 0;
+    margin: 0;
+    cursor: default;
+    -webkit-border-radius: 0;
+    -o-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    border-radius: 0;
+}
+.ui-hscrollbar .ui-button-hover {
+    padding: 0;
+    margin: 0;
+    cursor: default;
+    -webkit-border-radius: 0;
+    -o-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    border-radius: 0;
+}
+.ui-hscrollbar-prev {
+    width: 15px;
+    height: 15px;
+    border: 0px;
+    background: url(img/ecui.png) -2px -281px no-repeat;
+}
+.ui-hscrollbar-next {
+    width: 15px;
+    height: 15px;
+    border: 0;
+    background: url(img/ecui.png) -22px -282px no-repeat;
+}
+.ui-hscrollbar .ui-scrollbar-thumb {
+    height: 15px;
+    background: #EDF0F6;
+}

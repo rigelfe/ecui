@@ -1,0 +1,24 @@
+
+.ui-custom-checkboxs input {
+    vertical-align: middle;
+}
+.ui-custom-checkboxs-title {
+    margin: 0 -10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    padding-top: 0;
+    border-bottom: 1px dashed #CCC;
+}
+.ui-custom-checkboxs-title label {
+    margin: 0 10px 0 5px;
+    font-weight: bold;
+}
+.ui-custom-checkboxs-item {
+    display: block;
+    float: left;
+    width: 138px;
+    padding-bottom: 5px;
+}
+.ui-custom-checkboxs-item label {
+    margin-left: 5px;
+}

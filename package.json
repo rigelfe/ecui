@@ -1,9 +1,21 @@
 {
-    "name": "ecui",
-    "version": "2.1.0",
-    "description": "ecui",
-    "main": ["dis/ecui.js", "dis/ecui.css"],
-    "devDependencies": {
-        "uglify-js": "~2.3.6"
-    }
+    "name": "ECUI",
+    "version": "0.0.0",
+    "description": "",
+    "main": "gruntfile.js",
+    "dependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-copy": "~0.4.1",
+        "grunt-contrib-cssmin": "~0.6.1",
+        "grunt-contrib-uglify": "~0.2.2",
+        "grunt-contrib-clean": "~0.4.1"
+    },
+    "devDependencies": {},
+    "scripts": {
+    },
+    "repository": "",
+    "author": "",
+    "license": "BSD",
+    "readmeFilename": "readme.txt"
 }

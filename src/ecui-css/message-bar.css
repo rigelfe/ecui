@@ -1,0 +1,71 @@
+
+.ui-message-bar {
+    position: relative;
+    width: 515px;
+    height: 24px;
+    cursor: default;
+    font-family: '宋体';
+    overflow: hidden;
+}
+.ui-message-bar-title {
+    position: relative;
+    float: left;
+    width: 57px;
+    height: 22px;
+    padding-left: 20px;
+    line-height: 22px;
+    border: 1px solid #CCC;
+    background: url(img/ecui-bg.png) 0px -198px repeat-x;
+    background-color: #FFF;
+    color: #848484;
+    -webkit-border-top-left-radius: 2px;
+    -moz-border-radius-topleft: 2px;
+    border-top-left-radius: 2px;
+}
+.ui-message-bar-title-icon {
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    width: 14px;
+    height: 12px;
+    background: url(img/ecui.png) 0 -340px no-repeat;
+    overflow: hidden;
+}
+.ui-message-bar-scroll-msg {
+    position: relative;
+    margin-left: 79px;
+    height: 22px;
+    background: #FEFACA;
+    border: 1px solid #E3DA87;
+    border-left: 0;
+    -webkit-border-top-right-radius: 2px;
+    -moz-border-radius-topright: 2px;
+    border-top-right-radius: 2px;
+}
+.ui-message-bar-scroll-msg-inner {
+    position: absolute;
+    padding-left: 3px;
+    line-height: 22px;
+}
+.ui-message-bar-expend .ui-message-bar-title {
+    border-bottom-color: #FFF;
+    background-position: 0 -217px;
+}
+.ui-message-bar-expend .ui-message-bar-scroll-msg {
+    border-bottom: 1px solid #CCC;
+}
+.ui-message-bar-layer {
+    border: 1px solid #CCC;
+    border-top: 0;
+    background: #FFF;
+    font-family: '宋体';
+}
+.ui-message-bar-layer ul {
+    list-style-type: decimal;
+    padding-left: 30px;
+}
+.ui-message-bar-layer li {
+    line-height: 20px;
+    word-wrap: break-word;
+    word-break: break-all;
+}

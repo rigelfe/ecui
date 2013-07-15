@@ -1,0 +1,262 @@
+.ui-table {
+    border: 0;
+    border-right: 1px solid #E6E6E6;
+    background: #FFF;
+}
+
+.ui-table-layout {
+}
+
+.ui-table-head, 
+.ui-table-locked-head {
+    overflow: hidden;
+    border-bottom: 1px solid #E6E6E6;
+    border-top: 1px solid #E6E6E6;
+    background: url(img/ecui-bg.png) 0 0 repeat-x;
+    background-color: #FFF;
+}
+
+.ui-table-hcell {
+    padding: 0 3px;
+    cursor: default;
+    border-left: 1px solid #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
+    vertical-align: middle;
+    color: #3C75A2;
+    text-align: center;
+    font-weight: normal;
+    white-space: nowrap; 
+    word-break: keep-all; 
+}
+
+.ui-table-fill {
+    padding: 0;
+    border-right: 1px solid #E6E6E6;
+}
+
+.ui-table-cell {
+    overflow: hidden; 
+    padding: 0 3px;
+    border-bottom: 1px solid #E6E6E6;
+    border-left: 1px solid #E6E6E6;
+    line-height: 30px;
+    vertical-align: middle;
+    white-space: nowrap; 
+    word-break: keep-all; 
+}
+
+.ui-table-cell .ui-checkbox {
+    *margin-top: 6px;
+}
+
+.ui-table-expend-cell .ui-checkbox {
+    *margin-top: 11px;
+}
+
+.ui-table-cell-align-right {
+    text-align: right;
+}
+
+.ui-table-cell-align-center {
+    text-align: center;
+}
+
+.ui-table-row-focus {
+    background: #E6F4FF;
+}
+
+.ui-table-row-hover {
+    background: #F6FAFB;
+}
+
+.ui-table-row-highlight {
+    background: #FEFACA;
+}
+
+.ui-table-head-shadow {
+    height: 5px;
+    overflow: hidden;
+    background: #CCC;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+
+.ui-table-hcell-sort {
+    background: url(img/ecui-table.png) right -240px no-repeat;
+}
+
+.ui-table-hcell-sort-asc {
+    background: url(img/ecui-table.png) right -300px no-repeat;
+}
+
+.ui-table-hcell-sort-desc {
+    background: url(img/ecui-table.png) right -360px no-repeat;
+}
+
+.ui-table-hcell-filter {
+    background: url(img/ecui.png) right 0px no-repeat;
+}
+
+.ui-table-hcell-filter-hover {
+    background-position: right -60px;
+}
+
+.ui-table-hcell-filter-active {
+    background-position: right -120px;
+}
+
+.ui-table-panel-empty {
+    height: 40px;
+    line-height: 40px;
+}
+
+.ui-table-empty {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.ui-table-expend-layer {
+    background: #FFF;
+    overflow: auto;
+}
+
+@-moz-document url-prefix()
+{
+    .ui-table {
+        border-left: 1px solid #E6E6E6;
+        border-right: none;
+    }
+    .ui-table-hcell, .ui-table-cell {
+        border-left: none;
+        border-right: 1px solid #E6E6E6;
+    }
+}
+
+.ui-table-row-hover .ui-table-cell-editor {
+    _border-color: #F6FAFB;
+}
+
+.ui-table-cell-editor-button {
+    position: absolute;
+    display: none;
+    top: 6px;
+    right: 6px;
+    width: 16px;
+    height: 16px;
+    background: url(img/ecui.png) -85px -220px no-repeat;
+}
+
+.ui-table-cell-align-right .ui-table-cell-editor-button {
+    right: 100%;
+    margin-right: -22px;
+/*只为了IE6...为啥就不能直接left...*/
+}
+
+.ui-table-cell-hover .ui-table-cell-editor {
+    border-color: #FFCC33;
+}
+
+.ui-table-cell-hover .ui-table-cell-editor-button {
+    display: block;
+}
+
+.ui-table-empty-cell {
+    color: #999;
+}
+
+.ui-table-hcell {
+    line-height: 30px;
+}
+
+.ui-table-cell-ellipsis {
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.ui-table table {
+    *table-layout: fixed;
+}
+
+.ui-table a:link, 
+.ui-table a:visited, 
+.ui-table a:hover, 
+.ui-table a:active {
+    color: #117BD3; 
+    text-decoration: none;
+}
+
+/**
+ * editor相关css
+ */
+.ui-table-cell-editor {
+    position: relative;
+    margin: 0 -3px;
+    padding: 0 3px;
+    border: 1px solid transparent;
+    line-height: 28px;
+    vertical-align: top;
+    _border-color: #FFF;
+}
+
+.ui-table-cell-editor-button {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: url(img/icon.gif) -85px -220px no-repeat;
+    top: 6px;
+    right: 6px;
+    display: none;
+}
+
+.ui-table-cell-align-right .ui-table-cell-editor-button {
+    right: 100%;
+    margin-right: -22px;
+}
+
+.ui-table-cell-hover .ui-table-cell-editor-button {
+    display: block;
+}
+
+.ui-table-cell-editable {
+    position: relative;
+}
+
+.ui-table-editor {
+    position: absolute;
+}
+
+.ui-table-cell-editor-container{
+    position: relative;
+}
+
+.ui-table-editor .ui-input{
+    line-height: 20px;
+}
+
+.ui-table-editor .ui-input input{
+    border-top: 0px none #F0F0F0;
+}
+
+.ui-ext-editor{
+    position: relative;
+    width: 300px;
+    height: 180px;
+    border: solid 1px #999;
+}
+
+.ui-ext-editor-line-number{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 24px;
+    bottom: 0px;
+    background-color: #CACACA;
+    color: #fff;
+}
+
+.ui-ext-editor-edit-area{
+    margin-left: 24px;
+    height: 100%;
+}
