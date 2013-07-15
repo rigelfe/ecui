@@ -189,6 +189,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Default task(s).
-    grunt.registerTask('default', ['concat', 'uglify', 'cssmin' /*'copy:img',, 'clean'*/ ]);
+    grunt.registerTask('default', ['concat', 'uglify', 'cssmin' /*'copy:img',*/ , 'clean']);
     //grunt.registerTask('debug', ['concat', 'minified']);
 };
