@@ -5,5 +5,13 @@
     "main": ["dist/ecui.js", "dist/ecui.css"],
     "devDependencies": {
         "uglify-js": "~2.3.6"
+    },
+    "dependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-copy": "~0.4.1",
+        "grunt-contrib-cssmin": "~0.6.1",
+        "grunt-contrib-uglify": "~0.2.2",
+        "grunt-contrib-clean": "~0.4.1"
     }
 }

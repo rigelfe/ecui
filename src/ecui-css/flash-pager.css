@@ -1,0 +1,32 @@
+
+.ui-flash-pager-pre {
+    padding: 1px 5px; 
+    margin-right: 2px; 
+    background: #e4e4e4; 
+    color: #0066cc; 
+    cursor: pointer;
+}
+.ui-flash-pager-next {
+    padding: 1px 5px; 
+    margin-left: 2px; 
+    background: #e4e4e4; 
+    color: #0066cc; 
+    cursor: pointer;
+}
+.ui-flash-pager-pre-disabled {
+    color: #333;
+}
+.ui-flash-pager-next-disabled {
+    color: #333;
+}
+.ui-flash-pager-item {
+    padding: 2px 5px; 
+    margin: 0 1px; 
+    color: #0066cc; 
+    background: #e4e4e4; 
+    cursor: pointer;
+}
+.ui-flash-pager-item-selected {
+    font-weight: bold; 
+    color: #333;
+}

@@ -1,0 +1,40 @@
+.ui-form {
+    position: absolute;
+    padding-top: 29px;
+    border: 1px solid #7D889A;
+    overflow: hidden;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius:2px;
+    border-radius: 2px;
+}
+.ui-form-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 28px;
+    padding-left: 5px;
+    border-bottom: 1px solid #7D889A;
+    background: #7D889A;
+    line-height: 28px;
+    overflow: hidden;
+    color: #FFF;
+    font-weight: bold;
+}
+.ui-form-close {
+    display: block;
+    top: 8px;
+    right: 8px;
+    width: 12px;
+    height: 12px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    cursor: default;
+    background: url(img/ecui.png) -90px -160px no-repeat;
+}
+.ui-form-body {
+    background-color: #FFF;
+    padding: 10px;
+}
