@@ -5,10 +5,10 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         dirs: {
-            cssSrc: 'src/ecui-css',
+            cssSrc: 'src/css',
             cssDest: 'dist/',
 
-            jsSrc: 'src/ecui-js',
+            jsSrc: 'src/js',
             jsDest: 'dist/'
         },
         //合并
@@ -53,9 +53,6 @@ module.exports = function(grunt) {
                     '<%= dirs.cssSrc %>/x-calendar.css',
                     '<%= dirs.cssSrc %>/fixed-table.css',
                     '<%= dirs.cssSrc %>/suggest.css'
-
-
-
                 ],
                 dest: '<%= dirs.cssDest %>/ecui-concat.css'
             },
@@ -121,13 +118,13 @@ module.exports = function(grunt) {
                     '<%= dirs.jsSrc %>/pager/custom-pager.js',
                     '<%= dirs.jsSrc %>/pager/flash-pager.js'
                 ],
-                dest: '<%= dirs.jsDest %>/ecui-concat.js'
+                dest: '<%= dirs.jsDest %>/ecui.js'
             },
             business: {
                 src: [
                     "<%= dirs.jsSrc %>/business/message-bar.js",
                 ],
-                dest: '<%= dirs.jsDest %>/business-concat.js'
+                dest: '<%= dirs.jsDest %>/business.js'
             }
         },
         //js压缩
@@ -139,12 +136,12 @@ module.exports = function(grunt) {
                 // options: {
                 //     sourceMap: '<%= dirs.jsDest %>/map/ecui-map.js'
                 // },
-                src: '<%= dirs.jsDest %>/ecui-concat.js',
-                dest: '<%= dirs.jsDest %>/ecui.js'
+                src: '<%= dirs.jsDest %>/ecui.js',
+                dest: '<%= dirs.jsDest %>/ecui-min.js'
             },
             business: {
-                src: '<%= dirs.jsDest %>/business-concat.js',
-                dest: '<%= dirs.jsDest %>/business.js'
+                src: '<%= dirs.jsDest %>/business.js',
+                dest: '<%= dirs.jsDest %>/business-min.js'
             }
         },
         cssmin: {
@@ -155,9 +152,7 @@ module.exports = function(grunt) {
         },
         clean: {
             removeMiddleFiles: [
-                '<%= dirs.jsDest %>/ecui-concat.css',
-                '<%= dirs.jsDest %>/ecui-concat.js',
-                '<%= dirs.jsDest %>/business-concat.js'
+                '<%= dirs.jsDest %>/ecui-concat.css'
             ]
         },
         copy: {
