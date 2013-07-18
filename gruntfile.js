@@ -173,6 +173,23 @@ module.exports = function(grunt) {
                     }
                 ]
             }
+        },
+        zip: {
+            main: {
+                router: function (filepath) {
+                    return 'ecui/' + filepath;
+                },
+
+                src: [
+                    'package.json', 
+                    'README.md', 
+                    'dist/<%= pkg.name %>.js',
+                    'dist/<%= pkg.name %>.css',
+                    'dist/img/*'
+                ],
+
+                dest: '<%= pkg.name %>.zip'
+            }
         }
     });
 
@@ -191,8 +208,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-zip');
 
     // Default task(s).
     grunt.registerTask('default', ['clean:all', 'concat', 'uglify', 'cssmin', 'copy:img', 'clean:removeMiddleFiles']);
-    //grunt.registerTask('debug', ['concat', 'minified']);
+    grunt.registerTask('release', ['default', 'zip']);
 };
