@@ -6,10 +6,10 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         dirs: {
             cssSrc: 'src/css',
-            cssDest: 'dist/',
+            cssDest: 'dist',
 
             jsSrc: 'src/js',
-            jsDest: 'dist/'
+            jsDest: 'dist'
         },
         //合并
         concat: {
@@ -151,16 +151,25 @@ module.exports = function(grunt) {
             }
         },
         clean: {
+            all: [
+                '<%= dirs.jsDest %>/*'
+            ],
             removeMiddleFiles: [
                 '<%= dirs.jsDest %>/ecui-concat.css'
             ]
         },
         copy: {
             img: {
+                // TODO
+                options: {
+                    processContentExclude: '*-source.*'
+                },
                 files: [
                     {
-                        src: ['src/ecui-css/img/*'], 
-                        dest: 'dist/img/'
+                        expand: true,
+                        cwd: '<%= dirs.cssSrc %>/img',
+                        src: ['*'], 
+                        dest: '<%= dirs.cssDest %>/img/'
                     }
                 ]
             }
@@ -184,6 +193,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Default task(s).
-    grunt.registerTask('default', ['concat', 'uglify', 'cssmin' /*'copy:img',*/ , 'clean']);
+    grunt.registerTask('default', ['clean:all', 'concat', 'uglify', 'cssmin', 'copy:img', 'clean:removeMiddleFiles']);
     //grunt.registerTask('debug', ['concat', 'minified']);
 };
