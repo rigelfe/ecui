@@ -1,0 +1,71 @@
+.ui-button {
+    display: inline-block;
+    overflow: hidden;
+    padding: 0px 12px;
+    margin-right: 6px;
+    font-size: 12px;
+    line-height: 18px;
+    cursor: pointer;
+    text-decoration: none;
+    vertical-align: middle;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    border-radius: 2px;
+    *display: inline;
+    *zoom: 1;
+}
+.ui-button {
+    border: 1px solid #ACB9C1;
+    background: url(img/ecui-bg.png) 0px -114px repeat-x;
+    color: #010000;
+}
+.ui-button-hover {
+    background-position: 0px -132px;
+    color: #010000;
+}
+.ui-button-active {
+    background-position: 0px -150px;
+    color: #010000;
+}
+
+.ui-button-g {
+    background: url(img/ecui-bg.png) 0px -60px repeat-x;
+    border: 1px solid #68A500;
+    color: #FFF;
+}
+.ui-button-g-hover {
+    background-position: 0px -78px;
+    color: #FFF;
+}
+.ui-button-g-active {
+    background-position: 0px -96px;
+    color: #FFF;
+}
+
+.ui-button-disabled {
+    cursor: default;
+    border-color: #D2D6D9;
+    background: #EFF3F6;
+    color: #9CA9AF;
+}
+
+input.ui-button:hover {
+    background-position: 0px -132px;
+    color: #010000;
+}
+input.ui-button:active {
+    background-position: 0px -150px;
+    color: #010000;
+}
+input.ui-button-g:hover {
+    background-position: 0px -78px;
+    color: #FFF;
+}
+input.ui-button-g:active {
+    background-position: 0px -96px;
+    color: #FFF;
+}

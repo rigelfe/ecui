@@ -1,0 +1,25 @@
+.ui-treeview{
+    height: 20px;
+    padding-left: 15px;
+    margin-bottom: 3px;
+    font-size: 12px;
+    list-style-type: none;
+    cursor: default;
+}
+.ui-treeview label{
+    margin: 0;
+    padding: 0;
+}
+.ui-treeview-expanded{
+    background: url(img/ecui.png) 2px -35px no-repeat;
+}
+.ui-treeview-collapsed{
+    background: url(img/ecui.png) 2px -95px no-repeat;
+}
+.ui-treeview-children{
+    margin-left: 15px;
+}
+.ui-treeview-selected{
+    background-color: #E9E9E9;
+    font-weight: bold;
+}

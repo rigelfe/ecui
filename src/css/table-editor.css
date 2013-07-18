@@ -1,0 +1,12 @@
+.ui-table-editor{
+    position: absolute;
+}
+.ui-table-cell-editor-container{
+    position: relative;
+}
+.ui-table-editor .ui-input{
+    line-height: 20px;
+}
+.ui-table-editor .ui-input input{
+    border-top: 0px none #F0F0F0;
+}
