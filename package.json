@@ -13,5 +13,11 @@
         "grunt-contrib-cssmin": "~0.6.1",
         "grunt-contrib-uglify": "~0.2.2",
         "grunt-contrib-clean": "~0.4.1"
-    }
+    },
+    "contributors": [
+	    {
+		    "name": "Qu Yatong",
+		    "email": "quyatong@126.com"
+		}
+	]
 }
