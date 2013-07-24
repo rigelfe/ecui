@@ -116,7 +116,7 @@
                 } : undefined,
 
             opacity:
-                ieVersion ? {
+                ieVersion < 9 ? {
                     get: function (el, style) {
                         return /alpha\(opacity=(\d+)/.test(style.filter) ? ((REGEXP.$1 - 0) / 100) + '' : '1';
                     },
@@ -511,7 +511,7 @@
                 }
                 else {
                     if (ieVersion < 9) {
-                        return createDom('', '', '<input type="' + (type || '') + '" name="' + (name || '') + '">');
+                        return createDom('', '', '<input type="' + (type || '') + '" name="' + (name || '') + '" />');
                     }
                     el = createDom('', '', 'input');
                 }
@@ -521,7 +521,7 @@
             type = type === undefined ? el.type : type;
 
             if (el.name != name || el.type != type) {
-                if ((ieVersion && type != 'textarea') ||
+                if ((ieVersion && ieVersion < 10 && type != 'textarea') ||
                         el.type != type && (el.type == 'textarea' || type == 'textarea')) {
                     insertHTML(
                         el,

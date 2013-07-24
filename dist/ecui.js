@@ -163,7 +163,7 @@ var ecui;
                 } : undefined,
 
             opacity:
-                ieVersion ? {
+                ieVersion < 9 ? {
                     get: function (el, style) {
                         return /alpha\(opacity=(\d+)/.test(style.filter) ? ((REGEXP.$1 - 0) / 100) + '' : '1';
                     },
@@ -558,7 +558,7 @@ var ecui;
                 }
                 else {
                     if (ieVersion < 9) {
-                        return createDom('', '', '<input type="' + (type || '') + '" name="' + (name || '') + '">');
+                        return createDom('', '', '<input type="' + (type || '') + '" name="' + (name || '') + '" />');
                     }
                     el = createDom('', '', 'input');
                 }
@@ -568,7 +568,7 @@ var ecui;
             type = type === undefined ? el.type : type;
 
             if (el.name != name || el.type != type) {
-                if ((ieVersion && type != 'textarea') ||
+                if ((ieVersion && ieVersion < 10 && type != 'textarea') ||
                         el.type != type && (el.type == 'textarea' || type == 'textarea')) {
                     insertHTML(
                         el,
@@ -21227,253 +21227,173 @@ change:     切换了分页
 })();
 //{/if}//
 
-/**
- * @file 工作台首页订制的分页控件,只满足简单分页需求
- * @author hades(denghongqi@gmail.com)
- */
+/*
+Pager - 分页控件。
+分页控件，配合表格控件使用，翻页时触发change事件，可在其中进行表格数据的更新。
 
-(function() {
+分页控件直接HTML初始化的例子:
+<div type="type:pager;pageSize:10;maxNum:40" class="ui-pager"></div>
+
+属性
+nPage:      当前的页码(从1开始记数)
+nPageSize:  每页的记录数
+nTotal:     总记录数
+
+事件
+change:     切换了分页
+
+*/
+(function () {
+
     var core = ecui,
-        ui = core.ui,
         dom = core.dom,
+        string = core.string,
+        array = core.array,
+        ui = core.ui,
         util = core.util,
 
-        $fastcreate = core.$fastCreate,
-        inheritsControl = core.inherits,
-        triggerEvent = core.triggerEvent,
+        undefined,
+        MATH = Math,
+
         createDom = dom.create,
         children = dom.children,
-        setStyle = dom.setStyle,
-        addClass = dom.addClass,
-        removeClass = dom.removeClass,
         extend = util.extend,
         blank = util.blank,
 
-        MATH = Math,
+        $fastCreate = core.$fastCreate,
+        inheritsControl = core.inherits,
+        triggerEvent = core.triggerEvent,
 
         UI_CONTROL = ui.Control,
+        UI_PAGER = ui.Pager,
+        UI_SELECT = ui.Select,
         UI_CONTROL_CLASS = UI_CONTROL.prototype,
-        UI_ITEM = ui.Item,
-        UI_ITEM_CLASS = UI_ITEM.prototype,
-        UI_ITEMS = ui.Items;
-
+        UI_PAGER_CLASS = UI_PAGER.prototype;
+    /**
+     * 初始化分页控件。
+     * options 对象支持的属性如下：
+     *      {Number} pageSize   每页的最大记录数
+     *      {Number} total      记录总数 
+     *      {Number} page      当前页码
+     *
+     * @public
+     *
+     * @param {Object} options 初始化选项
+     */
     var UI_CUSTOM_PAGER = ui.CustomPager =
         inheritsControl(
             UI_CONTROL,
             'ui-custom-pager',
-            function(el, options) {
-                var type = this.getTypes()[0];
-                setStyle(el, 'display', 'inline-block');
-                el.innerHTML = '<span class="' + type + '-pre" style="'
-                    + 'display:inline-block">&lt;</span>'
-                    + '<span class="' + type + '-items" style="'
-                    + 'display:inline-block">'
-                    + '<span ecui="value:1">1</span>'
-                    + '<span ecui="value:2">2</span>'
-                    + '<span ecui="value:3">3</span>'
-                    + '</span>'
-                    + '<span class="' + type + '-next" style="'
-                    + 'display:inline-block">&gt;</span>';
+            function (el, options) {
+                var type = this.getTypes()[0],
+                    i, len, html = [];
+
+                if (options.pageOptions) {
+                    this.PAGE_SIZE = options.pageOptions.split(',');
+                }
+                else {
+                    this.PAGE_SIZE = [10, 20, 50, 100];
+                }
+
+                var hideTotal = ' style="display:' + (options.hideTotal ? 'none' : '') + '"';
+                var hideSize = ' style="display:' + (options.hideSize ? 'none' : '') + '"';
+
+                html.push('<div class="' + type + '-page" ' + hideTotal + '>共<em></em>页</div>');
+                html.push('<span style="float:left; margin-right:10px;' + 'display:' + (options.hideTotal ? 'none' : '') + '">，</span>');
+                html.push('<div class="'+ type +'-sum" ' + hideTotal + '>共<em></em>条记录</div>');
+
+                html.push('<div class="ui-pager"></div>');
+
+                html.push('<div class="'+ type +'-pagesize" ' + hideSize + '>每页显示<select class="ui-select" style="width:45px">');
+                for (i = 0, len = this.PAGE_SIZE.length; i < len; i++) {
+                    html.push('<option value="'+ this.PAGE_SIZE[i] +'">' + this.PAGE_SIZE[i] + '</option>');
+                }
+                html.push('</select>条</div>')
+                el.innerHTML = html.join('');
+
+                //处理pageSize
+                options.pageSize = options.pageSize || DEFAULT_PAGE_SIZE;
+                for (i = 0, len = this.PAGE_SIZE.length; i < len; i++) {
+                    if (this.PAGE_SIZE[i] == options.pageSize) {
+                        break;
+                    }
+                }
+                
             },
-            function(el, options) {
-                this._nPage = options.page - 0 || 1;
-                this._nTotal = options.total - 0 || 100;
-                this._nPagesize = options.pagesize - 0 || 10;
-                this._nMaxShow = options.maxShow - 0 || 3;
-                el = children(el);
+            function (el, options) {
+                var el = children(el),
+                    me = this;
 
-                this._uPre = $fastcreate(
-                    this.Pre, 
-                    el[0], 
-                    this, 
-                    {userSelect:false}
-                );
-                this._uNext = $fastcreate(
-                    this.Next, 
-                    el[2], 
-                    this, 
-                    {userSelect:false}
-                );
-                this.$setBody(el[1]);
-                this.$initItems();
-                flushPager(this, this._nPage);
-                //this.render();
+                this._bResizable = false;
+                this._eTotalPage = el[0].getElementsByTagName('em')[0];
+                this._eTotalNum = el[2].getElementsByTagName('em')[0];
+                this._uPager = $fastCreate(UI_PAGER, el[3], this, extend({}, options));
+                this._uPager.$change = function (value) {
+                    triggerEvent(me, 'change', null, [value, me._uPager._nPageSize]);
+                }
+                this._uSelect = $fastCreate(UI_SELECT, el[4].getElementsByTagName('select')[0], this);
+                this._uSelect.$change = function () {
+                    triggerEvent(me, 'pagesizechange', null, [this.getValue()]);
+                }
             }
-        );
+        ),
 
-    var UI_CUSTOM_PAGER_CLASS = UI_CUSTOM_PAGER.prototype;
+        UI_CUSTOM_PAGER_CLASS = UI_CUSTOM_PAGER.prototype,
 
-    /**
-     * @public
-     */
-    UI_CUSTOM_PAGER_CLASS.getValue = function() {
-        if (this._cSelected) {
-            return this._cSelected.$getValue();
-        }
-        else {
-            return null;
-        }
-    };
+        DEFAULT_PAGE_SIZE = 50;
+        
 
-    /**
-     * 渲染分页控件
-     * @public
-     * @param {number} page 当前页
-     * @param {number} total 总数
-     * @param {number} pagesize 每页条数
-     */
-    UI_CUSTOM_PAGER_CLASS.render = function(page, total, pagesize) {
-        this._nPage = page || 1;
-        this._nTotal = total || 0;
-        this._nPagesize = pagesize || 10;
-        flushPager(this, this._nPage);
+    UI_CUSTOM_PAGER.PAGE_SIZE = [10, 20, 50, 100];
+
+    UI_CUSTOM_PAGER_CLASS.init = function () {
+        this._uPager.init();
+        this._uSelect.init();
+        this._eTotalPage.innerHTML = this._nTotalPage || 1;
+        this._eTotalNum.innerHTML = this._uPager._nTotal || 0;
+        this._uSelect.setValue(this._uPager._nPageSize);
     }
 
-    UI_CUSTOM_PAGER_CLASS.Pre = inheritsControl(UI_CONTROL);
-    var UI_CUSTOM_PAGER_PRE_CLASS = UI_CUSTOM_PAGER_CLASS.Pre.prototype;
+    UI_CUSTOM_PAGER_CLASS.render = function (page, total, pageSize) {
+        var item = this._uPager;
 
-    UI_CUSTOM_PAGER_CLASS.Next = inheritsControl(UI_CONTROL);
-    var UI_CUSTOM_PAGER_NEXT_CLASS = UI_CUSTOM_PAGER_CLASS.Next.prototype;
-
-    /**
-     * @event
-     */
-    UI_CUSTOM_PAGER_PRE_CLASS.$click = function() {
-        var par = this.getParent();
-        var value = par.getValue() - 1;
-        flushPager(par, value);
-    };
-
-    /**
-     * @event
-     */
-    UI_CUSTOM_PAGER_NEXT_CLASS.$click = function() {
-        var par = this.getParent();
-        var value = par.getValue() + 1;
-        flushPager(par, value);
-    };
-
-    /**
-     * 刷新分页页码items
-     * @param {ecui.ui.CustomPager} control
-     */
-    function flushPager(control, value) {
-        control._nTotalPage = MATH.ceil(control._nTotal / control._nPagesize);
-
-        if (control._nTotalPage < control.getItems().length) {
-            for (var i = 0; i < control._nMaxShow - control._nTotalPage; i++) {
-                var items = control.getItems();
-                control.remove(items[items.length - 1]);
-            }
-        }
-
-        if (control._nTotalPage <= 1) {
-            control.hide();
-            return ;
-        }
-
-        var items = control.getItems();
-        var start = items[0].$getValue();
-        var end = items[items.length - 1].$getValue();
-
-        if (value <= 1) {
-            value = 1;
-            control._uPre.disable();
+        this._uSelect.setValue(pageSize);
+        if (total || total == 0) {
+            this._eTotalNum.innerHTML = total;
+            item._nTotal = total
         }
         else {
-            control._uPre.enable();
+            this._eTotalPage.innerHTML = item._nPage || 0;
+            this._eTotalNum.innerHTML = item._nTotal || 0;
+            item._nTotal = item._nTotal || 0;
         }
+        item._nPageSize = pageSize || item._nPageSize;
 
-        if (value >= control._nTotalPage) {
-            value = control._nTotalPage;
-            control._uNext.disable();
-        }
-        else {
-            control._uNext.enable();
-        }
+        //by hades
+        this._nTotalPage = MATH.ceil(total / pageSize);
+        this._eTotalPage.innerHTML = this._nTotalPage;
 
-        if (value < start) {
-            start = value;
-            end = value + items.length;
-        }
-        else if (value > end) {
-            end = value;
-            start = end - items.length + 1;
-        }
-
-        for (var i = 0; i < items.length; i++) {
-            var o = items[i];
-            o.$setValue(i + start);
-            if (value == o.$getValue()) {
-                o.$setSelected();
-            }
-        }
+        item.go(page);
     };
 
-    UI_CUSTOM_PAGER_CLASS.Item = inheritsControl(
-        UI_CONTROL,
-        null,
-        function(el, options) {
-            options.userSelect = false;
-        },
-        function(el, options) {
-            this._nValue = options.value;
-        }
-    );
-    var UI_CUSTOM_PAGER_ITEM_CLASS = UI_CUSTOM_PAGER_CLASS.Item.prototype;
-    extend(UI_CUSTOM_PAGER_CLASS, UI_ITEMS);
+    UI_CUSTOM_PAGER_CLASS.getPageSize = function () {
+        return this._uPager._nPageSize;
+    };
 
-    UI_CUSTOM_PAGER_CLASS.$alterItems = blank;
+    UI_CUSTOM_PAGER_CLASS.getPage = function () {
+        return this._uPager._nPage;
+    };
 
+    UI_CUSTOM_PAGER_CLASS.getTotal = function () {
+        return this._uPager._nTotal;
+    };
+    
     /**
-     * @event
+     * override
      */
-    UI_CUSTOM_PAGER_ITEM_CLASS.$click = function() {
-        var par = this.getParent();
-        var value = this.$getValue();
-        flushPager(par, value);
-    };
+    UI_CUSTOM_PAGER_CLASS.$setSize = blank;
 
-    /**
-     * 页码item被选中时触发
-     * @private
-     */
-    UI_CUSTOM_PAGER_ITEM_CLASS.$setSelected = function() {
-        var par = this.getParent();
-        if (par._nValue == this.$getValue()) {
-            return ;
-        }
-        else {
-            if (par._cSelected) {
-                removeClass(
-                    par._cSelected.getOuter(), 
-                    'ui-custom-pager-item-selected'
-                );
-            }
-            addClass(this.getOuter(), 'ui-custom-pager-item-selected');
-            par._cSelected = this;
-            par._nValue = this.$getValue();
-            triggerEvent(par, 'change', null, [par.getValue()]);
-        }
-    };
+})();
 
-    /**
-     * @private
-     * @param {number} value
-     */
-    UI_CUSTOM_PAGER_ITEM_CLASS.$setValue = function(value) {
-        this._nValue = value;
-        this._sName = value;
-        this.setContent(this._sName);
-    };
-
-    /**
-     * @private
-     */
-    UI_CUSTOM_PAGER_ITEM_CLASS.$getValue = function() {
-        return this._nValue;
-    };
-}) ();
 /**
  * @file 工作台首页订制的分页控件,只满足简单分页需求
  * @author hades(denghongqi@gmail.com)
