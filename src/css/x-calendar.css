@@ -10,6 +10,7 @@
     background: white;
     *display: inline;
     *zoom: 1;
+    z-index: 65535;
 }
 .ui-x-calendar-range-mode {
     width:227px;

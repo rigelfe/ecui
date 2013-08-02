@@ -646,6 +646,7 @@
                 }
             }
         };
+        core.namedControls = namedControls;
 
         /**
          * 创建 ECUI 控件。
@@ -669,6 +670,7 @@
                 parent = options.parent,
                 el = options.main,
                 o = options.primary || '',
+                id = options.id,
                 className;
 
             options.uid = 'ecui-' + (++uniqueIndex);
@@ -680,7 +682,7 @@
                 else {
                     el.className = className = el.className + ' ' + o + type.agent.TYPES;
                 }
-
+                el.setAttribute('sm_id', id);
                 // 如果没有指定基本样式，使用控件的样式作为基本样式
                 if (!o) {
                     /\s*([^\s]+)/.test(className);
