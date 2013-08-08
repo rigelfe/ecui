@@ -35,18 +35,19 @@ _aValidateRules - 验证规则
 
         createDom = dom.create,
         insertBefore = dom.insertBefore,
+        insertAfter = dom.insertAfter,
         setInput = dom.setInput,
         setStyle = dom.setStyle,
         encodeHTML = string.encodeHTML,
         attachEvent = util.attachEvent,
         blank = util.blank,
         detachEvent = util.detachEvent,
-        timer = util.timer,
 
         $bind = core.$bind,
         inheritsControl = core.inherits,
         triggerEvent = core.triggerEvent,
         wrapEvent = core.wrapEvent,
+        createControl = core.create,
 
         UI_CONTROL = ui.Control,
         UI_CONTROL_CLASS = UI_CONTROL.prototype;
@@ -71,9 +72,10 @@ _aValidateRules - 验证规则
             UI_CONTROL,
             null,
             function (el, options) {
+                var input;
                 if (el.tagName == 'INPUT' || el.tagName == 'TEXTAREA') {
                     // 根据表单项初始化
-                    var input = el;
+                    input = el;
 
                     insertBefore(el = createDom(input.className, input.style.cssText, 'span'), input).appendChild(input);
                     input.className = '';
@@ -148,6 +150,21 @@ _aValidateRules - 验证规则
                 attachEvent(control._eInput, name, UI_INPUT_CONTROL_INPUT[name]);
             }
         }
+    }
+
+    /**
+     * 生成错误消息子控件
+     * @private
+     */
+    function createErrorTip(control) {
+        var ele = createDom('span');
+
+        ele.className = 'ui-tip-error';
+        insertAfter(ele, control.getOuter());
+
+        control._oErrorTip = createControl('Tip', {main: ele});
+
+        return control._oErrorTip;
     }
 
     /**
@@ -418,6 +435,27 @@ _aValidateRules - 验证规则
      */
     UI_INPUT_CONTROL_CLASS.validate = function() {
        return true; 
+    };
+
+    /**
+     * 设置错误信息
+     *
+     * @public
+     * @param {string} msg 错误信息
+     */
+    UI_INPUT_CONTROL_CLASS.setError = function (msg) {
+        var tip = this._oErrorTip;
+        if (!tip) {
+            tip = createErrorTip(this);
+        }
+
+        if (msg) {
+            tip.setMessage(msg);
+            tip.show();
+        }
+        else {
+            tip.hide();
+        }
     };
 
     /**

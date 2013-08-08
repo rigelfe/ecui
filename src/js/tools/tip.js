@@ -147,6 +147,10 @@
         this._bShow = false;
     }
 
+    UI_TIP_CLASS.setMessage = function (msg) {
+        this._sMessage = msg;
+    };
+
     UI_TIP_LAYER_CLASS.show = function (con) {
         var pos = getPosition(con.getOuter()),
             type = this.getTypes()[0],
@@ -188,12 +192,12 @@
     UI_TIP_LAYER_CLASS.$mouseover = function () {
         UI_CONTROL_CLASS.$mouseover.call(this);
         this._uHost.$mouseover();
-    }
+    };
 
     UI_TIP_LAYER_CLASS.$mouseout = function () {
         UI_CONTROL_CLASS.$mouseout.call(this);
         this._uHost.$mouseout();
-    }
+    };
 
     UI_TIP_LAYER_CLASS.$resize = function () {
          var el = this._eMain,
@@ -202,5 +206,5 @@
         currStyle.width = this._sWidth;
         currStyle.height = this._sHeight;
         this.repaint();
-    }
+    };
 })();
