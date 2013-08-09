@@ -10028,6 +10028,26 @@ _eInput - 多选项的INPUT对象
         return true;
     };
 
+    UI_MULTI_SELECT_CLASS.clear = function () {
+
+        var items = this.getItems() || [];
+        var len = items.length;
+        var last = (this._bSelectAllBtn) ? 1 : 0;
+
+        while ( len-- >  last) {
+            this.remove(len);
+        }
+
+        this._uOptions.reset();
+
+        //清空掉的时候 要把全部去掉
+        setTimeout(function () {
+            if (last == 1) {
+                items[0].setSelected(false);
+            }
+        }, 0);
+    };
+    
     /**
      * 设置下拉框允许显示的选项数量。
      * 如果实际选项数量小于这个数量，没有影响，否则将出现垂直滚动条，通过滚动条控制其它选项的显示。
