@@ -36,7 +36,7 @@
                 this._aFields = [];
                 this._eCheckboxAll = null;
                 this._aCheckboxs = [];
-                this._sEmptyText = options.emptyText || '暂无数据';
+                this._sEmptyText = options.noData || '暂无数据';
                 this._bCheckedHighlight = options.checkedHighlight === true;
             }
         ),
@@ -55,7 +55,7 @@
                     orderby = 'asc';
                 }
                 else if (this.className.indexOf('-sort-asc') >= 0) {
-                    orderby = 'desc'
+                    orderby = 'desc';
                 }
                 else {
                     orderby = this.getAttribute('data-orderby') || 'desc';
@@ -132,7 +132,7 @@
             className;
 
         for (i = 0; item = datasource[i]; i++) {
-            html.push('<tr class="'+ type +'-row">')
+            html.push('<tr class="'+ type +'-row">');
             for (j = 0; field = fields[j]; j++) {
                 className = type + '-cell';
                 if (field.align) {
@@ -164,13 +164,13 @@
                         html.push(str);
                     }
                 }
-                html.push('</td>')
+                html.push('</td>');
             }
-            html.push('</tr>')
+            html.push('</tr>');
         }
 
         return html.join('');
-    };
+    }
 
     /**
      * @override
@@ -194,10 +194,10 @@
                     var e = event || window.event;
                     e.targetElement = e.target || e.srcElement;
                     control.$fireEventHanlder(name, e);
-                }
+                };
             })(item));
         }
-    }
+    };
 
     /**
      * 设置表格的数据
@@ -265,17 +265,34 @@
 
     /**
      * 重新绘制表格
+     *
      * @public
+     * @param {Object} options 配置参数
+     * @param {Array.<Object>} options.datasource 表格数据
+     * @param {Array.<Object>} options.fields 
+     * @param {string} options.noData 无数据时展现的文本
+     * @param {string} options.sortby 排序字段
+     * @param {string} options.orderby 排序方式
      */
-    UI_LITE_TABLE_CLASS.render = function () {
+    UI_LITE_TABLE_CLASS.render = function (options) {
         var type = this.getTypes()[0],
             html = ['<table cellpadding="0" cellspacing="0" width="100%" class="'+ type +'-table">'],
-            i, item, className,
-            fields = this._aFields, datasource = this._aData;
+            i, item, className;
 
+        var fields = this._aFields;
+        if (options.fields) {
+            fields = this._aFields = copyArray(options.fields);
+        }
         if (!fields || fields.length <= 0) {
             return;
         }
+
+        var datasource = this._aData;
+        if (options.datasource) {
+            datasource = this._aData = copyArray(options.datasource);
+        }
+        this._sSortby = options.sortby || this._sSortby;
+        this._sOrderby = options.orderby || this._sOrderby;
 
         html.push('<tr class="'+ type +'-head">');
         // 渲染表头
@@ -304,10 +321,11 @@
         }
         html.push('</tr>');
 
+        var noData = options.noData || this._sEmptyText;
         // 渲染无数据表格
         if (!datasource || datasource.length <= 0) {
             html.push('<tr class="'+ type +'-row"><td colspan="'
-                    + fields.length +'" class="'+ type +'-cell-empty">'+ this._sEmptyText +'</td></tr>');
+                    + fields.length +'" class="'+ type +'-cell-empty">'+ noData +'</td></tr>');
         }
         else {
            html.push(buildTabeBody(fields, datasource, type));
