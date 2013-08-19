@@ -1,6 +1,59 @@
 /**
+ * 基于ecui实现的一个多功能复杂表格。实现的主要功能包括：
+ *     * 左右列锁定, 当列长度溢出容器宽度时则自动出横向滚动条
+ *     * 当列长度不足以撑满整个容器时，可以自动将剩余的宽度均匀分配到其它单元格
+ *     * 当表格高度过大时可以配置表头和滚动条始终浮动在屏幕视窗上
+ *     * 提供按照表头field的排序接口
+ *     * 提供方便的事件绑定方法, 使用类似css选择器来选择需要绑定事件的元素
+ *     * 可以通过初始化dom元素活使用render方法传入数据来初始化表格
+ *     * 支持表头的跨行和跨列
+ *
+ * 使用方法
+ *     * 方法一：
+ *      <div ecui="type:custom-table; left-lock:1; right-lock:1">
+ *          <table>
+ *              <thead>
+ *                  <tr>
+ *                      <th>公司</th>
+ *                      <th>地址</th>
+ *                      <th>业务</th>
+ *                  </tr>
+ *              </thead>
+ *              <tbody>
+ *                  <tr>
+ *                      <td>公司</td>
+ *                      <td>地址</td>
+ *                      <td>业务</td>
+ *                  </tr>
+ *              </thead>
+ *          </table>
+ *      </div>
+ *     * 方法二：
+ *      <div ecui="id:table;type:custom-table; left-lock:1; right-lock:1;"></div>
+ *      
+ *      <script>
+ *      ecui.get('table').render({
+ *          head: [
+ *              {
+ *                  field: 'XX',
+ *                  name: 'XX',
+ *              }
+ *          ],
+ *          datasource: [
+ *              {
+ *                  'a': 'XX',
+ *                  'b': 'XX',
+ *              }
+ *          ],
+ *          sortinfo: {},
+ *          lockinfo: {}
+ *      });
+ *      </script>
+ *
+ * 表格将表头和表格体拆成两个表格来实现表头浮动，将锁定列绝对定位来实现左右锁定
+ * 模拟滚动条并通过改变表格的margin-left来模拟滚动
+ *
  * @author hades(denghongqi@baidu.com)
- * 表格读取第一行宽度值
  */
 (function() {
     var core = ecui;
