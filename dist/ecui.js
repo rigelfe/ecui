@@ -18508,8 +18508,8 @@ _eFill       - 用于控制中部宽度的单元格
                             + '">'
                         );
                         html.push(
-                            options.errorMsg 
-                            ? options.errorMsg
+                            options.noData 
+                            ? options.noData
                             : '暂无数据，请稍后再试'
                         );
                         html.push('</td>');
@@ -18913,8 +18913,8 @@ _eFill       - 用于控制中部宽度的单元格
 
             html.push('">');
             
-            if (o.name) {
-                html.push(o.name);
+            if (o.title) {
+                html.push(o.title);
             }
 
             if (o.checkbox) {
@@ -18971,18 +18971,29 @@ _eFill       - 用于控制中部宽度的单元格
     };
 
     /**
-     * 重新生成表格
-     * @public
+     * 根据数据绘制表格
      *
-     * @param {Array} fields 表格的列配置
-     * @param {Array} datasource 表格数据
-     * @param {Object} sortinfo 排序信息
-     * @param {Object} options 初始化选项
-     * @param {string} errorMsg 表格为空或出错时展示的内容
+     * @public
+     * @param {Object} options
+     * @param {Array.<Object>=} options.fields 表头配置
+     * @param {Array.<Object>=} options.datasource 表格数据
+     * @param {number=} options.leftLock 左锁定列的列数
+     * @param {number=} options.rightLock 右锁定列的列数
+     * @param {string=} options.sortby 排序字段
+     * @param {string=} options.orderby 排序方式
+     * @param {string=} options.noData 数据为空时显示的内容
      */
-    UI_CUSTOM_TABLE_CLASS.render = function(
-        fields, datasource, sortinfo, options, errorMsg
-    ) {
+    UI_CUSTOM_TABLE_CLASS.render = function(options) {
+        var options = options || {};
+        extend(options, this._oOptions);
+        if (Object.prototype.toString.call(options.leftLock) != '[object Number]') {
+            options.leftLock = this._nLeftLock;
+        }
+        if (Object.prototype.toString.call(options.rightLock) != '[object Number]') {
+            options.rightLock = this._nRightLock;
+        }
+
+        /*
         var options = extend({}, options);
         options = extend(options, this._oOptions);
         options.leftLock = this._nLeftLock;
@@ -18993,8 +19004,9 @@ _eFill       - 用于控制中部宽度的单元格
         options.sortby = sortinfo.sortby;
         options.orderby = sortinfo.orderby;
         options.errorMsg = errorMsg;
+        */
 
-        if (!datasource.length) {
+        if (!options.datasource.length) {
             options.leftLock = 0;
             options.rightLock = 0;
         }
@@ -19360,8 +19372,61 @@ _eFill       - 用于控制中部宽度的单元格
  }) ();
 
 /**
+ * 基于ecui实现的一个多功能复杂表格。实现的主要功能包括：
+ *     * 左右列锁定, 当列长度溢出容器宽度时则自动出横向滚动条
+ *     * 当列长度不足以撑满整个容器时，可以自动将剩余的宽度均匀分配到其它单元格
+ *     * 当表格高度过大时可以配置表头和滚动条始终浮动在屏幕视窗上
+ *     * 提供按照表头field的排序接口
+ *     * 提供方便的事件绑定方法, 使用类似css选择器来选择需要绑定事件的元素
+ *     * 可以通过初始化dom元素活使用render方法传入数据来初始化表格
+ *     * 支持表头的跨行和跨列
+ *
+ * 使用方法
+ *     * 方法一：
+ *      <div ecui="type:custom-table; left-lock:1; right-lock:1">
+ *          <table>
+ *              <thead>
+ *                  <tr>
+ *                      <th>公司</th>
+ *                      <th>地址</th>
+ *                      <th>业务</th>
+ *                  </tr>
+ *              </thead>
+ *              <tbody>
+ *                  <tr>
+ *                      <td>公司</td>
+ *                      <td>地址</td>
+ *                      <td>业务</td>
+ *                  </tr>
+ *              </thead>
+ *          </table>
+ *      </div>
+ *     * 方法二：
+ *      <div ecui="id:table;type:custom-table; left-lock:1; right-lock:1;"></div>
+ *      
+ *      <script>
+ *      ecui.get('table').render({
+ *          head: [
+ *              {
+ *                  field: 'XX',
+ *                  title: 'XX',
+ *              }
+ *          ],
+ *          datasource: [
+ *              {
+ *                  'a': 'XX',
+ *                  'b': 'XX',
+ *              }
+ *          ],
+ *          sortinfo: {},
+ *          lockinfo: {}
+ *      });
+ *      </script>
+ *
+ * 表格将表头和表格体拆成两个表格来实现表头浮动，将锁定列绝对定位来实现左右锁定
+ * 模拟滚动条并通过改变表格的margin-left来模拟滚动
+ *
  * @author hades(denghongqi@baidu.com)
- * 表格读取第一行宽度值
  */
 (function() {
     var core = ecui;
@@ -19551,7 +19616,9 @@ _eFill       - 用于控制中部宽度的单元格
                         + ' />';
                 }
                 else {
-                    th.innerHTML = o.name;
+                    //th.innerHTML = o.name;
+                    //将字段key改成title
+                    th.innerHTML = o.title;
                 }
                 if (o.tip && o.tip.length) {
                     var tipEl = dom.create('', 'margin-left:3px;', 'span');
@@ -19939,6 +20006,13 @@ _eFill       - 用于控制中部宽度的单元格
      *
      * @public
      * @param {Object} options
+     * @param {Array.<Object>=} options.fields 表头配置
+     * @param {Array.<Object>=} options.datasource 表格数据
+     * @param {number=} options.leftLock 左锁定列的列数
+     * @param {number=} options.rightLock 右锁定列的列数
+     * @param {string=} options.sortby 排序字段
+     * @param {string=} options.orderby 排序方式
+     * @param {string=} options.noData 数据为空时显示的内容
      */
     UI_FIXED_TABLE_CLASS.render = function(options) {
         util.detachEvent(WINDOW, 'resize', core.repaint);
@@ -19961,6 +20035,26 @@ _eFill       - 用于控制中部宽度的单元格
         var el = this.getOuter();
         el.innerHTML = '';
         this.$resize();
+
+        this._aFields = options.fields || this._aFields;
+        options.fields = this._aFields;
+        if (Object.prototype.toString.call(options.leftLock) == '[object Number]') {
+            this._nLeft = options.leftLock;
+        }
+        if (Object.prototype.toString.call(options.rightLock) == '[object Number]') {
+            this._nRight = options.rightLock;
+        }
+        options.leftLock = this._nLeft;
+        options.rightLock = this._nRight;
+        if (Object.prototype.toString.call(options.sortby) == '[object String]') {
+            this._sSortby = options.sortby;
+        }
+        if (Object.prototype.toString.call(options.orderby) == '[object String]') {
+            this._sOrderby = options.orderby;
+        }
+        options.sortby = this._sSortby;
+        options.orderby = this._sOrderby;
+
         if (options.fields) {
             this._aData = options.datasource || [];
             _createDom.call(this, el, options, domReadyCallback);
@@ -20500,6 +20594,7 @@ _eFill       - 用于控制中部宽度的单元格
         this.getParent()._scroll(el.scrollLeft);
     };
 })();
+
 /**
  * liteTable - 简单表格
  *
@@ -20538,7 +20633,7 @@ _eFill       - 用于控制中部宽度的单元格
                 this._aFields = [];
                 this._eCheckboxAll = null;
                 this._aCheckboxs = [];
-                this._sEmptyText = options.emptyText || '暂无数据';
+                this._sEmptyText = options.noData || '暂无数据';
                 this._bCheckedHighlight = options.checkedHighlight === true;
             }
         ),
@@ -20557,7 +20652,7 @@ _eFill       - 用于控制中部宽度的单元格
                     orderby = 'asc';
                 }
                 else if (this.className.indexOf('-sort-asc') >= 0) {
-                    orderby = 'desc'
+                    orderby = 'desc';
                 }
                 else {
                     orderby = this.getAttribute('data-orderby') || 'desc';
@@ -20634,7 +20729,7 @@ _eFill       - 用于控制中部宽度的单元格
             className;
 
         for (i = 0; item = datasource[i]; i++) {
-            html.push('<tr class="'+ type +'-row">')
+            html.push('<tr class="'+ type +'-row">');
             for (j = 0; field = fields[j]; j++) {
                 className = type + '-cell';
                 if (field.align) {
@@ -20666,13 +20761,13 @@ _eFill       - 用于控制中部宽度的单元格
                         html.push(str);
                     }
                 }
-                html.push('</td>')
+                html.push('</td>');
             }
-            html.push('</tr>')
+            html.push('</tr>');
         }
 
         return html.join('');
-    };
+    }
 
     /**
      * @override
@@ -20696,10 +20791,10 @@ _eFill       - 用于控制中部宽度的单元格
                     var e = event || window.event;
                     e.targetElement = e.target || e.srcElement;
                     control.$fireEventHanlder(name, e);
-                }
+                };
             })(item));
         }
-    }
+    };
 
     /**
      * 设置表格的数据
@@ -20767,17 +20862,34 @@ _eFill       - 用于控制中部宽度的单元格
 
     /**
      * 重新绘制表格
+     *
      * @public
+     * @param {Object} options 配置参数
+     * @param {Array.<Object>} options.datasource 表格数据
+     * @param {Array.<Object>} options.fields 
+     * @param {string} options.noData 无数据时展现的文本
+     * @param {string} options.sortby 排序字段
+     * @param {string} options.orderby 排序方式
      */
-    UI_LITE_TABLE_CLASS.render = function () {
+    UI_LITE_TABLE_CLASS.render = function (options) {
         var type = this.getTypes()[0],
             html = ['<table cellpadding="0" cellspacing="0" width="100%" class="'+ type +'-table">'],
-            i, item, className,
-            fields = this._aFields, datasource = this._aData;
+            i, item, className;
 
+        var fields = this._aFields;
+        if (options.fields) {
+            fields = this._aFields = copyArray(options.fields);
+        }
         if (!fields || fields.length <= 0) {
             return;
         }
+
+        var datasource = this._aData;
+        if (options.datasource) {
+            datasource = this._aData = copyArray(options.datasource);
+        }
+        this._sSortby = options.sortby || this._sSortby;
+        this._sOrderby = options.orderby || this._sOrderby;
 
         html.push('<tr class="'+ type +'-head">');
         // 渲染表头
@@ -20806,10 +20918,11 @@ _eFill       - 用于控制中部宽度的单元格
         }
         html.push('</tr>');
 
+        var noData = options.noData || this._sEmptyText;
         // 渲染无数据表格
         if (!datasource || datasource.length <= 0) {
             html.push('<tr class="'+ type +'-row"><td colspan="'
-                    + fields.length +'" class="'+ type +'-cell-empty">'+ this._sEmptyText +'</td></tr>');
+                    + fields.length +'" class="'+ type +'-cell-empty">'+ noData +'</td></tr>');
         }
         else {
            html.push(buildTabeBody(fields, datasource, type));

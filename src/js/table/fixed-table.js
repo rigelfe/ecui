@@ -36,7 +36,7 @@
  *          head: [
  *              {
  *                  field: 'XX',
- *                  name: 'XX',
+ *                  title: 'XX',
  *              }
  *          ],
  *          datasource: [
@@ -243,7 +243,9 @@
                         + ' />';
                 }
                 else {
-                    th.innerHTML = o.name;
+                    //th.innerHTML = o.name;
+                    //将字段key改成title
+                    th.innerHTML = o.title;
                 }
                 if (o.tip && o.tip.length) {
                     var tipEl = dom.create('', 'margin-left:3px;', 'span');
@@ -631,6 +633,13 @@
      *
      * @public
      * @param {Object} options
+     * @param {Array.<Object>=} options.fields 表头配置
+     * @param {Array.<Object>=} options.datasource 表格数据
+     * @param {number=} options.leftLock 左锁定列的列数
+     * @param {number=} options.rightLock 右锁定列的列数
+     * @param {string=} options.sortby 排序字段
+     * @param {string=} options.orderby 排序方式
+     * @param {string=} options.noData 数据为空时显示的内容
      */
     UI_FIXED_TABLE_CLASS.render = function(options) {
         util.detachEvent(WINDOW, 'resize', core.repaint);
@@ -653,6 +662,26 @@
         var el = this.getOuter();
         el.innerHTML = '';
         this.$resize();
+
+        this._aFields = options.fields || this._aFields;
+        options.fields = this._aFields;
+        if (Object.prototype.toString.call(options.leftLock) == '[object Number]') {
+            this._nLeft = options.leftLock;
+        }
+        if (Object.prototype.toString.call(options.rightLock) == '[object Number]') {
+            this._nRight = options.rightLock;
+        }
+        options.leftLock = this._nLeft;
+        options.rightLock = this._nRight;
+        if (Object.prototype.toString.call(options.sortby) == '[object String]') {
+            this._sSortby = options.sortby;
+        }
+        if (Object.prototype.toString.call(options.orderby) == '[object String]') {
+            this._sOrderby = options.orderby;
+        }
+        options.sortby = this._sSortby;
+        options.orderby = this._sOrderby;
+
         if (options.fields) {
             this._aData = options.datasource || [];
             _createDom.call(this, el, options, domReadyCallback);

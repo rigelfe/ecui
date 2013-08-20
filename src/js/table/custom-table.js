@@ -143,8 +143,8 @@
                             + '">'
                         );
                         html.push(
-                            options.errorMsg 
-                            ? options.errorMsg
+                            options.noData 
+                            ? options.noData
                             : '暂无数据，请稍后再试'
                         );
                         html.push('</td>');
@@ -548,8 +548,8 @@
 
             html.push('">');
             
-            if (o.name) {
-                html.push(o.name);
+            if (o.title) {
+                html.push(o.title);
             }
 
             if (o.checkbox) {
@@ -606,18 +606,29 @@
     };
 
     /**
-     * 重新生成表格
-     * @public
+     * 根据数据绘制表格
      *
-     * @param {Array} fields 表格的列配置
-     * @param {Array} datasource 表格数据
-     * @param {Object} sortinfo 排序信息
-     * @param {Object} options 初始化选项
-     * @param {string} errorMsg 表格为空或出错时展示的内容
+     * @public
+     * @param {Object} options
+     * @param {Array.<Object>=} options.fields 表头配置
+     * @param {Array.<Object>=} options.datasource 表格数据
+     * @param {number=} options.leftLock 左锁定列的列数
+     * @param {number=} options.rightLock 右锁定列的列数
+     * @param {string=} options.sortby 排序字段
+     * @param {string=} options.orderby 排序方式
+     * @param {string=} options.noData 数据为空时显示的内容
      */
-    UI_CUSTOM_TABLE_CLASS.render = function(
-        fields, datasource, sortinfo, options, errorMsg
-    ) {
+    UI_CUSTOM_TABLE_CLASS.render = function(options) {
+        var options = options || {};
+        extend(options, this._oOptions);
+        if (Object.prototype.toString.call(options.leftLock) != '[object Number]') {
+            options.leftLock = this._nLeftLock;
+        }
+        if (Object.prototype.toString.call(options.rightLock) != '[object Number]') {
+            options.rightLock = this._nRightLock;
+        }
+
+        /*
         var options = extend({}, options);
         options = extend(options, this._oOptions);
         options.leftLock = this._nLeftLock;
@@ -628,8 +639,9 @@
         options.sortby = sortinfo.sortby;
         options.orderby = sortinfo.orderby;
         options.errorMsg = errorMsg;
+        */
 
-        if (!datasource.length) {
+        if (!options.datasource.length) {
             options.leftLock = 0;
             options.rightLock = 0;
         }
