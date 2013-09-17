@@ -9,6 +9,85 @@
  * @depend:  ecui
  */
 
+/**
+ * 配置方式举例：（全不配置也可，就取默认的）
+ * {
+ *     "forbidEmpty": false,
+ *     "disableCancelBtn": false,
+ *
+ *     // 下文中日周月季所对应的"D"、"W"、"M"、"Q"为内建常量，
+ *     // 不能变为其他表示（如不可写为"Day"、"Week"）
+ *     "timeTypeList": [
+ *         // 此为日周月季的切换下拉框的内容和文字配置
+ *         // 例如，如果只要显示“日”和“月”，那么不配置“周”和“季”即可
+ *         { "value": "D", "text": "日" },
+ *         { "value": "W", "text": "周" },
+ *         { "value": "M", "text": "月" },
+ *         { "value": "Q", "text": "季" }
+ *     ],
+ *
+ *     "timeTypeOpt": {
+ *         // 此为日周月季每个所对应的配置
+ *         // 例如，如果只要显示“日”和“月”，那么不配置“周”和“季”即可
+ *         "D": {
+ *             "date": ["-31D", "-1D"],
+ *             "range": {
+ *                  start: "2011-01-01",
+ *                  end: "-1D",
+ *                  offsetBase: new Date()
+ *             },
+ *             // selModelList表示所需要的时间点选模式
+ *             // 可取枚举值（value字段）为"SINGLE"（单选），"RANGE"（首尾范围选择），"MULTIPLE"（离散多选）
+ *             "selModeList": [
+ *                 { "text": "单选", "value": "SINGLE", "prompt": "单项选择" }
+ *             ],
+ *             // selModeList表示默认的时间点选模式
+ *             "selMode": "SINGLE"
+ *         },
+ *
+ *         "W": {
+ *             "date": ["-31D", "-1D"],
+ *             "range": {
+ *                  start: "2011-01-01",
+ *                  end: "-1D",
+ *                  offsetBase: new Date()
+ *             },
+ *             "selModeList": [
+ *                 { "text": "单选", "value": "SINGLE", "prompt": "单项选择" },
+ *                 { "text": "范围多选", "value": "RANGE", "prompt": "范围选择，点击一下选择开始值，再点击一下选择结束值" }
+ *             ],
+ *             "selMode": "RANGE"
+ *         },
+ *
+ *         "M": {
+ *             "date": ["-31D", "-1D"],
+ *             "range": {
+ *                  start: "2011-01-01",
+ *                  end: "-1D",
+ *                  offsetBase: new Date()
+ *             },
+ *             "selModeList": [
+ *                 { "text": "单选", "value": "SINGLE", "prompt": "单项选择" },
+ *                 { "text": "范围多选", "value": "RANGE", "prompt": "范围选择，点击一下选择开始值，再点击一下选择结束值" },
+ *                 { "text": "散选", "value": "MULTIPLE", "prompt": "多项选择" }
+ *             ],
+ *             "selMode": "MULTIPLE"
+ *         },
+ *
+ *         "Q": {
+ *             "date": ["-31D", "-1D"],
+ *             "range": {
+ *                  start: "2011-01-01",
+ *                  end: "-1D",
+ *                  offsetBase: new Date()
+ *             },
+ *             "selModeList": [
+ *                 { "text": "单选", "value": "SINGLE", "prompt": "单项选择" }
+ *             ],
+ *             "selMode": "SINGLE"
+ *         }
+ *     }
+ */
 (function() {
 
     var core = ecui;
@@ -281,7 +360,7 @@
                 { text: '月', value: 'M'},
                 { text: '季', value: 'Q'}
             ];
-        var models = this._oModels = {};
+        var models = this._oModels = this._oModels || {};
         var timeType = this._sTimeType = datasource.timeType 
             || (timeTypeList.length ? timeTypeList[0].value : void 0);
 
