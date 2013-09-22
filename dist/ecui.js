@@ -20955,6 +20955,8 @@ _eFill       - 用于控制中部宽度的单元格
             html = ['<table cellpadding="0" cellspacing="0" width="100%" class="'+ type +'-table">'],
             i, item, className;
 
+        options = options || {};
+
         var fields = this._aFields;
         if (options.fields) {
             fields = this._aFields = copyArray(options.fields);
