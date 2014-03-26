@@ -702,7 +702,7 @@ _uOptions     - 下拉选择框
             if (o._sValue == value) {
                 UI_SUGGEST_CHANGE_SELECTED(this, o);
                 //text
-                this._nLastText = Ovalue.text || o.getBody().innerHTML;
+                this._nLastText = oValue.text || o.getBody().innerHTML;
                 return;
             }
         }
