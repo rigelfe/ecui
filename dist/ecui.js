@@ -181,7 +181,7 @@ var ecui;
          * 查询数组中指定对象的位置序号。
          * indexOf 方法返回完全匹配的对象在数组中的序号，如果在数组中找不到指定的对象，返回 -1。
          * @public
-         * 
+         *
          * @param {Array} list 数组对象
          * @param {Object} obj 需要查询的对象
          * @return {number} 位置序号，不存在返回 -1
@@ -198,7 +198,7 @@ var ecui;
         /**
          * 从数组中移除对象。
          * @public
-         * 
+         *
          * @param {Array} list 数组对象
          * @param {Object} obj 需要移除的对象
          */
@@ -213,7 +213,7 @@ var ecui;
         /**
          * 为 Element 对象添加新的样式。
          * @public
-         * 
+         *
          * @param {HTMLElement} el Element 对象
          * @param {string} className 样式名，可以是多个，中间使用空白符分隔
          */
@@ -226,7 +226,7 @@ var ecui;
         /**
          * 获取所有 parentNode 为指定 Element 的子 Element 集合。
          * @public
-         * 
+         *
          * @param {HTMLElement} el Element 对象
          * @return {Array} Element 对象数组
          */
@@ -236,14 +236,14 @@ var ecui;
                     result.push(o);
                 }
             }
-            return result;    
+            return result;
         },
 
         /**
          * 判断一个 Element 对象是否包含另一个 Element 对象。
          * contain 方法认为两个相同的 Element 对象相互包含。
          * @public
-         * 
+         *
          * @param {HTMLElement} container 包含的 Element 对象
          * @param {HTMLElement} contained 被包含的 Element 对象
          * @return {boolean} contained 对象是否被包含于 container 对象的 DOM 节点上
@@ -257,7 +257,7 @@ var ecui;
         /**
          * 创建 Element 对象。
          * @public
-         * 
+         *
          * @param {string} className 样式名称
          * @param {string} cssText 样式文本
          * @param {string} tagName 标签名称，默认创建一个空的 div 对象
@@ -438,7 +438,7 @@ var ecui;
         /**
          * 向指定的 Element 对象内插入一段 html 代码。
          * @public
-         * 
+         *
          * @param {HTMLElement} el Element 对象
          * @param {string} position 插入 html 的位置信息，取值为 beforeBegin,afterBegin,beforeEnd,afterEnd
          * @param {string} html 要插入的 html 代码
@@ -502,7 +502,7 @@ var ecui;
         /**
          * 从页面中移除 Element 对象。
          * @public
-         * 
+         *
          * @param {HTMLElement} el Element 对象
          * @return {HTMLElement} 被移除的 Element 对象
          */
@@ -517,7 +517,7 @@ var ecui;
         /**
          * 删除 Element 对象中的样式。
          * @public
-         * 
+         *
          * @param {HTMLElement} el Element 对象
          * @param {string} className 样式名，可以是多个，中间用空白符分隔
          */
@@ -802,7 +802,7 @@ var ecui;
         /**
          * 计算字符串的字节长度。
          * 如果没有指定编码集，相当于获取字符串属性 length 的值。
-         * 
+         *
          * @param {string} source 目标字符串
          * @param {string} charsetName 字符对应的编码集
          * @return {number} 字节长度
@@ -814,7 +814,7 @@ var ecui;
         /**
          * 根据字节长度截取字符串。
          * 如果没有指定编码集，相当于字符串的 slice 方法。
-         * 
+         *
          * @param {string} source 目标字符串
          * @param {number} length 需要截取的字节长度
          * @param {string} charsetName 字符对应的编码集
@@ -850,7 +850,7 @@ var ecui;
 
         /**
          * 将目标字符串中常见全角字符转换成半角字符。
-         * 
+         *
          * @param {string} source 目标字符串
          * @return {string} 结果字符串
          */
@@ -1071,7 +1071,7 @@ var ecui;
         inherits = util.inherits = function (subClass, superClass) {
             var oldPrototype = subClass.prototype,
                 clazz = new FUNCTION();
-                
+
             clazz.prototype = superClass.prototype;
             extend(subClass.prototype = new clazz(), oldPrototype);
             subClass.prototype.constructor = subClass;
@@ -1487,7 +1487,7 @@ var ecui;
                         if (control._bDisabled) {
                             //如果是点击的日历控件 就直接触发一个mousedown事件之后返回，也不用blur
                             mousedown(control, event);
-                            return; 
+                            return;
                         }
 
                         for (; target; target = target.getParent()) {
@@ -2171,7 +2171,7 @@ var ecui;
                 o.$dispose();
             }
         };
-        
+
         /**
          * 释放 ECUI 控件及其子控件占用的内存。
          * 与公共的dispose方法相比只会清除已命名的子控件，对于未命名的控件（一般是由控件生成的）需要手动以独立模式调用$dispose进行清除工作
@@ -2240,7 +2240,7 @@ var ecui;
          *
          * @param {ecui.ui.Control} control 需要进行拖拽的 ECUI 控件对象
          * @param {ecui.ui.Event} event 事件对象
-         * @param {Object} range 控件允许拖拽的范围，省略参数时，控件默认只允许在 offsetParent 定义的区域内拖拽，如果 
+         * @param {Object} range 控件允许拖拽的范围，省略参数时，控件默认只允许在 offsetParent 定义的区域内拖拽，如果
          *                       offsetParent 是 body，则只允许在当前浏览器可视范围内拖拽
          */
         drag = core.drag = function (control, event, range) {
@@ -2545,7 +2545,7 @@ var ecui;
                     'px;height:' + MIN(o.height * 5, o.pageHeight - top) + 'px;display:';
 
             if ('boolean' == typeof opacity) {
-                text += opacity ? 'block' : 'none'; 
+                text += opacity ? 'block' : 'none';
                 for (; o = maskElements[i++]; ) {
                     o.style.cssText += text;
                 }
@@ -2747,10 +2747,10 @@ var ecui;
         /**
          * 将指定的 ECUI 控件 设置为缩放状态。
          * zoom 方法将控件设置为缩放，缩放的值允许负数，用于表示反向的缩放，调用它会触发控件对象的 onzoomstart 事件，在整个 zoom 的周期中，还将触发 onzoom 与 onzoomend 事件，在释放鼠标按键时缩放操作周期结束。range 参数支持的属性如下：
-         * minWidth  {number} 控件允许缩放的最小宽度 
-         * maxWidth  {number} 控件允许缩放的最大宽度 
-         * minHeight {number} 控件允许缩放的最小高度 
-         * maxHeight {number} 控件允许缩放的最大高度 
+         * minWidth  {number} 控件允许缩放的最小宽度
+         * maxWidth  {number} 控件允许缩放的最大宽度
+         * minHeight {number} 控件允许缩放的最小高度
+         * maxHeight {number} 控件允许缩放的最大高度
          * @public
          *
          * @param {ecui.ui.Control} control ECUI 控件
@@ -2848,7 +2848,7 @@ var ecui;
          */
         UI_EVENT_CLASS.getControl = function (opt_except) {
             var o = findControl(this.target);
-          
+
             if (o && !o.isDisabled()) {
                 for (; o; o = o.getParent()) {
                     if (o.isCapturable()) {
@@ -2863,7 +2863,7 @@ var ecui;
                     }
                 }
             }
-            
+
             return null;
         };
 
@@ -3118,7 +3118,7 @@ var ecui;
          * 控件对象创建后的处理。
          * @private
          *
-         * @param {ecui.ui.Control} control 
+         * @param {ecui.ui.Control} control
          * @param {Object} options 控件初始化选项
          */
         function oncreate(control, options) {
@@ -5541,7 +5541,7 @@ $$mainHeight         - layout区域的实际高度
             hscroll = this._uHScrollbar,
             corner = this._uCorner,
             vsWidth = vscroll ? vscroll.getWidth() : 0,
-            hsHeight = hscroll ? hscroll.getHeight() : 0, 
+            hsHeight = hscroll ? hscroll.getHeight() : 0,
             innerWidth = bodyWidth - vsWidth,
             innerHeight = bodyHeight - hsHeight,
             hsWidth = innerWidth + paddingWidth,
@@ -5632,7 +5632,7 @@ $$mainHeight         - layout区域的实际高度
         if (hscroll) {
             hscroll.$setPageStep(innerWidth);
         }
-    
+
         // 设置内部定位器的大小，以下使用 corner 表示 style
         if (browser) {
             corner = browser.style;
@@ -6377,7 +6377,7 @@ _aValidateRules - 验证规则
      * @return {Boolean} 验证结果
      */
     UI_INPUT_CONTROL_CLASS.validate = function() {
-       return true; 
+       return true;
     };
 
     /**
@@ -6456,7 +6456,7 @@ MessageBox - 消息框功能。
     /**
      * 消息框点击事件处理。
      * @private
-     * 
+     *
      * @param {Event} event 事件对象
      */
     function ECUI_MESSAGEBOX_ONCLICK(event) {
@@ -6469,7 +6469,7 @@ MessageBox - 消息框功能。
     /**
      * 消息框显示提示信息，仅包含确认按钮。
      * @protected
-     * 
+     *
      * @param {string} text 提示信息文本
      * @param {Array} buttonTexts 按钮的文本数组
      * @param {Array} 按钮配置
@@ -6539,7 +6539,7 @@ MessageBox - 消息框功能。
     /**
      * 消息框显示提示信息，仅包含确认按钮。
      * @public
-     * 
+     *
      * @param {string} text 提示信息文本
      * @param {Function} onok 确认按钮点击事件处理函数
      */
@@ -6552,7 +6552,7 @@ MessageBox - 消息框功能。
     /**
      * 消息框显示提示信息，包含确认/取消按钮。
      * @public
-     * 
+     *
      * @param {string} text 提示信息文本
      * @param {Function} onok 确认按钮点击事件处理函数
      * @param {Function} oncancel 取消按钮点击事件处理函数
@@ -6571,10 +6571,10 @@ MessageBox - 消息框功能。
 /**
  * score
  * Copyright 2012 Baidu Inc. All rights reserved.
- * 
+ *
  * path:    score.js
  * desc:    评分控件
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(c.xinle@gmail.com)
  * date:    2012/03/22
  *
  * params:
@@ -6599,7 +6599,7 @@ MessageBox - 消息框功能。
         UI_INPUT_CONTROL = ui.InputControl,
         UI_INPUT_CONTROL_CLASS = UI_INPUT_CONTROL.prototype;
 
-    var UI_SCORE = ui.Score = 
+    var UI_SCORE = ui.Score =
             inheritsControl(
                 UI_INPUT_CONTROL,
                 'ui-score',
@@ -6616,13 +6616,13 @@ MessageBox - 消息框功能。
                 },
                 function (el, options) {
                     this._bStatic = (options['static'] === true);
-                    this.$initItems(); 
+                    this.$initItems();
                 }
             ),
         UI_SCORE_CLASS = UI_SCORE.prototype,
 
         UI_SCORE_ITEM = UI_SCORE_CLASS.Item = inheritsControl(
-            UI_CONTROL, 
+            UI_CONTROL,
             'ui-score-item',
             function (el, options) {
                 options.resizable = false;
@@ -6646,14 +6646,14 @@ MessageBox - 消息框功能。
     /**
      * 标记评分
      * @private
-     * 
+     *
      * @param <Number> score 需要标记的分值
      */
     UI_SCORE_CLASS.$score = function(score) {
         var items = this.getItems(),
             i, item;
 
-        score = score || this.getValue(); 
+        score = score || this.getValue();
         for (i = 0; item = items[i]; i++) {
             item.alterClass(i < score ? '+marked' : '-marked');
         }
@@ -6750,7 +6750,7 @@ MessageBox - 消息框功能。
 
         uiPsTipLayer = null;
 
-    var UI_TIP = ui.Tip = 
+    var UI_TIP = ui.Tip =
         inheritsControl(
             UI_CONTROL,
             'ui-tip',
@@ -6768,7 +6768,7 @@ MessageBox - 消息框功能。
         ),
 
         UI_TIP_CLASS = UI_TIP.prototype,
-        UI_TIP_LAYER = UI_TIP_CLASS.Layer = 
+        UI_TIP_LAYER = UI_TIP_CLASS.Layer =
         inheritsControl(
             UI_CONTROL,
             'ui-tip-layer',
@@ -6895,7 +6895,7 @@ MessageBox - 消息框功能。
             className.push('-left');
         }
 
-        if (pos.top - cornerHeight - this.getHeight() < view.top 
+        if (pos.top - cornerHeight - this.getHeight() < view.top
                 && pos.top + h + cornerHeight + this.getHeight() < view.bottom) {
             pos.top += h + cornerHeight;
             className.push('-bottom');
@@ -7433,7 +7433,7 @@ _cFor - 被转发的控件对象
     // 设置事件转发
     (function () {
         var i, name;
-        
+
         for (i = 0; name = AGENT_EVENT[i]; i++) {
             UI_LABEL_CLASS['$' + name]  = (function (name) {
                 return function (event) {
@@ -7455,10 +7455,10 @@ _cFor - 被转发的控件对象
 /**
  * input
  * Copyright 2012 Baidu Inc. All rights reserved.
- * 
+ *
  * path:    input.js
  * desc:    文本输入框(input与textarea)
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(c.xinle@gmail.com)
  * date:    2012/03/12
  */
 (function () {
@@ -7491,7 +7491,7 @@ _cFor - 被转发的控件对象
             },
             function (el, options) {
                 var o, type = this.getType();
-                
+
                 this.getInput().style.border = '';
 
 				if(options.maxLength){
@@ -7540,19 +7540,19 @@ _cFor - 被转发的控件对象
     }
 
     UI_INPUT_CLASS.$keydown = function () {
-    	
+
         UI_INPUT_TIP_DISPLAY(this, false);
     };
 
     UI_INPUT_CLASS.$keyup = function () {
         var value = this.getValue();
-        
+
         if(this._sMaxLength){
         	if(baidu.string.getByteLength(value) > this._sMaxLength){
         		this.setValue(baidu.string.subByte(value, this._sMaxLength));
         	}
         }
-        
+
         if (!value) {
             UI_INPUT_TIP_DISPLAY(this, true);
         }
@@ -7677,10 +7677,10 @@ _uOptions     - 下拉选择框
                     );
 
                 optionsEl.setAttribute('ecui_id', id);
-                   
+
                 setDefault(options, 'hidden', true);
 
-                
+
                 moveElements(el, optionsEl);
 
                 el.innerHTML =
@@ -7699,7 +7699,7 @@ _uOptions     - 下拉选择框
                     this._nTimeout =  options.timeout;
                 }
                 if (options.hide) {
-                    this.getOuter().style.display = 'none'; 
+                    this.getOuter().style.display = 'none';
                 }
                 el = children(el);
                 var me = this;
@@ -7725,7 +7725,7 @@ _uOptions     - 下拉选择框
                 this._uText.$change = EVENT_TEXT_CHANGE;
                 //取消滚轮事件
                 //this._uText.$mousewheel = function() {};
-                
+
             }
         ),
         UI_SUGGEST_CLASS = UI_SUGGEST.prototype,
@@ -7759,11 +7759,11 @@ _uOptions     - 下拉选择框
     * @event 注册input文本框的onchange事件
     */
     function EVENT_TEXT_CHANGE() {
-        var par = this.getParent(); 
-        var value = par.getValue(); 
-        
+        var par = this.getParent();
+        var value = par.getValue();
+
         //触发onchange事件
-        triggerEvent(par, 'change', value); 
+        triggerEvent(par, 'change', value);
         var txt= par.getText();
         var lastTxt = par._nLastText;
 
@@ -7771,31 +7771,31 @@ _uOptions     - 下拉选择框
         if (trim(txt) != trim(lastTxt)) {
 
             par._eInput.value = '';
-        } 
-        
+        }
+
         //trim后没有内容 所以不查找
         if (trim(txt) == '') {
-            return; 
+            return;
         }
 
         //因为改变了文本，理论值不一样了
         //触发onquery事件
         if (par._nTimeoutHandler) {
             //清除之前的句柄
-            clearTimeout(par._nTimeoutHandler); 
+            clearTimeout(par._nTimeoutHandler);
         }
         //延迟触发onquery事件
         par._nTimeoutHandler = setTimeout(function() {
             //清空事件句柄
-            par._nTimeoutHandler = null;      
+            par._nTimeoutHandler = null;
             triggerEvent(par, 'query', value);
-            
+
         }, par._nTimeout);
-            
+
     }
     /**
     * 填充输入的文字自动匹配value值
-    * 用户输入文本以后 寻找相关的id,并填入sugguest框 
+    * 用户输入文本以后 寻找相关的id,并填入sugguest框
     * @param {ecui{Object}} suggest控件本身
     * @param {array[Object]} suggest控件本身
     * @param {string} suggest控件本身的text
@@ -7805,18 +7805,18 @@ _uOptions     - 下拉选择框
         var value = null;
         for (var i = 0, item; item = list[i++];) {
             if (item.text == text) {
-                value = item.value; 
+                value = item.value;
                 break;
             }
-        
+
         }
         //渲染
         if (value != null) {
             ele._eInput.value = value;
             //触发onslect
-            triggerEvent(ele, 'select', {value: value, text:text}); 
+            triggerEvent(ele, 'select', {value: value, text:text});
         }
-     
+
     }
 //{else}//
     /**
@@ -7886,7 +7886,7 @@ _uOptions     - 下拉选择框
                 //suggest选择事件
                 //选择事件的触发
                 //
-                triggerEvent(control, 'select', {value: item._sValue, text:text}); 
+                triggerEvent(control, 'select', {value: item._sValue, text:text});
                 triggerEvent(control, item._sValue);
                 //设置焦点到最后
                 //bugfix ie可能会选择以后会有显示在前边问题
@@ -7926,7 +7926,7 @@ _uOptions     - 下拉选择框
         setFocused(this);
     };
 
-  
+
     /**
      * 获取选项的值。
      * getValue 方法返回选项控件的值，即选项选中时整个下拉框控件的值。
@@ -7935,7 +7935,7 @@ _uOptions     - 下拉选择框
      * @return {string} 选项的值
      */
     UI_SUGGEST_ITEM_CLASS.getValue = function () {
-       
+
         return this._sValue;
     };
     /**
@@ -7946,7 +7946,7 @@ _uOptions     - 下拉选择框
      * @return {string} 选项的值
      */
     UI_SUGGEST_ITEM_CLASS.getText = function () {
-       
+
         return this._eBody.innerHTML;
     };
     /**
@@ -8073,7 +8073,7 @@ _uOptions     - 下拉选择框
                 //bugfix
                 //shift + 40 是（  ，shift + 38 是 &
                 if (event && event._oNative.shiftKey) {
-                    return true; 
+                    return true;
                 }
                 if (length) {
 
@@ -8087,7 +8087,7 @@ _uOptions     - 下拉选择框
                     else {
                         //不需要选择列表里的item
                         return false;
-                        
+
                         //this.setSelectedIndex(MIN(MAX(0, indexOf(list, this._cSelected) + which - 39), length - 1));
                     }
 
@@ -8115,14 +8115,14 @@ _uOptions     - 下拉选择框
                 //可以支持用户继续输入
                 //bugfix: 这里有一个bug，keypress和keydown，which可能是0 所以不用处理不然firefox会丢失 item的焦点
                 if (which != 0) {
-                        
-                    setFocused(this._uText); 
+
+                    setFocused(this._uText);
                 }
 
             }
 
         }
-        
+
     };
 
     /**
@@ -8201,7 +8201,7 @@ _uOptions     - 下拉选择框
         this._uText.$setSize(width = this.getBodyWidth(), height);
         //this._uText.$setSize(width = this.getBodyWidth() - height, height);
 
-        
+
     };
 
     /**
@@ -8218,7 +8218,7 @@ _uOptions     - 下拉选择框
     * @return {string} 选择的文本
     */
     UI_SUGGEST_CLASS.getText = function () {
-        var txt = this._uText.getValue(); 
+        var txt = this._uText.getValue();
         return txt;
     };
 
@@ -8228,7 +8228,7 @@ _uOptions     - 下拉选择框
     * @return {string} 选择的文本
     */
     UI_SUGGEST_CLASS.setText = function (txt) {
-        this._uText.setValue(txt); 
+        this._uText.setValue(txt);
     };
     /**
     * 获取suggest的文本框里的值
@@ -8240,7 +8240,7 @@ _uOptions     - 下拉选择框
             value: value,
             text: text
         };
-        return obj; 
+        return obj;
     };
     /**
      * 设置下拉框允许显示的选项数量。
@@ -8277,9 +8277,9 @@ _uOptions     - 下拉选择框
         //{text:XX,value:XX}
         var value = oValue;
         if ('[object Object]' == Object.prototype.toString.call(oValue)) {
-            value = oValue.value; 
+            value = oValue.value;
         }
-        
+
         for (var i = 0, list = this.getItems(), o; o = list[i++]; ) {
             if (o._sValue == value) {
                 UI_SUGGEST_CHANGE_SELECTED(this, o);
@@ -8309,14 +8309,14 @@ _uOptions     - 下拉选择框
     * @param {Array[Object]} 数据源
     */
     UI_SUGGEST_CLASS.update = function (list) {
-        //清空    
+        //清空
         this.clear();
         var item = null;
         var el = null;
         var control = this;
         for (var i = 0, o; o = list[i++];) {
-          
-            item = this.add(o.text, null, {value: o.value});  
+
+            item = this.add(o.text, null, {value: o.value});
             //以后可以增加title的标识的变量
             if (true) {
                 item.getOuter().title = o.text;
@@ -8330,19 +8330,19 @@ _uOptions     - 下拉选择框
             UI_SUGGEST_FLUSH(this);
         }
         else {
-            
+
             control.$alterItems();
         }
         //自动填充相关id，用户
         var txt = this.getText(txt);
-        AUTO_FILL_VALUE(this, list, txt); 
+        AUTO_FILL_VALUE(this, list, txt);
         //updae控件以后需要focus到文本框
         setFocused(control._uText);
         //event.stopPropagation();
     };
     //聚焦到最后
     UI_SUGGEST_CLASS.setFocusToEnd = function() {
-        var input = this._uText;  
+        var input = this._uText;
         core.setFocused(input);
         input = input._eInput;
         var len = input.value.length;
@@ -8351,13 +8351,13 @@ _uOptions     - 下拉选择框
             sel.moveStart('character', len);
             sel.collapse();
             sel.select();
-        } 
+        }
         else if (typeof input.selectionStart == 'number'
                 && typeof input.selectionEnd == 'number') {
             input.selectionStart = input.selectionEnd = len;
         }
-        
-        
+
+
     };
     UI_SUGGEST_CLASS.$mousewheel = function() {};
 //{/if}//
@@ -8720,7 +8720,7 @@ _uClose         - 关闭按钮
      * @override
      */
     UI_FORM_CLASS.$resize = function () {
-        var style = this.getMain().lastChild.style; 
+        var style = this.getMain().lastChild.style;
 
         UI_CONTROL_CLASS.$resize.call(this);
         style.width = '';
@@ -8758,7 +8758,7 @@ _uClose         - 关闭按钮
                 UI_FORM_FLUSH_ZINDEX(this);
             }
             else if (this._bAutoCenter) {
-                this.center(); 
+                this.center();
             }
         }
     };
@@ -8791,7 +8791,7 @@ _uClose         - 关闭按钮
         UI_BUTTON = ui.Button,
         UI_BUTTON_CLASS = UI_BUTTON.prototype;
 
-    var UI_POP = ui.Pop = 
+    var UI_POP = ui.Pop =
         inheritsControl(
             UI_CONTROL,
             'ui-pop',
@@ -8814,7 +8814,7 @@ _uClose         - 关闭按钮
 
         UI_POP_CLASS = UI_POP.prototype;
 
-        UI_POP_BTN = UI_POP_CLASS.Button = 
+        UI_POP_BTN = UI_POP_CLASS.Button =
         inheritsControl(
             UI_BUTTON,
             null,
@@ -8894,7 +8894,7 @@ _uClose         - 关闭按钮
         }
     };
 
-    var UI_POP_BUTTON = ui.PopButton = 
+    var UI_POP_BUTTON = ui.PopButton =
         inheritsControl(
             UI_BUTTON,
             'ui-pop-button',
@@ -9028,7 +9028,7 @@ _uOptions     - 下拉选择框
                     );
 
                 optionsEl.setAttribute('ecui_id', id);
-                   
+
                 setDefault(options, 'hidden', true);
 
                 if (el.tagName == 'SELECT') {
@@ -9496,7 +9496,7 @@ _uOptions     - 下拉选择框
  * Copyright 2012 Baidu Inc. All rights reserved
  *
  * desc: 级联下拉菜单
- * author: hades(denghongqi@baidu.com)
+ * author: hades(denghongqi@gmail.com)
  */
 
  (function () {
@@ -9539,7 +9539,7 @@ _uOptions     - 下拉选择框
             control.clear();
             for (var i = 0, o; o = options[i]; i++) {
                 control.add(o.text, null, {value : o.value});
-            } 
+            }
             if(value) {
                 control.setValue(value);
             }
@@ -9613,7 +9613,7 @@ _eInput - 多选项的INPUT对象
      */
     //__gzip_original__UI_MULTI_SELECT
     //__gzip_original__UI_MULTI_SELECT_ITEM
-    var UI_MULTI_SELECT = ui.MultiSelect = 
+    var UI_MULTI_SELECT = ui.MultiSelect =
         inheritsControl(
             UI_SELECT,
             'ui-multi-select',
@@ -9673,7 +9673,7 @@ _eInput - 多选项的INPUT对象
             function (el, options) {
                 var type = this.getTypes()[0],
                     o = createDom(type + '-icon');
-                
+
                 this._bSelectAllBtn = options.selectAllButton;
                 this._sTip = options.tip ? options.tip : getText(el);
 
@@ -9687,7 +9687,7 @@ _eInput - 多选项的INPUT对象
         ),
         UI_MULTI_SELECT_ITEM_CLASS = UI_MULTI_SELECT_ITEM.prototype;
 //{else}//
-    
+
     /**
      * 刷新全选按钮
      * @private
@@ -9734,7 +9734,7 @@ _eInput - 多选项的INPUT对象
             if (
                 control._sTextAll
                 && (text.length != 0 || btnAllSelected)
-                && text.length == list.length + (control._bSelectAllBtn ? -1 : 0) 
+                && text.length == list.length + (control._bSelectAllBtn ? -1 : 0)
             ) {
                 text = control._sTextAll;
             }
@@ -10047,7 +10047,7 @@ _eInput - 多选项的INPUT对象
             }
         }, 0);
     };
-    
+
     /**
      * 设置下拉框允许显示的选项数量。
      * 如果实际选项数量小于这个数量，没有影响，否则将出现垂直滚动条，通过滚动条控制其它选项的显示。
@@ -10393,7 +10393,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         if (control._uSelected == o) {
             return;
         }
-        
+
         if (control._uSelected) {
             control._uSelected.alterClass('-selected');
         }
@@ -11203,7 +11203,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         UI_CALENDAR_CLASS = UI_CALENDAR.prototype,
         UI_CALENDAR_CANCEL_CLASS = (UI_CALENDAR_CLASS.Cancel = inheritsControl(UI_CONTROL)).prototype,
 
-        UI_CALENDAR_PANEL = UI_CALENDAR_CLASS.Panel = 
+        UI_CALENDAR_PANEL = UI_CALENDAR_CLASS.Panel =
         inheritsControl(
             UI_CONTROL,
             'ui-calendar-panel',
@@ -11246,7 +11246,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                     selectClass = this.Select,
                     monthViewClass = this.MonthView,
                     date = options.date;
-                
+
                 el = children(el);
                 o = children(el[0]);
 
@@ -11436,7 +11436,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     };
 
     /**
-     * 设置日历面板的展现年月 
+     * 设置日历面板的展现年月
      */
     UI_CALENDAR_PANEL_CLASS.setView = function (year, month) {
         var monthSlt = this._uMonthSlt,
@@ -11555,7 +11555,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
      * @param {Object} options 初始化选项
      */
 
-    var UI_MULTI_CALENDAR = ui.MultiCalendar = 
+    var UI_MULTI_CALENDAR = ui.MultiCalendar =
         inheritsControl(
             UI_CALENDAR,
             'ui-multi-calendar',
@@ -11573,7 +11573,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
                 o.innerHTML = '<input type="hidden" name="'+ (options.beginname ? options.beginname : 'beginDate') +'" />'
                     + '<input type="hidden" name="'+ (options.endname ? options.endname : 'endDate') +'" />';
-                
+
                 if (options.bdate) {
                     els = options.bdate.split('-');
                     this._oBegin = new Date (els[0], parseInt(els[1], 10) - 1, els[2]);
@@ -11582,7 +11582,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                     els = options.edate.split('-');
                     this._oEnd = new Date (els[0], parseInt(els[1], 10) - 1, els[2]);
                 }
-                els = children(o);    
+                els = children(o);
                 this._eBeginInput = els[0];
                 this._eEndInput = els[1];
 
@@ -11592,7 +11592,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
     var UI_MULTI_CALENDAR_CLASS = UI_MULTI_CALENDAR.prototype;
 
-    var UI_MULTI_CALENDAR_PANEL = UI_MULTI_CALENDAR_CLASS.Panel = 
+    var UI_MULTI_CALENDAR_PANEL = UI_MULTI_CALENDAR_CLASS.Panel =
         inheritsControl(
             UI_CONTROL,
             'ui-multi-calendar-panel',
@@ -11622,23 +11622,23 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             }
         );
 
-    var UI_MULTI_CALENDAR_CANCEL_CLASS = 
-        (UI_MULTI_CALENDAR_CLASS.Cancel = 
+    var UI_MULTI_CALENDAR_CANCEL_CLASS =
+        (UI_MULTI_CALENDAR_CLASS.Cancel =
             inheritsControl(UI_CALENDAR_CLASS.Cancel)
         ).prototype;
 
     var UI_MULTI_CALENDAR_PANEL_CLASS = UI_MULTI_CALENDAR_PANEL.prototype;
 
     var UI_MULTI_CALENDAR_PANEL_CAL_CLASS = (
-        UI_MULTI_CALENDAR_PANEL_CLASS.Cal = 
+        UI_MULTI_CALENDAR_PANEL_CLASS.Cal =
             inheritsControl(UI_CALENDAR_PANEL)
         ).prototype;
 
-    var UI_MULTI_CALENDAR_PANEL_BUTTON_CLASS = 
-        (UI_MULTI_CALENDAR_PANEL_CLASS.Button = 
+    var UI_MULTI_CALENDAR_PANEL_BUTTON_CLASS =
+        (UI_MULTI_CALENDAR_PANEL_CLASS.Button =
             inheritsControl(UI_BUTTON)
         ).prototype;
-    
+
     function UI_MULTI_CALENDAR_TEXT_FLUSH(con) {
         var el = con._eText;
         if (el.innerHTML == '') {
@@ -11668,7 +11668,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         beginTxt = date.begin ? formatDate(date.begin, UI_CALENDAR_STR_PATTERN) : '';
         endTxt = date.end ? formatDate(date.end, UI_CALENDAR_STR_PATTERN) : '';
 
-        this._oBegin = date.begin;    
+        this._oBegin = date.begin;
         this._oEnd = date.end;
         this._eBeginInput.value = beginTxt;
         this._eEndInput.value = endTxt;
@@ -11719,7 +11719,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     };
 
     UI_MULTI_CALENDAR_PANEL_CLASS.setDate = function (date) {
-        var range = this._oRange, 
+        var range = this._oRange,
             begin, end;
 
         this._oBeginDate = date.begin;
@@ -11802,7 +11802,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     };
 
     UI_MULTI_CALENDAR_PANEL_CLASS.$setDate = function (date, type) {
-        var key = type.charAt(0).toUpperCase() 
+        var key = type.charAt(0).toUpperCase()
                 + type.substring(1);
 
         var par = this.getParent();
@@ -11936,9 +11936,9 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     };
 
     var date2Arr = UI_X_CALENDAR_UTIL.date2Arr = function (d, willCreate) {
-        return d == null 
+        return d == null
             ? d
-            : !isArray(d) 
+            : !isArray(d)
                 ? [d.getFullYear(), d.getMonth(), d.getDate()]
                 : willCreate
                     ? [d[0], d[1], d[2]]
@@ -11948,7 +11948,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     var arr2Date = UI_X_CALENDAR_UTIL.arr2Date = function (d, willCreate) {
         return d == null
             ? d
-            : isArray(d) 
+            : isArray(d)
                 ? new Date(d[0], d[1] || 0, d[2] || 1)
                 : willCreate
                     ? new Date(d.getFullYear(), d.getMonth(), d.getDate())
@@ -11960,7 +11960,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         date = date2Arr(date);
         var quarter = getQuarter(date);
         var mon = [0, 0, 3, 6, 9];
-        return retArrOrDate 
+        return retArrOrDate
             ? [date[0], mon[quarter], 1]
             : new Date(date[0], mon[quarter], 1);
     };
@@ -12008,7 +12008,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             slt.add(String(o.text), null, { value: o.value });
         }
         slt.setValue(dataWrap.selected);
-    };    
+    };
 
     var isDate = UI_X_CALENDAR_UTIL.isDate = function (input) {
         return objProtoToString.call(input) == '[object Date]';
@@ -12038,7 +12038,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         var weekDay = date.getDay();
         var pre = -((weekDay + 6) % 7), next = (7 - weekDay) % 7;
         var weekInfo = {
-            monday: new Date(date.getTime() + pre * DAY_MILLISECOND), 
+            monday: new Date(date.getTime() + pre * DAY_MILLISECOND),
             sunday: new Date(date.getTime() + next * DAY_MILLISECOND)
         };
         weekInfo.workday = weekInfo.monday;
@@ -12072,15 +12072,15 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     // function getDateKey(date) {
     //     if (isDate(date)) {
     //         return [
-    //             pad(date.getFullYear(), 4), 
-    //             pad(date.getMonth(), 2), 
+    //             pad(date.getFullYear(), 4),
+    //             pad(date.getMonth(), 2),
     //             pad(date.getDate(), 2)
     //         ].join('-');
     //     }
     //     else if (isArray(date)) {
     //         return [
-    //             pad(date[0], 4), 
-    //             pad(date[1], 2), 
+    //             pad(date[0], 4),
+    //             pad(date[1], 2),
     //             pad(date[2], 2)
     //         ].join('-');
     //     }
@@ -12096,7 +12096,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
      * @public
      * @param {Object} options 初始化选项
      */
-    var UI_X_CALENDAR_VIEW = 
+    var UI_X_CALENDAR_VIEW =
         inheritsControl(UI_CONTROL, 'ui-x-calendar-view');
     var UI_X_CALENDAR_VIEW_CLASS = UI_X_CALENDAR_VIEW.prototype;
 
@@ -12120,9 +12120,9 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'
     ];
     UI_X_CALENDAR_VIEW_CLASS.QUARTER = [
-        '第一季度（Q1，一月至三月）', 
+        '第一季度（Q1，一月至三月）',
         '第二季度（Q2，四月至六月）',
-        '第三季度（Q3，七月至九月）', 
+        '第三季度（Q3，七月至九月）',
         '第四季度（Q4，十月至十二月）'
     ];
 
@@ -12216,7 +12216,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                 );
             }
         );
-    }    
+    }
 
     UI_X_CALENDAR_VIEW_CLASS.$doFlushHover = function (getIndexMapFunc, timeType) {
         var model = this.getModel();
@@ -12252,7 +12252,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                         cell.alterClass('+hover'),
                         cell._bHover = true
                     );
-                } 
+                }
                 else {
                     cell._bHover && (
                         cell.alterClass('-hover'),
@@ -12333,7 +12333,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     var UI_X_CALENDAR_MD_VIEW_CLASS = UI_X_CALENDAR_MD_VIEW.prototype;
 
     var UI_X_CALENDAR_MD_VIEW_CELL_CLASS = (
-        UI_X_CALENDAR_MD_VIEW_CLASS.Cell = 
+        UI_X_CALENDAR_MD_VIEW_CLASS.Cell =
             inheritsControl(UI_X_CALENDAR_VIEW_CLASS.Cell)
     ).prototype;
 
@@ -12367,9 +12367,9 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         for (i = 0; o = list[i]; i ++) {
             // 日历视图单元格禁止改变大小
             this._aCells[i] = $fastCreate(
-                i < 7 ? this.HCell : this.Cell, 
-                o, 
-                this, 
+                i < 7 ? this.HCell : this.Cell,
+                o,
+                this,
                 { resizable: false }
             );
         }
@@ -12378,7 +12378,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     UI_X_CALENDAR_MD_VIEW_CLASS.$flushSelected = function () {
         return this.$doFlushSelected(getIndexMapByDate, 'D');
     };
-    
+
     UI_X_CALENDAR_MD_VIEW_CLASS.$flushHover = function () {
         this.$doFlushHover(getIndexMapByDate, 'D');
     };
@@ -12387,7 +12387,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         var lastDayOfCurrMonth = new DATE(this._nYear, this._nMonth + 1, 0).getDate();
 
         for (var i = 7, cell; cell = this._aCells[i]; i ++) {
-            if (cell._nDay > 0 
+            if (cell._nDay > 0
                 && cell._nDay <= lastDayOfCurrMonth
                 && callback.call(this, cell, i) === false
             ) {
@@ -12453,7 +12453,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             for (; o = this._aCells[i]; i ++) {
                 if (month = day > 0 && day <= lastDayOfCurrMonth) {
                     currDate.setDate(day);
-                    if ((!rangeStart || rangeStart <= currDate) 
+                    if ((!rangeStart || rangeStart <= currDate)
                         && (!rangeEnd || rangeEnd >= currDate)) {
                         o.open();
                     }
@@ -12470,15 +12470,15 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                         getParent(o.getOuter()), this.getType() + '-extra'
                     );
                 }
-                
-                cellDay = month 
-                    ? day 
-                    : day > lastDayOfCurrMonth 
-                        ? day - lastDayOfCurrMonth 
+
+                cellDay = month
+                    ? day
+                    : day > lastDayOfCurrMonth
+                        ? day - lastDayOfCurrMonth
                         : lastDayOfLastMonth + day;
 
-                this.setCellHTML 
-                    && (this.setCellHTML(o, cellDay, day) !== false) 
+                this.setCellHTML
+                    && (this.setCellHTML(o, cellDay, day) !== false)
                     || setText(o.getBody(), cellDay);
 
                 this.cellValue2IndexMap[day] = i;
@@ -12497,7 +12497,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     function getIndexMapByDate(viewInfo, dateArr, cellValue2IndexMap) {
         var ret = {};
         for (var i = 0, date; date = date2Arr(dateArr[i]); i ++) {
-            if (date[0] == viewInfo[0] && date[1] == viewInfo[1]) { 
+            if (date[0] == viewInfo[0] && date[1] == viewInfo[1]) {
                 ret[cellValue2IndexMap[date[2]]] = 1;
             }
         }
@@ -12519,7 +12519,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     var UI_X_CALENDAR_MW_VIEW_CLASS = UI_X_CALENDAR_MW_VIEW.prototype;
 
     var UI_X_CALENDAR_MW_VIEW_CELL_CLASS = (
-        UI_X_CALENDAR_MW_VIEW_CLASS.Cell = 
+        UI_X_CALENDAR_MW_VIEW_CLASS.Cell =
             inheritsControl(UI_X_CALENDAR_VIEW_CLASS.Cell)
     ).prototype;
 
@@ -12537,7 +12537,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
     UI_X_CALENDAR_MW_VIEW_CLASS.getViewInfo = UI_X_CALENDAR_MD_VIEW_CLASS.getViewInfo;
 
-    UI_X_CALENDAR_MW_VIEW_CLASS.$setView = UI_X_CALENDAR_MD_VIEW_CLASS.$setView;    
+    UI_X_CALENDAR_MW_VIEW_CLASS.$setView = UI_X_CALENDAR_MD_VIEW_CLASS.$setView;
 
     UI_X_CALENDAR_MW_VIEW_CELL_CLASS.getUnitInfo = function () {
         var par = this.getParent();
@@ -12582,10 +12582,10 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     var UI_X_CALENDAR_YM_VIEW_CLASS = UI_X_CALENDAR_YM_VIEW.prototype;
 
     var UI_X_CALENDAR_YM_VIEW_CELL_CLASS = (
-        UI_X_CALENDAR_YM_VIEW_CLASS.Cell = 
+        UI_X_CALENDAR_YM_VIEW_CLASS.Cell =
             inheritsControl(UI_X_CALENDAR_VIEW_CLASS.Cell)
     ).prototype;
-    
+
     function ymConstructor(el, options) {
         var type = this.getType();
         var list;
@@ -12620,7 +12620,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             );
             this._aCells[i]._nMonth = i;
         }
-    }    
+    }
 
     UI_X_CALENDAR_YM_VIEW_CLASS.$flushSelected = function () {
         return this.$doFlushSelected(getIndexMapByMonth, 'M');
@@ -12670,7 +12670,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     function getIndexMapByMonth(viewInfo, dateArr, cellValue2IndexMap) {
         var ret = {};
         for (var i = 0, date; date = date2Arr(dateArr[i]); i ++) {
-            if (date[0] == viewInfo[0]) { 
+            if (date[0] == viewInfo[0]) {
                 ret[cellValue2IndexMap[date[1]]] = 1;
             }
         }
@@ -12692,7 +12692,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     var UI_X_CALENDAR_YQ_VIEW_CLASS = UI_X_CALENDAR_YQ_VIEW.prototype;
 
     var UI_X_CALENDAR_YQ_VIEW_CELL_CLASS = (
-        UI_X_CALENDAR_YQ_VIEW_CLASS.Cell = 
+        UI_X_CALENDAR_YQ_VIEW_CLASS.Cell =
             inheritsControl(UI_X_CALENDAR_VIEW_CLASS.Cell)
     ).prototype;
 
@@ -12718,12 +12718,12 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         var quarterMap = [0, 3, 6, 9];
         this._aCells = [];
         for (i = 0, list = el.getElementsByTagName('div'), o;
-             o = list[i]; 
+             o = list[i];
              i ++
         ) {
             // 日历视图单元格禁止改变大小
             this._aCells[i] = $fastCreate(
-                this.Cell, o, this, { resizable: false } 
+                this.Cell, o, this, { resizable: false }
             );
             this._aCells[i]._nMonth = quarterMap[i];
         }
@@ -12758,7 +12758,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
  * @file:    富日历的日历层，
  *           支持日、周、月、季不同粒度时间选择，
  *           支持单选、多选、范围选
- * @author:  sushuang(sushuang@baidu.com)
+ * @author:  sushuang(sushuang0322@gmail.com)
  * @depend:  ecui
  */
 
@@ -12825,7 +12825,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
     /**
      * 富日历的日历层
-     * 
+     *
      * @param {Object} options 参数
      * @param {(string|Date|number|Array)=} options.date 初始时间，缺省则为new Date()
      *          可为表示时间的string：格式为：（以下时间字符串都用此格式）
@@ -12852,7 +12852,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
      * @param {Object=} options.model 当前数据对象，如果不传入则自己创建。传入，则可多个实例共享model（参见render方法）
      * @class
      */
-    var UI_X_CALENDAR_LAYER = ui.XCalendarLayer = 
+    var UI_X_CALENDAR_LAYER = ui.XCalendarLayer =
         inheritsControl(
             UI_CONTROL,
             'ui-x-calendar-layer',
@@ -12872,15 +12872,15 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     UI_X_CALENDAR_LAYER_YQ_VIEW_CLASS = (UI_X_CALENDAR_LAYER_CLASS.YQView = inheritsControl(UI_X_CALENDAR_YQ_VIEW, null)).prototype;
 
     UI_X_CALENDAR_LAYER_SELECT_CLASS.Options = inheritsControl(
-        UI_X_CALENDAR_LAYER_SELECT_CLASS.Options, 
-        null, 
-        null, 
+        UI_X_CALENDAR_LAYER_SELECT_CLASS.Options,
+        null,
+        null,
         function(el, options) {
-            addClass(el, 'ui-x-calendar-layer-select-options'); 
+            addClass(el, 'ui-x-calendar-layer-select-options');
         }
     );
 
-    UI_X_CALENDAR_LAYER_SEL_MODE_CLASS = (UI_X_CALENDAR_LAYER_CLASS.SelMode = 
+    UI_X_CALENDAR_LAYER_SEL_MODE_CLASS = (UI_X_CALENDAR_LAYER_CLASS.SelMode =
         inheritsControl(UI_CONTROL, 'ui-x-calendar-layer-selmode')
     ).prototype;
 
@@ -12989,7 +12989,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             var par = [0, 0, 3, 6, 9];
             return new Date(REGEXP.$1, par[REGEXP.$2], 1);
         }
-        
+
         return null;
     };
 
@@ -13091,7 +13091,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
         // 前进按钮
         html.push('<div class="' + type + '-btn-nxt' + UI_BUTTON.TYPES + '"></div>');
-        
+
         html.push('</div>');
 
         // selMode 选择区
@@ -13105,7 +13105,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
         o = children(el[0]);
         i = 0;
-        
+
         this._uPrvBtn = $fastCreate(stepBtnClass, o[i ++], this);
         this._uPrvBtn._nStep = -1;
 
@@ -13157,7 +13157,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         calView.setView(d);
     };
 
-    /** 
+    /**
      * 渲染
      *
      * @public
@@ -13166,24 +13166,24 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
      * @param {boolean} remainSlt 是否不重新绘制日期选择下拉框（默认false）
      * @param {boolean} remainSelMode 是否不重绘selMode选择区（默认false）
      * @param {boolean} remainTimeView 是否保留当前view（默认false）
-     */  
+     */
     UI_X_CALENDAR_LAYER_CLASS.render = function (opt) {
         opt = opt || {};
         var model = this.getModel();
 
         !opt.remainSlt && this.$resetSltDatasource();
         !opt.remainSelMode && this.$resetSelModeCtrl();
-        
+
         if (!opt.remainTimeView) {
             var aDate = this._oModel.getDate();
-            var viewDate = opt.viewDate 
+            var viewDate = opt.viewDate
                 // 默认取最后一个选中日期作为当前要显示的面板
                 || aDate[aDate.length - 1]
                 || (
-                    opt = new Date(), 
+                    opt = new Date(),
                     opt.setFullYear(
                         Math.min(
-                            Math.max(model._nYearRangeStart, opt.getFullYear()), 
+                            Math.max(model._nYearRangeStart, opt.getFullYear()),
                             model._nYearRangeEnd
                         )
                     ),
@@ -13227,8 +13227,8 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             prompt = o.prompt ? (' title="' + encodeHTML(o.prompt) + '" ') : '';
             checked = o.value == selMode ? ' checked="checked" ' : '';
             html.push(
-                '<input ' + prompt + ' type="radio" name="' + type + '-selmode-radio-' + this.getUID() 
-                + '" class="' + type + '-selmode-radio" ' + checked 
+                '<input ' + prompt + ' type="radio" name="' + type + '-selmode-radio-' + this.getUID()
+                + '" class="' + type + '-selmode-radio" ' + checked
                 + ' data-selmode="' + o.value + '"/>'
             );
             html.push('<span ' + prompt + ' class="' + type + '-selmode-text">' + encodeHTML(o.text) + '</span>');
@@ -13244,9 +13244,9 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         if (!yearSlt) { return; }
 
         var yearBase = (range.offsetBase || new Date()).getFullYear();
-        var yearRangeStart = range.start 
+        var yearRangeStart = range.start
             ? range.start.getFullYear() : (yearBase - 5);
-        var yearRangeEnd = range.end 
+        var yearRangeEnd = range.end
             ? range.end.getFullYear() : (yearBase + 5);
 
         var oldValue = Number(getSltValue(yearSlt));
@@ -13329,8 +13329,8 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         var yearSlt = layer._uYearSlt;
         var monthSlt = layer._uMonthSlt;
         var d = [
-            Number(getSltValue(yearSlt)), 
-            Number((getSltValue(monthSlt) || 1) - 1), 
+            Number(getSltValue(yearSlt)),
+            Number((getSltValue(monthSlt) || 1) - 1),
             1
         ];
 
@@ -13374,11 +13374,11 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
     /**
      * 设置model数据
-     * 
+     *
      * @public
      * @param {Object} datasource 设置
      * @param {string} datasource.selMode
-     * @param {Array.<Object>} datasource.selModeList 
+     * @param {Array.<Object>} datasource.selModeList
      * @param {string} datasource.timeType
      * @param {Object} datasource.range
      * @param {Date|string} datasource.range.start
@@ -13424,9 +13424,9 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         var range = datasource.range;
         if (range) {
             this._oRange = parseRange(
-                range.start, 
-                range.end, 
-                range.offsetBase, 
+                range.start,
+                range.end,
+                range.offsetBase,
                 this._sCellTimeType
             );
             this.$clipByRange(this._aDate);
@@ -13443,7 +13443,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         if (aDate) {
             this._aDate = this.$parseADate(aDate);
         }
-        
+
         // 如果禁止为空
         if (this._bForbidEmpty && !this._aDate.length) {
             this._aDate = cloneADate(this._aDefaultDate);
@@ -13464,9 +13464,9 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             aDate = [aDate];
         }
 
-        if (this._sSelMode == 'RANGE' 
+        if (this._sSelMode == 'RANGE'
             && aDate[0]
-            && aDate[1] 
+            && aDate[1]
             && compareDate(aDate[0], aDate[1], this._sCellTimeType) > 0
         ) {
             var tmp = aDate[1];
@@ -13476,7 +13476,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         this.$clipByRange(aDate);
 
         return aDate;
-    };    
+    };
 
     UI_X_CALENDAR_MODEL_CLASS.getDate = function () {
         return this._aDate;
@@ -13489,14 +13489,14 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     UI_X_CALENDAR_MODEL_CLASS.getTimeType = function () {
         return this._sTimeType;
     };
-    
+
     UI_X_CALENDAR_MODEL_CLASS.goStep = function (step) {
         for (var i = 0, d; i < this._aDate.length; i ++) {
             if (d = this._aDate[i]) {
                 this._aDate[i] = goCellStep(d, step, this._sTimeType);
             }
         }
-    };    
+    };
 
     UI_X_CALENDAR_MODEL_CLASS.getHoverDate = function (selMode) {
         return this._aHoverDate || [];
@@ -13504,11 +13504,11 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
     UI_X_CALENDAR_MODEL_CLASS.getSelMode = function () {
         return this._sSelMode;
-    };    
+    };
 
     UI_X_CALENDAR_MODEL_CLASS.getSelModeList = function () {
         return this._aSelModeList;
-    };    
+    };
 
     UI_X_CALENDAR_MODEL_CLASS.getRange = function () {
         return this._oRange;
@@ -13562,7 +13562,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                 lowerBound,
                 timeType
             ) >= 0;
-        }   
+        }
         else if (step > 0 && upperBound) {
             m = maxDate.apply(null, [timeType].concat(aDate));
 
@@ -13591,7 +13591,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                 : (modelDate = [thisClick])
         }
         else if (selMode == 'SINGLE') {
-            modelDate[0] && compareDate(modelDate[0], thisClick, timeType) == 0 
+            modelDate[0] && compareDate(modelDate[0], thisClick, timeType) == 0
                 ? (hasChange = false)
                 : (modelDate[0] = thisClick);
         }
@@ -13633,7 +13633,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             }
             else {
                 dateArr = [refDate];
-            }   
+            }
             this._aHoverDate = dateArr;
         }
     };
@@ -13656,7 +13656,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
  * @file:    富日历，
  *           支持日、周、月、季不同粒度时间选择，
  *           支持单选、多选、范围选
- * @author:  sushuang(sushuang@baidu.com)
+ * @author:  sushuang(sushuang0322@gmail.com)
  * @depend:  ecui
  */
 
@@ -13801,7 +13801,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
      * @param {string=} options.headText 最前面的显示文字，默认为：'时间粒度：'
      * @param {string=} options.rangeLinkStr 范围选择模式下，显示出的当前选中时间的连接符，默认为' 至 '
      * @param {string=} options.weekLinkStr 时间类型为周时，显示出的周首尾的连接符，默认为' ~ '
-     * @param {string=} options.blankText 当前无选中时显示的文本，默认为'请选择时间' 
+     * @param {string=} options.blankText 当前无选中时显示的文本，默认为'请选择时间'
      */
     var UI_X_CALENDAR = ui.XCalendar =
         inheritsControl(
@@ -13875,7 +13875,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
                 // 显示当前选择文本
                 this._eText = child[domIndexInfo + 1];
-                
+
                 // prev一天按钮
                 node = child[domIndexInfo];
                 if (shiftBtnDisabled) {
@@ -13927,12 +13927,12 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
     var UI_X_CALENDAR_BUTTON_CLASS = (
             UI_X_CALENDAR_CLASS.Button = inheritsControl(
-                UI_BUTTON, 
-                null, 
+                UI_BUTTON,
+                null,
                 function(el, options){
                     var o = createDom();
                     var type = this.getType();
-                
+
                     moveElements(el, o, true);
                     el.innerHTML = '<span class="'+ type +'-inner"></span>';
                     moveElements(o, el.firstChild, true);
@@ -13952,9 +13952,9 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         ).prototype;
 
     UI_X_CALENDAR_SELECT_CLASS.Options = inheritsControl(
-        UI_X_CALENDAR_SELECT_CLASS.Options, 
-        null, 
-        null, 
+        UI_X_CALENDAR_SELECT_CLASS.Options,
+        null,
+        null,
         function(el, options) {
             addClass(el, 'ui-x-calendar-select-options');
         }
@@ -13992,19 +13992,19 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
      *          D: { ... 日历定义 },
      *          W: { ... 日历定义 },
      *          M: { ... 日历定义 },
-     *          Q: { ... 日历定义 }   
+     *          Q: { ... 日历定义 }
      *      }
      *      其中，"日历定义"的参数内容参见x-calendar-layer.js
      * @param {boolean} datasource.disableCancelBtn
      * @param {boolean} datasource.disablePreviousBtn
      * @param {boolean} datasource.disableNextBtn
      * @param {boolean=} datasource.forbidEmpty 禁止时间为空，如果为空，则设置为默认date。默认notEmpty为false
-     */    
+     */
     UI_X_CALENDAR_CLASS.setDatasource = function (datasource, silent, renderOpt) {
         datasource = datasource || {};
 
         var timeTypeOpt = datasource.timeTypeOpt || {};
-        var timeTypeList = this._aTimeTypeList = datasource.timeTypeList 
+        var timeTypeList = this._aTimeTypeList = datasource.timeTypeList
             || [
                 { text: '日', value: 'D'},
                 { text: '周', value: 'W'},
@@ -14012,7 +14012,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                 { text: '季', value: 'Q'}
             ];
         var models = this._oModels = this._oModels || {};
-        var timeType = this._sTimeType = datasource.timeType 
+        var timeType = this._sTimeType = datasource.timeType
             || (timeTypeList.length ? timeTypeList[0].value : void 0);
 
         if (datasource.disableCancelBtn) {
@@ -14028,8 +14028,8 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         // 创建或重置layer的model
         for (var i = 0, t, opt, dft; t = timeTypeList[i]; i ++) {
             t = t.value;
-            opt = 
-                timeTypeOpt[t] = 
+            opt =
+                timeTypeOpt[t] =
                 extend({ timeType: t }, timeTypeOpt[t]);
 
             // 设默认值
@@ -14056,7 +14056,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         !silent && this.render(renderOpt);
     };
 
-    /** 
+    /**
      * 渲染
      *
      * @public
@@ -14064,7 +14064,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
      * @param {Date} viewDate 决定面板显示的日期
      * @param {boolean} remainSlt 是不时重新绘制日期选择下拉框
      * @param {boolean} remainLayer 是不是保留layer显示
-     */  
+     */
     UI_X_CALENDAR_CLASS.render = function (opt) {
         opt = opt || {};
 
@@ -14104,7 +14104,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         }
 
         this.$flushThis();
-    };    
+    };
 
     UI_X_CALENDAR_CLASS.$setSize = new Function();
 
@@ -14127,7 +14127,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
 
     UI_X_CALENDAR_CLASS.$showLayer = function() {
         var layer = this.getCurrLayer();
-        var anchor = this._bShiftBtnDisabled 
+        var anchor = this._bShiftBtnDisabled
             ? this._eText : this._uBtnPrv.getOuter();
         var pos = getPosition(anchor);
         var posTop = pos.top + this.getHeight();
@@ -14140,7 +14140,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             var height = layer.getHeight();
             layer.setPosition(
                 pos.left,
-                posTop + height <= getView().bottom 
+                posTop + height <= getView().bottom
                     ? posTop : pos.top - height
             );
         }
@@ -14188,7 +14188,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                 + formatDate(
                     range.end
                         ? minDate('D', weekInfo.weekend, range.end)
-                        : weekInfo.weekend, 
+                        : weekInfo.weekend,
                     PATTERN_SHOW_DATE
                 );
         }
@@ -14233,7 +14233,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
                 shortText += ', ...';
             }
             else {
-                shortText = fullText = this.$getSingleText(aDate[0], options) 
+                shortText = fullText = this.$getSingleText(aDate[0], options)
                     + rangeLinkStr
                     + this.$getSingleText(aDate[1], options);
             }
@@ -14249,7 +14249,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
         }
 
         return { shortHTML: encodeHTML(shortText), fullText: fullText };
-    };    
+    };
 
     UI_X_CALENDAR_CLASS.$click = function(event) {
         UI_INPUT_CONTROL_CLASS.$click.call(this);
@@ -14272,11 +14272,11 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     UI_X_CALENDAR_CLASS.getModel = function() {
         return this.getCurrLayer().getModel();
     };
-    
+
     UI_X_CALENDAR_CLASS.getCurrLayer = function() {
         return this._oLayers[this._sTimeType];
     };
-    
+
     UI_X_CALENDAR_CLASS.getDate = function() {
         return this.getModel().getDate();
     };
@@ -14319,7 +14319,7 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
             case 'cal':
                 par.$showLayer();
                 break;
-            case 'cancel': 
+            case 'cancel':
                 par.$clear();
                 changed = true;
                 break;
@@ -14359,12 +14359,12 @@ _nDay       - 从本月1号开始计算的天数，如果是上个月，是负�
     UI_X_CALENDAR_LAYER_CLASS.$blur = function () {
         this.hide();
     };
-    
+
     UI_X_CALENDAR_LAYER_CLASS.onchange = function() {
         var par = this.getParent();
         par.$flushThis();
         this._bLayerChanged = true;
-    };    
+    };
 
     UI_X_CALENDAR_LAYER_CLASS.ondateclick = function() {
         var model = this.getModel();
@@ -14905,7 +14905,7 @@ _uCheckbox - 复选框控件
      * @param {Object} options 初始化选项
      */
     //__gzip_original__UI_CHECK_TREE
-    var UI_CHECK_TREE = ui.CheckTree = 
+    var UI_CHECK_TREE = ui.CheckTree =
         inheritsControl(
             UI_TREE_VIEW,
             'ui-check-tree',
@@ -14970,7 +14970,7 @@ _uCheckbox - 复选框控件
      */
     UI_CHECK_TREE_CLASS.getChecked = function () {
         for (var i = 0, list = this.getChildren(), result = this.isChecked() ? [this] : [], o; o = list[i++]; ) {
-            result = result.concat(o.getChecked());    
+            result = result.concat(o.getChecked());
         }
         return result;
     };
@@ -15002,7 +15002,7 @@ _uCheckbox - 复选框控件
      * @param {boolean} 是否选中当前树控件复选框
      */
     UI_CHECK_TREE_CLASS.setChecked = function (status) {
-        this._uCheckbox.setChecked(status);    
+        this._uCheckbox.setChecked(status);
     };
 
     UI_CHECK_TREE_CLASS.disable = function () {
@@ -15039,11 +15039,11 @@ _uCheckbox - 复选框控件
 /**
  * data tree
  * Copyright 2012 Baidu Inc. All rights reserved.
- * 
+ *
  * path:    data-tree.js
  * desc:    数据树
  *          在普通树控件的基础上进行扩展
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(c.xinle@gmail.com)
  * date:    2012/03/12
  */
 (function () {
@@ -15076,7 +15076,7 @@ _uCheckbox - 复选框控件
         UI_TREE_VIEW = ui.TreeView,
         UI_TREE_VIEW_CLASS = UI_TREE_VIEW.prototype,
 
-        UI_DATA_TREE = ui.DataTree = 
+        UI_DATA_TREE = ui.DataTree =
         inheritsControl(
             UI_TREE_VIEW,
             'ui-data-tree',
@@ -15103,11 +15103,11 @@ _uCheckbox - 复选框控件
                 if (options.asyn && this._aChildren.length <= 0) {
                     this.add('Loadding', null);
                     this.collapse();
-                    this._bNeedAsyn = true;                        
+                    this._bNeedAsyn = true;
                 }
             }
         ),
-        
+
         UI_DATA_TREE_CLASS = UI_DATA_TREE.prototype;
 
     function UI_DATA_TREE_VIEW_FLUSH(control) {
@@ -15238,7 +15238,7 @@ _uCheckbox - 复选框控件
             else {
                 if (indexOf(this.getRoot()._aSelected, this) >= 0) {
                     if (this._bMultiSelect) {
-                        added = false;    
+                        added = false;
                     }
                 }
                 else {
@@ -15294,7 +15294,7 @@ _uCheckbox - 复选框控件
 
     UI_DATA_TREE_CLASS.clearSelected = function () {
         var selected, i, item;
-        
+
         if (this == this.getRoot()) {
             selected = this._aSelected;
             while(item = selected[0]) {
@@ -15307,7 +15307,7 @@ _uCheckbox - 复选框控件
         var selected, i;
 
         if (this == this.getRoot() && node._bSelectAble) {
-            selected = this._aSelected;                    
+            selected = this._aSelected;
             i = indexOf(selected, this);
             if ((i = indexOf(selected, node)) >= 0) {
                 if (!force && this._bMultiSelect) {
@@ -15333,10 +15333,10 @@ _uCheckbox - 复选框控件
 /**
  * input tree
  * Copyright 2012 Baidu Inc. All rights reserved.
- * 
+ *
  * path:    input-tree.js
  * desc:    树层级输入框
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(c.xinle@gmail.com)
  * date:    2012/03/12
  */
 (function () {
@@ -15369,15 +15369,15 @@ _uCheckbox - 复选框控件
         UI_INPUT_CONTROL = ui.InputControl,
         UI_INPUT_CONTROL_CLASS = UI_INPUT_CONTROL.prototype,
 
-        UI_INPUT_TREE = ui.InputTree = 
+        UI_INPUT_TREE = ui.InputTree =
         inheritsControl(
             UI_INPUT_CONTROL,
             'ui-input-tree',
             function (el, options) {
                 var type = this.getTypes()[0],
                     o = createDom();
-                
-                o.innerHTML = '<div class="'+ type +'-layer" ' 
+
+                o.innerHTML = '<div class="'+ type +'-layer" '
                     + ' style="position:absolute;display:none; z-index:65535; height:230px; width:250px">'
                     + '<div class="'
                     + UI_DATA_TREE.types[0] +'"></div></div>';
@@ -15386,7 +15386,7 @@ _uCheckbox - 复选框控件
 
                 moveElements(el, o.lastChild, true);
                 options._eLayer = document.body.appendChild(o);
-                
+
                 el.innerHTML = '<span class="'+ type +'-text">请选择</span><span class="'+ type +'-cancel"></span><span class="'+ type +'-button"></span><input type="hidden name="'+ options.name +'"" />';
 
                 options.hidden = true;
@@ -15396,7 +15396,7 @@ _uCheckbox - 复选框控件
             },
             function (el, options) {
                 var childs;
-                
+
                 if (options.value) {
                     UI_INPUT_CONTROL_CLASS.setValue.call(this, options.value);
                 }
@@ -15421,7 +15421,7 @@ _uCheckbox - 复选框控件
 
         UI_INPUT_TREE_CLASS = UI_INPUT_TREE.prototype,
 
-        UI_INPUT_TREE_LAYER = UI_INPUT_TREE_CLASS.Layer = 
+        UI_INPUT_TREE_LAYER = UI_INPUT_TREE_CLASS.Layer =
         inheritsControl(
             UI_CONTROL,
             'ui-input-tree-layer',
@@ -15432,11 +15432,11 @@ _uCheckbox - 复选框控件
             }
         ),
         UI_INPUT_TREE_LAYER_CLASS = UI_INPUT_TREE_LAYER.prototype,
-        
+
         UI_DATA_TREE = ui.DataTree,
-        
+
         UI_INPUT_TREE_CANCEL_CLASS = (UI_INPUT_TREE_CLASS.Cancel = inheritsControl(UI_CONTROL)).prototype,
-        UI_INPUT_TREE_LAYER_TREE = UI_INPUT_TREE_LAYER_CLASS.Tree = 
+        UI_INPUT_TREE_LAYER_TREE = UI_INPUT_TREE_LAYER_CLASS.Tree =
             inheritsControl(
                 UI_DATA_TREE,
                 null,
@@ -15447,7 +15447,7 @@ _uCheckbox - 复选框控件
                         var item = this.add('Loading', null);
                         item.canExpanded = false;
                         this.collapse();
-                        this._bNeedAsyn = true;                        
+                        this._bNeedAsyn = true;
                     }
                 }
             ),
@@ -15486,7 +15486,7 @@ _uCheckbox - 复选框控件
 
     UI_INPUT_TREE_CLASS.setValue = function (value) {
         var tree = this._uLayer._uTree;
-        
+
         UI_INPUT_CONTROL_CLASS.setValue.call(this, value);
         tree.clearSelected();
         tree.setValues([value]);
@@ -15525,7 +15525,7 @@ _uCheckbox - 复选框控件
     /**
      * 根据value获取树中的节点
      * @public
-     * @param {string} value 
+     * @param {string} value
      */
     UI_INPUT_TREE_CLASS.getTreeNodeByValue = function(value) {
         return this._uLayer.getTreeNodeByValue(value);
@@ -15554,7 +15554,7 @@ _uCheckbox - 复选框控件
         if (node != node.getRoot()) {
             node = node.getParent();
         }
-        
+
         this.setValue(node.getValue());
     };
 
@@ -15648,7 +15648,7 @@ _uCheckbox - 复选框控件
     UI_INPUT_TREE_LAYER_TREE_CLASS.onexpand = function (item, callback) {
         var superObj = this.getParent().getParent(),
             callback = callback || blank;
-        
+
         var layer =  superObj._uLayer.getOuter(),
             scrollHeight = layer.scrollTop;
         var setScroll = function() {
@@ -15657,7 +15657,7 @@ _uCheckbox - 复选框控件
         };
         if (item._bNeedAsyn) {
             triggerEvent(superObj, 'loadtree', null, [item.getValue(), function (data) {
-                item.load(data); 
+                item.load(data);
                 callback.call(null);
                 setScroll();
             }]);
@@ -15684,7 +15684,7 @@ _uCheckbox - 复选框控件
             delete item.text;
             this.add(text, null, item).init();
         }
-        
+
         if (!datasource || datasource.length <= 0) {
             this.setClass(this.getPrimary());
         }
@@ -16140,10 +16140,10 @@ _eContainer      - 容器 DOM 元素
 /**
  * query-tab
  * Copyright 2012 Baidu Inc. All rights reserved.
- * 
+ *
  * path:    query-tab.js
  * desc:    查询类型tab
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(c.xinle@gmail.com)
  * date:    2012/03/12
  */
 (function () {
@@ -16166,7 +16166,7 @@ _eContainer      - 容器 DOM 元素
         UI_RADIO = ui.Radio,
         UI_RADIO_CLASS = UI_RADIO.prototype;
 
-    var UI_QUERY_TAB = ui.QueryTab = 
+    var UI_QUERY_TAB = ui.QueryTab =
         inheritsControl(
             UI_CONTROL,
             'ui-query-tab',
@@ -16177,7 +16177,7 @@ _eContainer      - 容器 DOM 元素
                     i, item, value = options.value;
 
                 this._aItems = [];
-                
+
                 for (i = 0; item = childs[i]; i++) {
                     item.className = trim(item.className) + ' ' + type + '-item' + UI_RADIO.TYPES;
                     this._aItems[i] = $fastCreate(this.Item, item, this, getOptions(item));
@@ -16192,8 +16192,8 @@ _eContainer      - 容器 DOM 元素
         UI_QUERY_TAB_CLASS = UI_QUERY_TAB.prototype,
         UI_QUERY_TAB_ITEM = UI_QUERY_TAB_CLASS.Item =
         inheritsControl(
-            UI_RADIO, 
-            'ui-query-tab-item', 
+            UI_RADIO,
+            'ui-query-tab-item',
             null,
             function (el, options) {
                 var o;
@@ -16265,8 +16265,8 @@ _eContainer      - 容器 DOM 元素
         UI_CONTROL = ui.Control,
         UI_CONTROL_CLASS = UI_CONTROL.prototype,
         UI_BUTTON = ui.Button,
-    
-        EXT_UI_EDITOR = ui.Editor = 
+
+        EXT_UI_EDITOR = ui.Editor =
         inheritsControl(
             UI_CONTROL,
             'ui-editor',
@@ -16274,7 +16274,7 @@ _eContainer      - 容器 DOM 元素
             function (el, options) {
                 var editor = EXT_EDITOR_ITEMS[options.type];
 
-                el.innerHTML = editor.innerHTML + 
+                el.innerHTML = editor.innerHTML +
                     '<div class="ui-button ui-button-g">确定</div><div class="ui-button">取消</div><div style="display:none" class="ui-editor-tip"></div>'
                 for (var key in editor) {
                     if ('[object Function]' == Object.prototype.toString.call(editor[key])) {
@@ -16295,7 +16295,7 @@ _eContainer      - 容器 DOM 元素
 
         EXT_UI_EDITOR_CLASS = EXT_UI_EDITOR.prototype,
 
-        EXT_UI_EDITOR_BUTTON_CLASS = (EXT_UI_EDITOR_CLASS.Button 
+        EXT_UI_EDITOR_BUTTON_CLASS = (EXT_UI_EDITOR_CLASS.Button
                 = inheritsControl(UI_BUTTON, null, function (el, options){ this._sCommand = options.command; })).prototype,
 
         EXT_EDITOR_ITEMS = {},
@@ -16339,7 +16339,7 @@ _eContainer      - 容器 DOM 元素
 
     EXT_UI_EDITOR_CLASS.$blur = function () {
         this.hide();
-    } 
+    }
 
     EXT_UI_EDITOR_CLASS.onhide = function () {
         this.setError('');
@@ -16423,7 +16423,7 @@ _eContainer      - 容器 DOM 元素
        }
     }
 
-    EXT_EDITOR = ext.editor = function () {};    
+    EXT_EDITOR = ext.editor = function () {};
 
     EXT_EDITOR.register = function (type, obj) {
         EXT_EDITOR_ITEMS[type] = obj;
@@ -16570,7 +16570,7 @@ _eContainer      - 容器 DOM 元素
         UI_ITEM_CLASS = UI_ITEM.prototype;
 
 
-    var UI_TABLE_EDITOR = ui.TableEditor = 
+    var UI_TABLE_EDITOR = ui.TableEditor =
         inheritsControl(
             UI_CONTROL,
             'ui-table-editor',
@@ -16612,7 +16612,7 @@ _eContainer      - 容器 DOM 元素
                 }
 
                 if (options.type == 'select' || options.type == 'input') {
-                    
+
                     var control = me._uInput || me._uSelect;
                     function triggerConnectEvent(control, rowData) {
                         triggerEvent(control, 'change', null, [control.getInnerControl(), control.target && control.target.getInnerControl(), rowData]);
@@ -16634,7 +16634,7 @@ _eContainer      - 容器 DOM 元素
                 }
             }
         )
-    
+
     UI_TABLE_EDITOR_CLASS = UI_TABLE_EDITOR.prototype;
 
     UI_TABLE_EDITOR_CLASS.setValue = function(value) {
@@ -16650,10 +16650,10 @@ _eContainer      - 容器 DOM 元素
                 '1' : 'www',
                 '2' : '无前缀'
             }
-            var front =  this._uFront.getValue();  
+            var front =  this._uFront.getValue();
             front = fronts[front];
-            var root =  this._uRoot.getValue();  
-            var path =  this._uPath.getValue();  
+            var root =  this._uRoot.getValue();
+            var path =  this._uPath.getValue();
             value = front + root + path;
         }
         else {
@@ -16712,10 +16712,10 @@ _eContainer      - 容器 DOM 元素
             me._uRoot.setValue('');
             me._uPath.setValue('');
             var frontWidth = me._uFront.getOuter().offsetWidth;
-            var rootWidth = me._uRoot.getOuter().offsetWidth;   
+            var rootWidth = me._uRoot.getOuter().offsetWidth;
             me._uRoot.getOuter().style.width = (con.offsetWidth - 130) + 'px';
-            
-            var pathWidth = me._uPath.getOuter().offsetWidth;     
+
+            var pathWidth = me._uPath.getOuter().offsetWidth;
             ele.style.width = frontWidth + rootWidth + pathWidth + 9 + 'px';
         }
 
@@ -16786,7 +16786,7 @@ _eContainer      - 容器 DOM 元素
         }
 
         if (!focusedEditor || (!checkIsTagetFocus(this) && !checkIsParentFocus(this))) {
-            
+
             getParControls(this);
             getChildControls(this);
             connectControls = baidu.array.unique(connectControls);
@@ -16800,12 +16800,12 @@ _eContainer      - 容器 DOM 元素
         var me = this;
         setTimeout(function(){
             lazyCheck.call(me, event)
-        }, 1); 
-    } 
+        }, 1);
+    }
 
     UI_TABLE_EDITOR_CLASS.onhide = function (e) {
         var me = this;
-        
+
         var rowData = this.rowData;
         var table = this.getParent();
         var control = this._uInput || this._uSelect;
@@ -16815,7 +16815,7 @@ _eContainer      - 容器 DOM 元素
         var e = {
             'message' : ''
         }
-        var o = null; 
+        var o = null;
 
         if (!control) {
             o = triggerEvent(this, 'editsubmit', e, [me._uFront, me._uRoot, me._uPath, rowData]);
@@ -16823,7 +16823,7 @@ _eContainer      - 容器 DOM 元素
         else {
             o = triggerEvent(this, 'editsubmit', e, [control, rowData]);
         }
-        
+
         if ('[object String]' == Object.prototype.toString.call(e.message) && e.message != '') {
             this.setError(e.message);
         }
@@ -17014,7 +17014,7 @@ _aElements   - 行的列Element对象，如果当前列需要向左合并为null
                     insertBefore(createDom('', '', 'thead'), list[0])
                         .appendChild(children(list[0])[0]);
                 }
-                
+
                 return el;
             },
             function (el, options) {
@@ -18296,7 +18296,7 @@ _eFill       - 用于控制中部宽度的单元格
             minHeight;
 
         // 设置表头， 处理多行表头的问题
-        height = this.$$paddingTop / rows.length; 
+        height = this.$$paddingTop / rows.length;
         for (i = 0; o = rows[i]; i++) {
             o._eFill.style.width = width;
             o._eFill.style.height = height + 'px';
@@ -18316,7 +18316,7 @@ _eFill       - 用于控制中部宽度的单元格
                 o.style.height = MAX(style * height - minHeight, 0) + 'px';
             }
         }
-        
+
         // 设置表格内容行
         rows = this._aLockedRow;
         for (i = 0; o = rows[i]; i++) {
@@ -18446,7 +18446,7 @@ _eFill       - 用于控制中部宽度的单元格
  * custom-table.js
  * Copyright 2012 Baidu Inc. All rights reserved *
  * desc: 工作台项目定制的table控件，提供的功能包括表头锁定和列锁定、行选中、排序、使用render方法填充和刷新表格；表格支持跨行跨列,最多跨两行
- * author: hades(denghongqi@baidu.com)
+ * author: hades(denghongqi@gmail.com)
  */
 
  (function () {
@@ -18541,7 +18541,7 @@ _eFill       - 用于控制中部宽度的单元格
                 else {
                     //表头目前只支持跨两行
                     if ('[object Array]' == Object.prototype.toString.call(options.fields[0])) {
-                        var flag = 0;    
+                        var flag = 0;
                         var i;
                         for (i = 0; i < options.fields.length; i++) {
                             var o = options.fields[i];
@@ -18587,7 +18587,7 @@ _eFill       - 用于控制中部宽度的单元格
                             + '">'
                         );
                         html.push(
-                            options.noData 
+                            options.noData
                             ? options.noData
                             : '暂无数据，请稍后再试'
                         );
@@ -18610,8 +18610,8 @@ _eFill       - 用于控制中部宽度的单元格
 
                                 html.push(' width="' + o.width + '"');
                                 html.push(
-                                    ' style="width:' 
-                                    + o.width 
+                                    ' style="width:'
+                                    + o.width
                                     + 'px;'
                                     + 'min-width:'
                                     + o.width
@@ -18638,7 +18638,7 @@ _eFill       - 用于控制中部宽度的单元格
 
                                 o.editable && o.field && html.push(
                                     ' edit-field="' + o.field + '"'
-                                ) 
+                                )
                                 && html.push(
                                     ' edit-type="' + o.editType + '"'
                                 ) && o.target && html.push(
@@ -18654,8 +18654,8 @@ _eFill       - 用于控制中部宽度的单元格
                                 if (o.editable) {
                                     html.push('<div class="' + type + '-cell-editor-container">');
                                     html.push('<span class="' + type + '-cell-editor-button"></span>');
-                                }   
-                                
+                                }
+
                                 var content = o.content || o.field;
 
                                 if (typeof content == 'function') {
@@ -18685,7 +18685,7 @@ _eFill       - 用于控制中部宽度的单元格
                                                     + '</div>'
                                                 );
                                             }
-                                            else if (o.maxlength 
+                                            else if (o.maxlength
                                                 && e
                                                 && e.length > o.maxlength
                                             ) {
@@ -18710,7 +18710,7 @@ _eFill       - 用于控制中部宽度的单元格
                                             html.push(div.innerHTML);
                                         }
                                     }
- 
+
                                 }
                                 else {
                                     if (o.detail) {
@@ -18753,8 +18753,8 @@ _eFill       - 用于控制中部宽度的单元格
                                                 + '</div>'
                                             );
                                         }
-                                        else if (o.maxlength 
-                                            && item[content] 
+                                        else if (o.maxlength
+                                            && item[content]
                                             && item[content].length > o.maxlength
                                         ) {
                                             html.push('<span class="');
@@ -18805,7 +18805,7 @@ _eFill       - 用于控制中部宽度的单元格
 
         // 默认处理函数
         DEFAULT_EVENTS = {
-            
+
             'click th.ui-table-hcell-sort': function (event, control) {
                 var field = this.getAttribute('data-field'),
                     orderby;
@@ -18838,7 +18838,7 @@ _eFill       - 用于控制中部宽度的单元格
 
                 var editField = baidu.dom.getAttr(cell, 'edit-field');
                 var editType = baidu.dom.getAttr(cell, 'edit-type');
-                
+
 
                 var datasource = table._oOptions.datasource;
                 var rows = table._aRows;
@@ -18885,7 +18885,7 @@ _eFill       - 用于控制中部宽度的单元格
 
                         editor.target = tarEditor;
                         editor.targetField = editTarget;
-                        
+
                         tarEditor.parTarget = editor;
                     }
 
@@ -18914,9 +18914,9 @@ _eFill       - 用于控制中部宽度的单元格
             }
         };
 
-    /** 
+    /**
      * 生成表头的一行
-     * 
+     *
      * @param {Array} headrow 一行表头的数据
      * @param {ecui.ui.CustomTable} con
      * @param {Array} opt_head 所有的表头数据
@@ -18950,7 +18950,7 @@ _eFill       - 用于控制中部宽度的单元格
             if (o.editable && o.field) {
                 con.editors[o.field] = con.editors[o.field] || {};
             }
-            
+
             if (o.rowspan) {
                 html.push(
                     '" rowspan="' + o.rowspan
@@ -18991,7 +18991,7 @@ _eFill       - 用于控制中部宽度的单元格
             }
 
             html.push('">');
-            
+
             if (o.title) {
                 html.push(o.title);
             }
@@ -19099,8 +19099,8 @@ _eFill       - 用于控制中部宽度的单元格
             var rows;
             var i;
             rows = this._aHeadRows.concat(
-                this._aRows, 
-                this._aLockedRow, 
+                this._aRows,
+                this._aLockedRow,
                 this._aLockedHeadRow
             );
 
@@ -19152,8 +19152,8 @@ _eFill       - 用于控制中部宽度的单元格
         //卸载行
         var rows;
         rows = this._aHeadRows.concat(
-            this._aRows, 
-            this._aLockedRow, 
+            this._aRows,
+            this._aLockedRow,
             this._aLockedHeadRow
         );
 
@@ -19194,7 +19194,7 @@ _eFill       - 用于控制中部宽度的单元格
         this._eCheckboxAll = null;
 
         for (i = 0; item = inputs[i]; i++) {
-            if (item.type == 'checkbox' 
+            if (item.type == 'checkbox'
                     && item.className.indexOf(type + '-checkbox-all') >= 0
             ) {
                 this._eCheckboxAll = item;
@@ -19379,7 +19379,7 @@ _eFill       - 用于控制中部宽度的单元格
 
     /**
      * 让表格的横滚始终悬浮在页面视窗低端
-     * 
+     *
      * @param {ecui.ui.CustomTable} con
      */
     function setFloatHScroll(con) {
@@ -19439,7 +19439,7 @@ _eFill       - 用于控制中部宽度的单元格
 
         return res;
     }
-    
+
     function copyArray(data) {
         var res = [];
         for (var i = 0, o; o = data[i++]; ) {
@@ -19482,7 +19482,7 @@ _eFill       - 用于控制中部宽度的单元格
  *      </div>
  *     * 方法二：
  *      <div ecui="id:table;type:custom-table; left-lock:1; right-lock:1;"></div>
- *      
+ *
  *      <script>
  *      ecui.get('table').render({
  *          head: [
@@ -19505,7 +19505,7 @@ _eFill       - 用于控制中部宽度的单元格
  * 表格将表头和表格体拆成两个表格来实现表头浮动，将锁定列绝对定位来实现左右锁定
  * 模拟滚动条并通过改变表格的margin-left来模拟滚动
  *
- * @author hades(denghongqi@baidu.com)
+ * @author hades(denghongqi@gmail.com)
  */
 (function() {
     var core = ecui;
@@ -19521,9 +19521,9 @@ _eFill       - 用于控制中部宽度的单元格
     var DOCUMENT = document;
     var WINDOW = window;
     var USER_AGENT = navigator.userAgent;
-    var ieVersion = /msie (\d+\.\d)/i.test(USER_AGENT) 
+    var ieVersion = /msie (\d+\.\d)/i.test(USER_AGENT)
         ? DOCUMENT.documentMode || (RegExp.$1 - 0) : undefined;
-    var chromeVersion = /chrome\/(\d+\.\d+)/i.test(navigator.userAgent) 
+    var chromeVersion = /chrome\/(\d+\.\d+)/i.test(navigator.userAgent)
         ? + RegExp['\x241'] : undefined;
 
     ui.FixedTable = core.inherits(
@@ -19612,7 +19612,7 @@ _eFill       - 用于控制中部宽度的单元格
         'click input.ui-fixed-table-checkbox': function (event, control) {
             control._refreshCheckbox();
         }
-    };      
+    };
 
     /**
      * 根据header和datasource生成dom元素
@@ -19702,7 +19702,7 @@ _eFill       - 用于控制中部宽度的单元格
                 if (o.tip && o.tip.length) {
                     var tipEl = dom.create('', 'margin-left:3px;', 'span');
                     tipEl.setAttribute(
-                        'ecui', 
+                        'ecui',
                         'type:tip;message:' + string.encodeHTML(o.tip)
                     );
                     th.appendChild(tipEl);
@@ -19801,7 +19801,7 @@ _eFill       - 用于控制中部宽度的单元格
      * 如果表格的首行有colspan，计算宽度会出现问题，需要做特殊处理
      * 暂时只解决表头跨两行的问题
      * todo:解决表头跨多行的问题
-     * 
+     *
      * @private
      */
     function _createWidthControlRow(el, options) {
@@ -19971,7 +19971,7 @@ _eFill       - 用于控制中部宽度的单元格
                 dom.setStyle(cell, 'top', top + 'px');
                 dom.setStyle(cell, 'right', right + 'px');
                 right += initFieldsWidth[initFieldsWidth.length - j - 1];
-            } 
+            }
 
             if (i < headRows.length - 1) {
                 top += cells[0].offsetHeight;
@@ -19994,7 +19994,7 @@ _eFill       - 用于控制中部宽度的单元格
         for (var i = 0; i < this._nRight; i++) {
             this._nRightLockedWidth += initFieldsWidth[len - i - 1];
         }
-        
+
         dom.setStyle(
             this._uHead._eInner, 'marginLeft', this._nLeftLockedWidth + 'px'
         );
@@ -20269,7 +20269,7 @@ _eFill       - 用于控制中部宽度的单元格
 
         var item;
         for (var i = 0; item = inputs[i]; i++) {
-            if (item.type == 'checkbox' 
+            if (item.type == 'checkbox'
                     && item.className.indexOf(type + '-checkbox-all') >= 0
             ) {
                 this._eCheckboxAll = item;
@@ -20363,7 +20363,7 @@ _eFill       - 用于控制中部宽度的单元格
 
     UI_FIXED_TABLE_CLASS.Head = core.inherits(
         UI_CONTROL,
-        'ui-fixed-table', 
+        'ui-fixed-table',
         function(el, options) {
             var type = this.getType();
             dom.addClass(el, type + '-head');
@@ -20474,8 +20474,8 @@ _eFill       - 用于控制中部宽度的单元格
     };
 
     UI_FIXED_TABLE_CLASS.Body = core.inherits(
-        UI_CONTROL, 
-        'ui-fixed-table', 
+        UI_CONTROL,
+        'ui-fixed-table',
         function(el, options) {
             this._bNowrap = options.nowrap !== false;
             options.createCellControl = false;
@@ -20878,7 +20878,7 @@ _eFill       - 用于控制中部宽度的单元格
     /**
      * 设置表格的数据
      * @public
-     * 
+     *
      * @param {Array} datasource 表格数据
      * @param {Object} sortInfo 排序信息
      *          {String} sortby 排序字段
@@ -20915,7 +20915,7 @@ _eFill       - 用于控制中部宽度的单元格
     /**
      * 设置表格的列信息
      * @public
-     * 
+     *
      * @param {Array} fields 列信息
      * @param {Boolean} isSilent 静默模式 如果true的话 不会立刻重绘表格 需要手动调用render
      */
@@ -20945,7 +20945,7 @@ _eFill       - 用于控制中部宽度的单元格
      * @public
      * @param {Object} options 配置参数
      * @param {Array.<Object>} options.datasource 表格数据
-     * @param {Array.<Object>} options.fields 
+     * @param {Array.<Object>} options.fields
      * @param {string} options.noData 无数据时展现的文本
      * @param {string} options.sortby 排序字段
      * @param {string} options.orderby 排序方式
@@ -21152,7 +21152,7 @@ change:     切换了分页
      * 初始化分页控件。
      * options 对象支持的属性如下：
      *      {Number} pageSize   每页的最大记录数
-     *      {Number} total      记录总数 
+     *      {Number} total      记录总数
      *      {Number} page      当前页码
      *
      * @public
@@ -21166,7 +21166,7 @@ change:     切换了分页
             function (el, options) {
                 var type = this.getTypes()[0],
                     i, len, html = [];
-                
+
                 if (!options.showCount || options.showCount < 3) {
                     len = this._nShowCount = 7;
                 }
@@ -21201,10 +21201,10 @@ change:     切换了分页
             }
         ),
         UI_PAGER_CLASS = UI_PAGER.prototype,
-        UI_PAGER_BUTTON = UI_PAGER_CLASS.Button = 
+        UI_PAGER_BUTTON = UI_PAGER_CLASS.Button =
         inheritsControl(
-            UI_BUTTON, 
-            'ui-pager-button', 
+            UI_BUTTON,
+            'ui-pager-button',
             function (el, options) {
                 var type = this.getTypes()[0],
                     o = createDom(type + '-icon');
@@ -21214,12 +21214,12 @@ change:     切换了分页
         ),
         UI_PAGER_BUTTON_CLASS = UI_PAGER_BUTTON.prototype,
         UI_PAGER_ITEM_CLASS = (UI_PAGER_CLASS.Item = inheritsControl(UI_ITEM, 'ui-pager-item', function (el, options) {
-            options.resizeable = false; 
+            options.resizeable = false;
         })).prototype;
 //{else}//
 
     extend(UI_PAGER_CLASS, UI_ITEMS);
-    
+
     /**
      * 分页按钮事件处理函数
      * 根据按钮的step属性确定需要切换的页码
@@ -21308,7 +21308,7 @@ change:     切换了分页
 
         UI_PAGER_OMS_REFRESH(con);
     }
-   
+
     /**
      * 刷新more符号按钮
      * @private
@@ -21322,7 +21322,7 @@ change:     切换了分页
         if (!con._bOMSButton) {
             return;
         }
-        
+
         if (items[0].getContent() != '1') {
             items[0].setContent(1);
             items[0].setStep(1);
@@ -21421,7 +21421,7 @@ change:     切换了分页
      */
     UI_PAGER_CLASS.go = function (i) {
         this._nPage = i;
-        UI_PAGER_REFRESH(this); 
+        UI_PAGER_REFRESH(this);
     };
 
     /**
@@ -21433,7 +21433,7 @@ change:     切换了分页
     UI_PAGER_CLASS.setPageSize = function (num) {
         this._nPageSize = num;
         this._nPage = 1;
-        UI_PAGER_REFRESH(this); 
+        UI_PAGER_REFRESH(this);
     };
 
     /**
@@ -21445,7 +21445,7 @@ change:     切换了分页
     UI_PAGER_CLASS.setTotal = function (num) {
         this._nTotal = num;
         this._nPage = 1;
-        UI_PAGER_REFRESH(this); 
+        UI_PAGER_REFRESH(this);
     };
 
     /**
@@ -21531,7 +21531,7 @@ change:     切换了分页
      * 初始化分页控件。
      * options 对象支持的属性如下：
      *      {Number} pageSize   每页的最大记录数
-     *      {Number} total      记录总数 
+     *      {Number} total      记录总数
      *      {Number} page      当前页码
      *
      * @public
@@ -21576,7 +21576,7 @@ change:     切换了分页
                         break;
                     }
                 }
-                
+
             },
             function (el, options) {
                 var el = children(el),
@@ -21599,7 +21599,7 @@ change:     切换了分页
         UI_CUSTOM_PAGER_CLASS = UI_CUSTOM_PAGER.prototype,
 
         DEFAULT_PAGE_SIZE = 50;
-        
+
 
     UI_CUSTOM_PAGER.PAGE_SIZE = [10, 20, 50, 100];
 
@@ -21644,7 +21644,7 @@ change:     切换了分页
     UI_CUSTOM_PAGER_CLASS.getTotal = function () {
         return this._uPager._nTotal;
     };
-    
+
     /**
      * override
      */
@@ -21708,15 +21708,15 @@ change:     切换了分页
                 el = children(el);
 
                 this._uPre = $fastcreate(
-                    this.Pre, 
-                    el[0], 
-                    this, 
+                    this.Pre,
+                    el[0],
+                    this,
                     {userSelect:false}
                 );
                 this._uNext = $fastcreate(
-                    this.Next, 
-                    el[2], 
-                    this, 
+                    this.Next,
+                    el[2],
+                    this,
                     {userSelect:false}
                 );
                 this.$setBody(el[1]);
@@ -21871,7 +21871,7 @@ change:     切换了分页
         else {
             if (par._cSelected) {
                 removeClass(
-                    par._cSelected.getOuter(), 
+                    par._cSelected.getOuter(),
                     'ui-flash-pager-item-selected'
                 );
             }

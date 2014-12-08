@@ -4,7 +4,7 @@
  * 
  * path:    message-bar.js
  * desc:    系统消息控件
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(c.xinle@gmail.com)
  * date:    2012/03/20
  */
 (function () {
