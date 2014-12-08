@@ -1,9 +1,8 @@
 /**
  * cascade-select.js
- * Copyright 2012 Baidu Inc. All rights reserved
  *
  * desc: 级联下拉菜单
- * author: hades(denghongqi@baidu.com)
+ * author: hades(denghongqi@gmail.com)
  */
 
  (function () {

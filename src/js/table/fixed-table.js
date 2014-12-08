@@ -53,7 +53,7 @@
  * 表格将表头和表格体拆成两个表格来实现表头浮动，将锁定列绝对定位来实现左右锁定
  * 模拟滚动条并通过改变表格的margin-left来模拟滚动
  *
- * @author hades(denghongqi@baidu.com)
+ * @author hades(denghongqi@gmail.com)
  */
 (function() {
     var core = ecui;

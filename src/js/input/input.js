@@ -1,10 +1,9 @@
 /**
  * input
- * Copyright 2012 Baidu Inc. All rights reserved.
  * 
  * path:    input.js
  * desc:    文本输入框(input与textarea)
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(treelite@gmail.com)
  * date:    2012/03/12
  */
 (function () {

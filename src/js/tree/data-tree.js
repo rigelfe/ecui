@@ -1,11 +1,10 @@
 /**
  * data tree
- * Copyright 2012 Baidu Inc. All rights reserved.
  * 
  * path:    data-tree.js
  * desc:    数据树
  *          在普通树控件的基础上进行扩展
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(treelite@gmail.com)
  * date:    2012/03/12
  */
 (function () {

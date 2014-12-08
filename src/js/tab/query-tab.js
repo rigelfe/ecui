@@ -1,10 +1,9 @@
 /**
  * query-tab
- * Copyright 2012 Baidu Inc. All rights reserved.
  * 
  * path:    query-tab.js
  * desc:    查询类型tab
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(treelite@gmail.com)
  * date:    2012/03/12
  */
 (function () {

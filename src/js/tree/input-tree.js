@@ -1,10 +1,9 @@
 /**
  * input tree
- * Copyright 2012 Baidu Inc. All rights reserved.
  * 
  * path:    input-tree.js
  * desc:    树层级输入框
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(treelite@gmail.com)
  * date:    2012/03/12
  */
 (function () {

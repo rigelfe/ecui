@@ -1,8 +1,6 @@
 /**
  * custom-table.js
- * Copyright 2012 Baidu Inc. All rights reserved *
- * desc: 工作台项目定制的table控件，提供的功能包括表头锁定和列锁定、行选中、排序、使用render方法填充和刷新表格；表格支持跨行跨列,最多跨两行
- * author: hades(denghongqi@baidu.com)
+ * author: hades(denghongqi@gmail.com)
  */
 
  (function () {

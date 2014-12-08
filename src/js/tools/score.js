@@ -1,10 +1,9 @@
 /**
  * score
- * Copyright 2012 Baidu Inc. All rights reserved.
  * 
  * path:    score.js
  * desc:    评分控件
- * author:  cxl(chenxinle@baidu.com)
+ * author:  treelite(treelite@gmail.com)
  * date:    2012/03/22
  *
  * params:
