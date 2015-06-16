@@ -954,7 +954,7 @@
          * @param {string} type 事件类型
          * @param {Function} func 事件处理函数
          */
-        detachEvent = util.detachEvent = ieVersion ? function (obj, type, func) {
+        detachEvent = util.detachEvent = (ieVersion && ieVersion < 11) ? function (obj, type, func) {
             obj.detachEvent('on' + type, func);
         } : function (obj, type, func) {
             obj.removeEventListener(type, func, false);
